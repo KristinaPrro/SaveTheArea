@@ -31,10 +31,10 @@ public class GameUiInstaller : MonoInstaller
 			.NonLazy();
 
 		//Screens
-		Container.BindViewController<UiViewStatusScreen, UiPresenterStatusScreen>(
-			_uiSettings.ViewStatusScreen, _containerScreenPrefabs);
-		Container.BindViewController<UiViewResultScreen, UiPresenterResultScreen>(
-			_uiSettings.ViewResultScreen, _containerScreenPrefabs);
+		//Container.BindViewController<UiViewStatusScreen, UiPresenterStatusScreen>(
+		//	_uiSettings.ViewStatusScreen, _containerScreenPrefabs);
+		//Container.BindViewController<UiViewResultScreen, UiPresenterResultScreen>(
+		//	_uiSettings.ViewResultScreen, _containerScreenPrefabs);
 
 		//Pools
 		//Container.BindMemoryPool<>()
