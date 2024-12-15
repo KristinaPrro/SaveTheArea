@@ -4,11 +4,11 @@
 public class GameUiSettings : ScriptableObject
 {
 	[field: SerializeField]
-	public UiViewEnemyDamageElement PresenterEnemyDamageElement { get; private set; }
+	public UiViewEnemyDamageElement ViewEnemyDamageElement { get; private set; }
 
 	[field: Header("Screen:") ]
 	[field: SerializeField]
-	public UiViewStatusScreen PresenterStatusScreen { get; private set; }
+	public UiViewStatusScreen ViewStatusScreen { get; private set; }
 	[field: SerializeField]
-	public UiViewResultScreen PresenterResultScreen { get; private set; }
+	public UiViewResultScreen ViewResultScreen { get; private set; }
 }
