@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
-	[field: SerializeField]
-	private GameSettings _settings { get; set; }
-	[field: SerializeField]
-	private ListPool<Transform> _containerEnemySpawn { get; set; }
+	[SerializeField]
+	private GameSettings _settings;
+	[SerializeField]
+	private List<Transform> _containerEnemySpawn;
+	[SerializeField]
+	private Transform _containerCharacterSpawn;
 
 	private void OnDestroy()
 	{
@@ -16,21 +19,24 @@ public class GameInstaller : MonoInstaller
 
 	public override void InstallBindings()
 	{
+		Container.BindInstances(_settings);
+
+		//Signals
+		Container.DeclareSignal<SignalPlayerDamage>();
+
 		//Models
-		Container.Bind(typeof(IInputModel), typeof(IInitializable), typeof(IDisposable))
+		Container.Bind(typeof(IInputModel), typeof(ITickable))
 			.To<DesktopInputModel>()
-			.AsSingle()
 			.NonLazy();
 
 		Container.BindInterfacesAndSelfTo<EnemySpawnModel>()
 			.FromInstance(_containerEnemySpawn)
-			.AsSingle()
 			.NonLazy();
 
-		Container.BindInterfacesAndSelfTo<FinishModel>().AsSingle().NonLazy();
-		Container.BindInterfacesAndSelfTo<PlayerModel>().AsSingle().NonLazy();
+		//Container.BindInterfacesAndSelfTo<FinishModel>().NonLazy();
+		//Container.BindInterfacesAndSelfTo<PlayerModel>().NonLazy();
 
 		//Pools
-
+		//Container.BindMemoryPool<>
 	}
 }
