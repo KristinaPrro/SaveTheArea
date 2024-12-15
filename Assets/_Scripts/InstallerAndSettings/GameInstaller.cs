@@ -22,16 +22,18 @@ public class GameInstaller : MonoInstaller
 		Container.BindInstances(_settings);
 
 		//Signals
-		Container.DeclareSignal<SignalPlayerDamage>();
+		//Container.DeclareSignal<SignalPlayerDamage>();
 
 		//Models
 		Container.Bind(typeof(IInputModel), typeof(ITickable))
 			.To<DesktopInputModel>()
+			.AsSingle()
 			.NonLazy();
 
-		Container.BindInterfacesAndSelfTo<EnemySpawnModel>()
-			.FromInstance(_containerEnemySpawn)
-			.NonLazy();
+		//Container.BindInterfacesAndSelfTo<EnemySpawnModel>()
+		//	.FromInstance(_containerEnemySpawn)
+		//	.AsSingle()
+		//	.NonLazy();
 
 		//Container.BindInterfacesAndSelfTo<FinishModel>().NonLazy();
 		//Container.BindInterfacesAndSelfTo<PlayerModel>().NonLazy();

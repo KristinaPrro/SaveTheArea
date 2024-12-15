@@ -4,7 +4,7 @@ using Zenject;
 
 public class EnemySpawnModel : IInitializable, IDisposable
 {
-	public EnemySpawnModel(ListPool<Transform> _containerEnemySpawn)
+	public EnemySpawnModel(ListPool<Transform> containerEnemySpawn)
 	{
 	}
 

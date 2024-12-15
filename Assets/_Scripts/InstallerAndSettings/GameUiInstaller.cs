@@ -26,9 +26,10 @@ public class GameUiInstaller : MonoInstaller
 		Container.BindInstances(_settings, _uiSettings);
 
 		//Model
-		Container.Bind(typeof(SceneUiModel), typeof(IInitializable), typeof(IDisposable))
-			.To<SceneUiModel>()
-			.NonLazy();
+		//Container.Bind(typeof(IInitializable), typeof(IDisposable))
+		//	.To<SceneUiModel>()
+		//	.AsSingle()
+		//	.NonLazy();
 
 		//Screens
 		//Container.BindViewController<UiViewStatusScreen, UiPresenterStatusScreen>(
