@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameSettings", menuName = "GameSettings", order = 1)]
@@ -30,4 +31,10 @@ public class GameSettings : ScriptableObject
 	public int CharacterDamagePerShot { get; private set; } = 5;
 	[field: SerializeField]
 	public float CharacterBulletSpeed { get; private set; } = 2.5f;
+
+	[field: Space]
+	[field: SerializeField]
+	public List<PoolItemData> PoolItemDatas { get; private set; } = new();
+
+	private PoolItemData GetPoolItem(PoolItemType itemType) => PoolItemDatas.Find(item => item.PoolItemType == itemType);
 }

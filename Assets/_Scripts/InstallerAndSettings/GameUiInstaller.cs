@@ -4,14 +4,14 @@ using Zenject;
 
 public class GameUiInstaller : MonoInstaller
 {
-	[field: SerializeField]
-	private GameUiSettings _uiSettings { get; set; }
-	[field: SerializeField]
-	private GameSettings _settings { get; set; }
-	[field: SerializeField]
-	private Transform _containerScreenPrefabs { get; set; }
-	[field: SerializeField]
-	private Transform _containerDefaultElementPrefabs { get; set; }
+	[SerializeField]
+	private GameUiSettings _uiSettings;
+	[SerializeField]
+	private GameSettings _settings;
+	[SerializeField]
+	private Transform _containerScreenPrefabs;
+	[SerializeField]
+	private Transform _containerDefaultElementPrefabs;
 
 	private void OnDestroy()
 	{
@@ -23,12 +23,13 @@ public class GameUiInstaller : MonoInstaller
 
 	public override void InstallBindings()
 	{
+		Container.BindInstances(_settings, _uiSettings);
+
 		//Model
 		Container.Bind(typeof(SceneUiModel), typeof(IInitializable), typeof(IDisposable))
 			.To<SceneUiModel>()
-			.AsSingle()
-			.NonLazy(); 
-		
+			.NonLazy();
+
 		//Screens
 		Container.BindViewController<UiViewStatusScreen, UiPresenterStatusScreen>(
 			_uiSettings.ViewStatusScreen, _containerScreenPrefabs);
