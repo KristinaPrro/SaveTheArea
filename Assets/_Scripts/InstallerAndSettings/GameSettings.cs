@@ -41,5 +41,5 @@ public class GameSettings : ScriptableObject
 	[field: SerializeField]
 	public List<PoolItemData> PoolItemDatas { get; private set; } = new();
 
-	private PoolItemData GetPoolItem(PoolItemType itemType) => PoolItemDatas.Find(item => item.PoolItemType == itemType);
+	public PoolItemData GetPoolItem(PoolItemType itemType) => PoolItemDatas.Find(item => item.PoolItemType == itemType);
 }
