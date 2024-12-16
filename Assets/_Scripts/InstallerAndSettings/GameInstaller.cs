@@ -22,6 +22,8 @@ public class GameInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
+		SignalBusInstaller.Install(Container);
+
 		InstallSignals();
 		InstallModels();
 		InstallPools();
@@ -30,7 +32,7 @@ public class GameInstaller : MonoInstaller
 
 	private void InstallSignals()
 	{
-		//Container.DeclareSignal<SignalPlayerDamage>();
+		Container.DeclareSignal<SignalPlayerDamage>();
 	}
 
 	private void InstallModels()
