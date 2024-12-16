@@ -1,15 +1,15 @@
-﻿using System;
-using Zenject;
+﻿using UniRx;
 
-public abstract class PresenterBase : IInitializable, IDisposable
+public abstract class PresenterBase<TView> : Presenter where TView : View
 {
-	public virtual void Initialize()
+	protected readonly BoolReactiveProperty IsShownProperty = new();
+
+	public TView View { get; }
+
+	public bool IsShown => IsShownProperty.Value;
+
+	protected PresenterBase(TView view)
 	{
-
-	}
-
-	public virtual void Dispose()
-	{
-
+		View = view;
 	}
 }
