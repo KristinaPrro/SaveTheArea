@@ -40,5 +40,9 @@ public class GameInstaller : MonoInstaller
 
 		//Pools
 		//Container.BindMemoryPool<>
+
+		//Presenters
+		Container.BindViewController<ViewAstronaut, PresenterAstronaut>(
+			_settings.ViewAstronaut, _containerCharacterSpawn);
 	}
 }

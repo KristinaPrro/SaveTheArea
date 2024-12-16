@@ -1,6 +1,6 @@
 ﻿using UniRx;
 
-public abstract class UiPresenterBase<TView>: PresenterBase where TView: UiView
+public abstract class UiPresenterBase<TView>: Presenter where TView: UiView
 {
 	protected readonly BoolReactiveProperty IsShownProperty = new();
 	protected readonly SceneUiModel SceneUiModel;

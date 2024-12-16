@@ -23,7 +23,7 @@ public class GameUiInstaller : MonoInstaller
 
 	public override void InstallBindings()
 	{
-		Container.BindInstances(_settings, _uiSettings);
+		Container.BindInstances(_uiSettings);
 
 		//Model
 		//Container.Bind(typeof(IInitializable), typeof(IDisposable))
