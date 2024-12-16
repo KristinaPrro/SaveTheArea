@@ -31,8 +31,13 @@ public class GameSettings : ScriptableObject
 	public int CharacterDamagePerShot { get; private set; } = 5;
 	[field: SerializeField]
 	public float CharacterBulletSpeed { get; private set; } = 2.5f;
+	[field: SerializeField]
+	public float CharacterSpeed { get; private set; } = 0.1f;
 
 	[field: Space]
+	[field: Space]
+	[field: SerializeField]
+	public ViewAstronaut ViewAstronaut { get; private set; }
 	[field: SerializeField]
 	public List<PoolItemData> PoolItemDatas { get; private set; } = new();
 
