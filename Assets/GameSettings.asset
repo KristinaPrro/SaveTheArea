@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <EnemyCountMin>k__BackingField: 3
   <EnemyCountMax>k__BackingField: 10
-  <EnemyTimeOutMin>k__BackingField: 0.5
-  <EnemyTimeOutMax>k__BackingField: 2
-  <EnemySpeedMin>k__BackingField: 1
-  <EnemySpeedMax>k__BackingField: 10
+  <EnemyTimeOutMin>k__BackingField: 2
+  <EnemyTimeOutMax>k__BackingField: 6
+  <EnemySpeedMin>k__BackingField: 2
+  <EnemySpeedMax>k__BackingField: 6
   <EnemyHealth>k__BackingField: 3
   <CharacterHealth>k__BackingField: 3
   <CharacterRadiusFire>k__BackingField: 3.5
