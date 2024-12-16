@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -11,6 +10,8 @@ public class GameInstaller : MonoInstaller
 	private List<Transform> _containerEnemySpawn;
 	[SerializeField]
 	private Transform _containerCharacterSpawn;
+	[SerializeField]
+	private Transform _containerDefaultElementPrefabs;
 
 	private void OnDestroy()
 	{
@@ -21,27 +22,46 @@ public class GameInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
-		//Signals
-		//Container.DeclareSignal<SignalPlayerDamage>();
+		InstallSignals();
+		InstallModels();
+		InstallPools();
+		InstallPresenters();
+	}
 
-		//Models
+	private void InstallSignals()
+	{
+		//Container.DeclareSignal<SignalPlayerDamage>();
+	}
+
+	private void InstallModels()
+	{
 		Container.Bind(typeof(IInputModel), typeof(ITickable))
 			.To<DesktopInputModel>()
 			.AsSingle()
 			.NonLazy();
 
-		//Container.BindInterfacesAndSelfTo<EnemySpawnModel>()
-		//	.FromInstance(_containerEnemySpawn)
-		//	.AsSingle()
-		//	.NonLazy();
+		Container.BindInterfacesAndSelfTo<EnemySpawnModel>()
+			.AsSingle()
+			.WithArguments(_containerEnemySpawn)
+			.NonLazy();
 
 		//Container.BindInterfacesAndSelfTo<FinishModel>().NonLazy();
 		//Container.BindInterfacesAndSelfTo<PlayerModel>().NonLazy();
+	}
 
-		//Pools
-		//Container.BindMemoryPool<>
+	private void InstallPools()
+	{
+		Container.BindMemoryPool<ViewPoolRobotGray, ViewPoolRobotGray.Pool>()
+			.WithInitialSize(_settings.GetPoolItem(PoolItemType.RobotGray).Count)
+			.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.RobotGray).ItemGameObject)
+			.UnderTransform(_containerDefaultElementPrefabs);
 
-		//Presenters
+		Container.BindFactory<Transform, PresenterPoolRobotGray, PresenterPoolRobotGray.Factory>()
+			.FromFactory<PooledViewPresenterFactory<PresenterPoolRobotGray, ViewPoolRobotGray, ViewPoolRobotGray.Pool>>();
+	}
+
+	private void InstallPresenters()
+	{
 		Container.BindViewController<ViewAstronaut, PresenterAstronaut>(
 			_settings.ViewAstronaut, _containerCharacterSpawn);
 	}
