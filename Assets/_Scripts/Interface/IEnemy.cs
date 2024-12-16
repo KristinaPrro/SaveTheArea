@@ -5,7 +5,7 @@ public interface IEnemy : IDisposable
 {
 	public void SetEnemyData(float speed, int health);
 	public void Tick();
-	public void Move(Vector2 vector);
+	public void OnDirectionChange(Vector2 vector);
 	public void SetDamage(int damage);
 	public void Explode();
 }

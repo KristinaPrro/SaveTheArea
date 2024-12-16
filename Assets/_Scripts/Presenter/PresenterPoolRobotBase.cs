@@ -1,5 +1,6 @@
 ﻿using System;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
@@ -12,6 +13,7 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 
 	private float _speed;
 	private Vector2 _directionMovement;
+	private int CharacterDamagePerShot => 1;//todo
 
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 
@@ -25,7 +27,7 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 
 	public override void Initialize()
 	{
-		//trigger
+		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter2D).AddTo(_disposables);
 	}
 
 	public override void Dispose()
@@ -41,7 +43,7 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 		_speed = speed;
 		_health.Value = health;
 
-		Move(Vector2.down);
+		OnDirectionChange(Vector2.down);
 	}
 
 	public void Tick()
@@ -49,22 +51,7 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * _speed * Time.deltaTime);
 	}
 
-	public void SetDamage(int damage)
-	{
-		_health.Value -= damage;
-
-		if (_health.Value <= 0)
-			Die();
-	}
-
-	public void Explode()
-	{
-		_signalBus.Fire(new SignalPlayerDamage());
-		Die();
-		//fx, destroy
-	}
-
-	public void Move(Vector2 direction)
+	public void OnDirectionChange(Vector2 direction)
 	{
 		View.AnimationComponent.Move(direction);
 		_directionMovement = direction;
@@ -76,9 +63,37 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 		_directionMovement = Vector2.zero;
 	}
 
-	private void Die()
+	public void SetDamage(int damage)
+	{
+		_health.Value -= damage;
+
+		if (_health.Value <= 0)
+			Die();
+	}
+
+	public void Explode()//todo
+	{
+		_signalBus.Fire(new SignalPlayerDamage());
+		//fx, destroy
+	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		switch (other.tag)
+		{
+			case ObjectUtils.FINISH_TAG:
+				Explode();
+				break;
+			case ObjectUtils.BULLET_TAG:
+				SetDamage(CharacterDamagePerShot); //todo
+				break;
+		}
+	}
+
+	private void Die() //todo
 	{
 		_directionMovement = Vector2.zero;
+		//View.SelfRelease();
 		View.AnimationComponent.Die();
 	}
 }
