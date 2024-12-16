@@ -30,11 +30,7 @@ MonoBehaviour:
   - _name: 
     <PoolItemType>k__BackingField: 1
     <Count>k__BackingField: 5
-    <ItemGameObject>k__BackingField: {fileID: 0}
-  - _name: 
-    <PoolItemType>k__BackingField: 2
-    <Count>k__BackingField: 5
-    <ItemGameObject>k__BackingField: {fileID: 0}
+    <ItemGameObject>k__BackingField: {fileID: 3444118335736650427, guid: d3394bef84c75a145924420c895a8d95, type: 3}
   - _name: 
     <PoolItemType>k__BackingField: 3
     <Count>k__BackingField: 20
