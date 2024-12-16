@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
 public class EnemySpawnModel : IInitializable, IDisposable, ITickable
 {
+	private readonly CompositeDisposable _disposables = new(); 
 	private readonly List<Transform> _containerEnemySpawn;
 	private readonly GameSettings _gameSettings;
 	private readonly PresenterPoolRobotGray.Factory _presenterPoolRobotFactoryGray;
-	//private readonly PresenterPoolRobotRed.Factory _presenterPoolRobotFactoryRed;
 	private readonly List<IEnemy> _presenterEnemys = new();
 
 	private DateTime _nextSpawnTime;
@@ -30,36 +31,42 @@ public class EnemySpawnModel : IInitializable, IDisposable, ITickable
 
 	public void Initialize()
 	{
-
+		Reset();
 	}
 
 	public void Dispose()
 	{
-
+		_disposables.Dispose();
+		_presenterEnemys.Clear();
 	}
 
 	public void Tick()
 	{
+		SpawnEnemy();
+
+		foreach (var enemy in _presenterEnemys)
+			enemy.Tick();
+	}
+
+	public void SpawnEnemy()
+	{
 		if (_nextSpawnTime > DateTime.Now || _countEnemy >= _necessaryCountEnemy)
 			return;
 
-		SpawnEnemy();
+		this.LogDebug($"Enemy tic");
+
+		var speed = UnityEngine.Random.Range(_gameSettings.EnemySpeedMin, _gameSettings.EnemySpeedMax);
+		var maxHealth = _gameSettings.EnemyHealth;
+		int spawnPoint = UnityEngine.Random.Range(0, _containerEnemySpawn.Count);
+
+		var presenterEnemy = CreateRobot(speed, spawnPoint).AddTo(_disposables);
+		presenterEnemy.SetEnemyData(speed, maxHealth);
+		_presenterEnemys.Add(presenterEnemy);
 
 		var timeOut = UnityEngine.Random.Range(_gameSettings.EnemyTimeOutMin, _gameSettings.EnemyTimeOutMax);
 
 		_countEnemy ++;
 		_nextSpawnTime = DateTime.Now.AddSeconds(timeOut);
-	}
-
-	public void SpawnEnemy()
-	{
-		var speed = UnityEngine.Random.Range(_gameSettings.EnemySpeedMin, _gameSettings.EnemySpeedMax);
-		var maxHealth = _gameSettings.EnemyHealth;
-		int spawnPoint = UnityEngine.Random.Range(0, _containerEnemySpawn.Count-1);
-
-		var presenterEnemy = CreateRobot(speed, spawnPoint);
-		presenterEnemy.SetEnemyData(speed, maxHealth);
-		_presenterEnemys.Add(presenterEnemy);
 	}
 
 	private IEnemy CreateRobot(float speed, int spawnPoint)
