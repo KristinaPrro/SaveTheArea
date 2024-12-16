@@ -3,7 +3,8 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-public class PresenterRobot : Presenter, IEnemy
+public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy
+	 where TView : ViewPoolRobot
 {
 	private readonly ReactiveProperty<int> _health;
 	private readonly CompositeDisposable _disposables = new();
@@ -11,20 +12,17 @@ public class PresenterRobot : Presenter, IEnemy
 
 	private float _speed;
 
-	public IObservable<int> HealthStream => _health;
-	public int Health => _health.Value;
-
-	public PresenterRobot(EnemyData enemyData, SignalBus signalBus)
+	public PresenterPoolRobotBase(TView view, SignalBus signalBus) : base(view)
 	{
-		_speed = enemyData.Speed;
-		_health.Value = enemyData.MaxHealth;
-
 		_signalBus = signalBus;
 	}
 
+	public IObservable<int> HealthStream => _health;
+	public int Health => _health.Value;
+
 	public override void Initialize()
 	{
-		
+		//trigger
 	}
 
 	public override void Dispose()
@@ -33,6 +31,12 @@ public class PresenterRobot : Presenter, IEnemy
 
 		_disposables.Dispose();
 		StopMoving();
+	}
+
+	public void SetEnemyData(float speed, int health)
+	{
+		_speed = speed;
+		_health.Value = health;
 	}
 
 	public void SetDamage(int damage)
