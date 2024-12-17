@@ -35,9 +35,10 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 
 		_inputModel.DirectionMovementStream.Subscribe(OnDirectionChange).AddTo(_disposables);
 
-		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter).AddTo(_disposables);
-		View.Collider.OnTriggerExit2DAsObservable().Subscribe(OnTriggerExit).AddTo(_disposables);
+		View.CircleCollider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter).AddTo(_disposables);
+		View.CircleCollider.OnTriggerExit2DAsObservable().Subscribe(OnTriggerExit).AddTo(_disposables);
 
+		View.CircleCollider.radius = _gameSettings.CharacterRadiusFire;
 		_modelPlayerAttack.SetContainer(View.ContainerBullet);
 	}
 

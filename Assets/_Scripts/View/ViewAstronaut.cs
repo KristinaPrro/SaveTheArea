@@ -12,7 +12,7 @@ public class ViewAstronaut : View
 	[field: SerializeField]
 	public AnimationComponent AnimationComponent { get; private set; }
 	[field: SerializeField]
-	public Collider2D Collider { get; private set; }
+	public CircleCollider2D CircleCollider { get; private set; }
 
 	public void Awake()
 	{
@@ -20,6 +20,6 @@ public class ViewAstronaut : View
 		Assert.IsNotNull(ContainerWeapon);
 		Assert.IsNotNull(AnimationComponent);
 		Assert.IsNotNull(ContainerBullet);
-		Assert.IsNotNull(Collider);
+		Assert.IsNotNull(CircleCollider);
 	}
 }
