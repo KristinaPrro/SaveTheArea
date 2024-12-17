@@ -43,10 +43,10 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 
 	public override void Dispose()
 	{
-		base.Dispose();
-
 		_disposables.Dispose();
 		StopMoving();
+
+		base.Dispose();
 	}
 
 	public void Tick()
@@ -59,13 +59,13 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		switch (other.tag)
 		{
 			case ObjectUtils.ROBOT_TAG:
-				if(!other.TryGetComponent<ISpawnElementsView>(out var enemy))
+				if (!other.TryGetComponent<TriggerComponent>(out var trigger))
 				{
-					this.LogError($"{nameof(ISpawnElementsView)} component not found on object with {other.tag} tag!");
+					this.LogError($"{nameof(TriggerComponent)} component not found on object with {other.tag} tag!");
 					break;
 				}
 
-				_modelPlayerAttack.AddTarget(enemy);
+				_modelPlayerAttack.AddTarget(trigger.Id);
 				break;
 		}
 	}
@@ -75,9 +75,9 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		switch (other.tag)
 		{
 			case ObjectUtils.ROBOT_TAG:
-				if(!other.TryGetComponent<ISpawnElementsView>(out var enemy))
+				if (!other.TryGetComponent<ITriggerComponent>(out var enemy))
 				{
-					this.LogError($"{nameof(ISpawnElementsView)} component not found on object with {other.tag} tag!");
+					this.LogError($"{nameof(ITriggerComponent)} component not found on object with {other.tag} tag!");
 					break;
 				}
 
@@ -100,7 +100,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		}
 
 		View.AnimationComponent.Move(direction);
-		_directionMovement = direction;
+		_directionMovement = Vector2.ClampMagnitude(direction, 1);
 	}
 
 	private void StopMoving()

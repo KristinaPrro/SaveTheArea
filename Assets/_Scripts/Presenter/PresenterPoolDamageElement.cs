@@ -2,7 +2,6 @@
 using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
-using static UnityEngine.GraphicsBuffer;
 
 public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TView>, ITickable, IDamageElement
 	 where TView : ViewPoolDamageElement
@@ -30,10 +29,11 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 
 	public override void Dispose()
 	{
-		base.Dispose();
 
 		_disposables.Dispose();
 		StopMoving();
+
+		base.Dispose();
 	}
 
 	public void Tick()
@@ -53,13 +53,13 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		switch (other.tag)
 		{
 			case ObjectUtils.ROBOT_TAG:
-				if (!other.TryGetComponent<ISpawnElementsView>(out var enemy))
+				if (!other.TryGetComponent<ITriggerComponent>(out var enemy))
 				{
-					this.LogError($"{nameof(ISpawnElementsView)} component not found on object with {other.tag} tag!");
+					this.LogError($"{nameof(ITriggerComponent)} component not found on object with {other.tag} tag!");
 					break;
 				}
 
-				_signalBus.Fire(new SignalPlayerDamage( Id, enemy.Id)); //todo
+				_signalBus.Fire(new SignalPlayerDamage(Id, enemy.Id)); //todo
 				break;
 		}
 	}
@@ -71,8 +71,7 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		//var time = 1;//todo
 		//var d = (targetPosition + targetDirectionMovement*speed*time -View.transform.position)/speed;
 		//var direction = new Vector2 ((targetPosition));
-		var direction = (targetPosition - targetDirectionMovement) 
-			/ Vector2.Distance(targetPosition, targetDirectionMovement);
+		var direction = Vector2.ClampMagnitude((targetPosition - targetDirectionMovement), 1);
 
 		_directionMovement = direction;
 	}

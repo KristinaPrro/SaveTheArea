@@ -1,6 +1,5 @@
 ﻿using System;
 using UniRx;
-using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
@@ -27,17 +26,12 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		_signalBus = signalBus;
 	}
 
-	public override void Initialize()
-	{
-		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter2D).AddTo(_disposables);
-	}
-
 	public override void Dispose()
 	{
-		base.Dispose();
-
 		_disposables.Dispose();
 		StopMoving();
+
+		base.Dispose();
 	}
 
 	public void SetEnemyData(float speed, int health, int id)
@@ -46,7 +40,7 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		_health.Value = health;
 
 		Id = id;
-		View.SetId(id);
+		View.Trigger.SetId(id);
 
 		OnDirectionChange(Vector2.down);
 	}
