@@ -1,10 +1,3 @@
-﻿using Zenject;
-
-public class ModelEnemyObjects : ModelObjectBase<IEnemy>, ITickable
+﻿public class ModelEnemyObjects : ModelObjectBase<IEnemy>
 {
-	public void Tick()
-	{
-		foreach (var enemy in Presenters)
-			enemy.Tick();
-	}
 }

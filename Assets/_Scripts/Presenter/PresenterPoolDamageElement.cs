@@ -60,7 +60,7 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 					break;
 				}
 
-				_signalBus.Fire(new SignalEnemyDamage(Damage, enemy.Id));
+				_signalBus.Fire(new SignalEnemyDamage(Damage, enemy.Id, Damage));
 				break;
 
 			case ObjectUtils.DISAPPEARANCE_TAG:
