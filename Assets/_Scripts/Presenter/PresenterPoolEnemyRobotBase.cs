@@ -4,8 +4,8 @@ using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
-public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, ITickable
-	 where TView : ViewPoolRobot
+public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, ITickable
+	 where TView : ViewPoolEnemyRobot
 {
 	private readonly ReactiveProperty<int> _health = new();
 	private readonly CompositeDisposable _disposables = new();
@@ -17,13 +17,14 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 
-	public PresenterPoolRobotBase(TView view, SignalBus signalBus) : base(view)
+	public int Id { get; private set; }
+	public IObservable<int> HealthStream => _health;
+	public int Health => _health.Value;
+
+	public PresenterPoolEnemyRobotBase(TView view, SignalBus signalBus) : base(view)
 	{
 		_signalBus = signalBus;
 	}
-
-	public IObservable<int> HealthStream => _health;
-	public int Health => _health.Value;
 
 	public override void Initialize()
 	{
@@ -38,10 +39,11 @@ public class PresenterPoolRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, I
 		StopMoving();
 	}
 
-	public void SetEnemyData(float speed, int health)
+	public void SetEnemyData(float speed, int health, int id)
 	{
 		_speed = speed;
 		_health.Value = health;
+		Id = id;
 
 		OnDirectionChange(Vector2.down);
 	}

@@ -1,7 +1,7 @@
 ﻿using ModestTree;
 using UnityEngine;
 
-public abstract class ViewPoolRobot : ViewPool
+public abstract class ViewPoolEnemyRobot : ViewPool
 {
 	[field: SerializeField]
 	public Rigidbody2D Rigidbody { get; private set; }

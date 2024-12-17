@@ -42,7 +42,7 @@ public class GameInstaller : MonoInstaller
 			.AsSingle()
 			.NonLazy();
 
-		Container.BindInterfacesAndSelfTo<EnemySpawnModel>()
+		Container.BindInterfacesAndSelfTo<ModelSpawnEnemy>()
 			.AsSingle()
 			.WithArguments(_containerEnemySpawn)
 			.NonLazy();
@@ -53,13 +53,13 @@ public class GameInstaller : MonoInstaller
 
 	private void InstallPools()
 	{
-		Container.BindMemoryPool<ViewPoolRobotGray, ViewPoolRobotGray.Pool>()
+		Container.BindMemoryPool<ViewPoolEnemyRobotGray, ViewPoolEnemyRobotGray.Pool>()
 			.WithInitialSize(_settings.GetPoolItem(PoolItemType.RobotGray).Count)
 			.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.RobotGray).ItemGameObject)
 			.UnderTransform(_containerDefaultElementPrefabs);
 
-		Container.BindFactory<Transform, PresenterPoolRobotGray, PresenterPoolRobotGray.Factory>()
-			.FromFactory<PooledViewPresenterFactory<PresenterPoolRobotGray, ViewPoolRobotGray, ViewPoolRobotGray.Pool>>();
+		Container.BindFactory<Transform, PresenterPoolEnemyRobotGray, PresenterPoolEnemyRobotGray.Factory>()
+			.FromFactory<PooledViewPresenterFactory<PresenterPoolEnemyRobotGray, ViewPoolEnemyRobotGray, ViewPoolEnemyRobotGray.Pool>>();
 	}
 
 	private void InstallPresenters()
