@@ -8,12 +8,12 @@ public abstract class ViewPoolEnemyRobot : ViewPool
 	[field: SerializeField]
 	public AnimationComponent AnimationComponent { get; private set; }
 	[field: SerializeField]
-	public Collider2D Collider { get; private set; }
+	public TriggerComponent Trigger { get; private set; }
 
 	public void Awake()
 	{
 		Assert.IsNotNull(Rigidbody);
 		Assert.IsNotNull(AnimationComponent);
-		Assert.IsNotNull(Collider);
+		Assert.IsNotNull(Trigger);
 	}
 }
