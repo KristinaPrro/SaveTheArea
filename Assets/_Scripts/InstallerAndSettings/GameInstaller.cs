@@ -33,7 +33,10 @@ public class GameInstaller : MonoInstaller
 	private void InstallSignals()
 	{
 		Container.DeclareSignal<SignalPlayerDamage>();
+		Container.DeclareSignal<SignalEnemyDamage>();
+		Container.DeclareSignal<SignalEnemyReachedFinish>();
 		Container.DeclareSignal<SignalPlayerFire>();
+		Container.DeclareSignal<SignalDisappearanceDamageElement>();
 	}
 
 	private void InstallModels()
@@ -43,17 +46,18 @@ public class GameInstaller : MonoInstaller
 			.AsSingle()
 			.NonLazy();
 
+		Container.BindInterfacesAndSelfTo<ModelEnemy>().AsSingle();
 		Container.BindInterfacesAndSelfTo<ModelEnemyObjects>().AsSingle();
 		Container.BindInterfacesAndSelfTo<ModelSpawnEnemy>()
 			.AsSingle()
 			.WithArguments(_containerEnemySpawn)
 			.NonLazy();
 
+		Container.BindInterfacesAndSelfTo<ModelPlayerDamageElementBullets>().AsSingle().NonLazy();
 		Container.BindInterfacesAndSelfTo<ModelPlayerDamageElements>().AsSingle();
 		Container.BindInterfacesAndSelfTo<ModelPlayerSpawnDamageElement>().AsSingle();
 		Container.BindInterfacesAndSelfTo<ModelPlayerTargetEnemys>().AsSingle().NonLazy();
 		Container.BindInterfacesAndSelfTo<ModelPlayerAttack>().AsSingle().NonLazy();
-
 
 		//Container.BindInterfacesAndSelfTo<FinishModel>().NonLazy();
 		//Container.BindInterfacesAndSelfTo<PlayerModel>().NonLazy();
