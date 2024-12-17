@@ -60,6 +60,14 @@ public class GameInstaller : MonoInstaller
 
 		Container.BindFactory<Transform, PresenterPoolEnemyRobotGray, PresenterPoolEnemyRobotGray.Factory>()
 			.FromFactory<PooledViewPresenterFactory<PresenterPoolEnemyRobotGray, ViewPoolEnemyRobotGray, ViewPoolEnemyRobotGray.Pool>>();
+
+		Container.BindMemoryPool<ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>()
+			.WithInitialSize(_settings.GetPoolItem(PoolItemType.Bullet).Count)
+			.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.Bullet).ItemGameObject)
+			.UnderTransform(_containerDefaultElementPrefabs);
+
+		Container.BindFactory<Transform, PresenterPoolDamageBullet, PresenterPoolDamageBullet.Factory>()
+			.FromFactory<PooledViewPresenterFactory<PresenterPoolDamageBullet, ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>>();
 	}
 
 	private void InstallPresenters()
