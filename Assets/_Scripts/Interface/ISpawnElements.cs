@@ -1,6 +1,5 @@
 ﻿using System;
 
-public interface ISpawnElements: IDisposable
+public interface ISpawnElements: ISpawnElementsView, IDisposable
 {
-	public int Id { get;}
 }
