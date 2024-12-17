@@ -82,7 +82,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 					break;
 				}
 
-				_modelPlayerAttack.RemoveTarget(enemy);
+				_modelPlayerAttack.RemoveTarget(enemy.Id);
 				break;
 		}
 	}

@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class TriggerComponent : MonoBehaviour, ITriggerComponent
 {
-	private int _id = -1;
-
-	public int Id => _id;
+	[field: SerializeField] // todo delete
+	public int Id { get; set; } = -1;
 
 	public void SetId(int id)
 	{
-		_id = id;
+		Id = id;
 	}
 }

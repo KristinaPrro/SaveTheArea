@@ -11,17 +11,17 @@ public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 		
 		if(Presenters == null || count == 0)
 		{
-			this.LogError($"{nameof(Presenters)} is null!");
+			this.LogWarning($"{nameof(Presenters)} is null!");
 
 			enemy = null;
 			return false;
 		}
 
-		Presenters.OrderBy(e => Vector2.Distance(e.Position, startPosition));
-		enemy = Presenters[0];
+		var sortPresenters = Presenters.OrderBy(e => Vector2.Distance(e.Position, startPosition)).ToList();
+		enemy = sortPresenters[0];
 
-		this.LogDebug($"{Presenters.Count}: ({Vector2.Distance(Presenters[0].Position, startPosition)} ; " +
-			$"{Vector2.Distance(Presenters[count - 1].Position, startPosition)})");
+		this.LogDebug($"{Presenters.Count}: ({Vector2.Distance(sortPresenters[0].Position, startPosition)} ; " +
+			$"{Vector2.Distance(sortPresenters[count - 1].Position, startPosition)})");
 
 		return true;
 	}
