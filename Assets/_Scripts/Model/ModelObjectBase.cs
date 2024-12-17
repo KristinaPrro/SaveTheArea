@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class ModelObjectBase<T> : IDisposable, IReset where T : ISpawnElements
 {
-	protected readonly List<T> Presenters = new();
+	private readonly List<T> _presenters = new();
+
+	public List<T> Presenters => _presenters;
 
 	public virtual void Dispose()
 	{

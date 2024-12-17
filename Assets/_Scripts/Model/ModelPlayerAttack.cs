@@ -60,9 +60,9 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		TryFire();
 	}
 
-	public void RemoveTarget(ITriggerComponent enemy)
+	public void RemoveTarget(int id)
 	{
-		_modelPlayerTargetEnemys.RemoveElementById(enemy.Id);
+		_modelPlayerTargetEnemys.RemoveElementById(id);
 	}
 
 	private void OnCheckTarget(bool isSpawnTime)
@@ -78,6 +78,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		if (!_modelPlayerTargetEnemys.TryGetFirstElementAfterCheckDistanse(_containerSpawn.position, out var enemy))
 			return;
 
+		this.LogDebug($"Fire! {enemy.DirectionMovement}; {enemy.Id};");
 		SpawnDamageElementWithTarget(_containerSpawn, enemy.Position, enemy.Speed, enemy.DirectionMovement);
 
 		_signalBus.Fire(new SignalPlayerFire());
