@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 
 public class ModelObjectBase<T> : IDisposable, IReset where T : ISpawnElements
 {
@@ -18,7 +17,6 @@ public class ModelObjectBase<T> : IDisposable, IReset where T : ISpawnElements
 
 	public virtual void AddElement(T element) => Presenters.Add(element);
 	public virtual void ClearElements() => DisposeSpownElements(Presenters);
-	public virtual bool TryGetElementById(int id, out T element) => TryGetElementById(id, Presenters, out element);
 	public virtual void RemoveElement(T enemy)
 	{
 		if(!Presenters.Contains(enemy))
@@ -32,28 +30,32 @@ public class ModelObjectBase<T> : IDisposable, IReset where T : ISpawnElements
 
 	public virtual void RemoveElementById(int id)
 	{
-		if(!TryGetElementById(id, Presenters, out var element))
+		if(!TryGetElementById(id, out var element))
+			return;
+
+		Presenters.Remove(element);
+	}
+
+	public virtual void DisposeElementById(int id)
+	{
+		if(!TryGetElementById(id, out var element))
 			return;
 
 		Presenters.Remove(element);
 		element.Dispose();
 	}
 
-	protected bool TryGetElementById(int id, IList<T> presenters, out T element)
-	{		
-		var i = presenters.Count -1;
-		while ( i >= 0)
+	public virtual bool TryGetElementById(int id, out T element)
+	{
+		element = Presenters.Find(e => e.Id == id);
+
+		if (element == null)
 		{
-			element = presenters[i];
-			if (element.Id == id)
-			{
-				return true;
-			}
+			this.LogError($"DamageElement by Id {id} is null!");
+			return false;
 		}
 
-		element = default(T);
-		this.LogError($"{nameof(T)} by Id {id} not found!");
-		return false;
+		return true;
 	}
 
 	protected void DisposeSpownElements(IList<T> presenters)
@@ -62,8 +64,8 @@ public class ModelObjectBase<T> : IDisposable, IReset where T : ISpawnElements
 		{
 			var idx = presenters.Count - 1;
 			var element = presenters[idx];
-			presenters.RemoveAt(idx);
 			element.Dispose();
+			presenters.RemoveAt(idx);
 		}
 	}
 }

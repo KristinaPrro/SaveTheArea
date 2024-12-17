@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ModelPlayerSpawnDamageElement
 {
@@ -23,6 +24,8 @@ public class ModelPlayerSpawnDamageElement
 			_gameSettings.CharacterBulletSpeed,
 			_gameSettings.CharacterDamagePerShot,
 			IdHandler.GetNext());
+
+		this.LogDebug($"CreateDamageElement");
 
 		_modelPlayerDamageElements.AddElement(presenter);
 

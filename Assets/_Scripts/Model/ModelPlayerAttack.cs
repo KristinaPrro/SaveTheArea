@@ -36,14 +36,14 @@ public class ModelPlayerAttack : ModelBase, ITickable
 	{
 		base.Initialize();
 
-		_isAttackTimeProperty.Subscribe(OnCheckTarget).AddTo(Disposables);
+		_isAttackTimeProperty.SkipLatestValueOnSubscribe().Subscribe(OnCheckTarget).AddTo(Disposables);
 
 		Reset();
 	}
 
 	public void Tick()
 	{
-		_isAttackTimeProperty.Value = _nextAttackTime > DateTime.Now;
+		_isAttackTimeProperty.Value = _nextAttackTime < DateTime.Now;
 	}
 
 	public void SetContainer(Transform containerSpawnDamageElement)
@@ -51,16 +51,16 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		_containerSpawn = containerSpawnDamageElement;
 	}
 
-	public void AddTarget(ISpawnElementsView enemy)
+	public void AddTarget(int id)
 	{
-		if (!_modelEnemyObjects.TryGetElementById(enemy.Id, out var element))
+		if (!_modelEnemyObjects.TryGetElementById(id, out var element))
 			return;
 
 		_modelPlayerTargetEnemys.AddElement(element);
 		TryFire();
 	}
 
-	public void RemoveTarget(ISpawnElementsView enemy)
+	public void RemoveTarget(ITriggerComponent enemy)
 	{
 		_modelPlayerTargetEnemys.RemoveElementById(enemy.Id);
 	}
@@ -88,7 +88,6 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		float speed,
 		Vector2 targetDirectionMovement)
 	{
-
 		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement(containerSpawnDamageElement).AddTo(Disposables);
 		presenter.SetTarget(targetPosition, speed, targetDirectionMovement);
 

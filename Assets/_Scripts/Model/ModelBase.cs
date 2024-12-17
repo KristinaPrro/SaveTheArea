@@ -8,7 +8,6 @@ public abstract class ModelBase: IInitializable, IDisposable, IReset
 
 	public ModelBase()
 	{
-		this.LogDebug($"SpawnModel");
 	}
 
 	public virtual void Initialize()

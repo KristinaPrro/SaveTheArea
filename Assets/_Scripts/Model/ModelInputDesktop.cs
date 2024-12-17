@@ -12,7 +12,6 @@ public class ModelInputDesktop : IInputModel, ITickable
 
 	public ModelInputDesktop()
 	{
-		this.LogDebug($"");
 	}
 
 	public void Tick()

@@ -1,18 +1,15 @@
 ﻿using System.Linq;
 using UnityEngine;
-using Zenject;
 
-public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>, ITickable
+public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 {
-	public void Tick()
-	{
-		foreach (var enemy in Presenters)
-			enemy.Tick();
-	}
+	public override void ClearElements() => Presenters.Clear();
 
 	public bool TryGetFirstElementAfterCheckDistanse(Vector2 startPosition, out IEnemy enemy)
 	{
-		if(Presenters == null || Presenters.Count == 0)
+		var count = Presenters.Count;
+		
+		if(Presenters == null || count == 0)
 		{
 			this.LogError($"{nameof(Presenters)} is null!");
 
@@ -22,6 +19,9 @@ public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>, ITickable
 
 		Presenters.OrderBy(e => Vector2.Distance(e.Position, startPosition));
 		enemy = Presenters[0];
+
+		this.LogDebug($"{Presenters.Count}: ({Vector2.Distance(Presenters[0].Position, startPosition)} ; " +
+			$"{Vector2.Distance(Presenters[count - 1].Position, startPosition)})");
 
 		return true;
 	}
