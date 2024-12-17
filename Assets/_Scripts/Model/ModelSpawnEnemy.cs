@@ -4,10 +4,11 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-public class ModelSpawnEnemy : ModelSpawnBase<IEnemy>, ITickable
+public class ModelSpawnEnemy : ModelBase, ITickable
 {
 	private readonly List<Transform> _containerEnemySpawn;
 	private readonly GameSettings _gameSettings;
+	private readonly ModelEnemyObjects _modelEnemyObjects;
 	private readonly PresenterPoolEnemyRobotGray.Factory _presenterPoolRobotFactoryGray;
 
 	private DateTime _nextSpawnTime;
@@ -15,11 +16,16 @@ public class ModelSpawnEnemy : ModelSpawnBase<IEnemy>, ITickable
 	private int _necessaryCountEnemy;
 	private float _middleSpeed;
 
-	public ModelSpawnEnemy(List<Transform> containerEnemySpawn, 
+	public ModelSpawnEnemy(List<Transform> containerEnemySpawn,
+		ModelEnemyObjects modelEnemyObjects,
 		PresenterPoolEnemyRobotGray.Factory presenterPoolRobotFactoryGray, 
 		GameSettings gameSettings) 
 		: base()
 	{
+		_containerEnemySpawn = containerEnemySpawn;
+		_modelEnemyObjects = modelEnemyObjects;
+		_gameSettings = gameSettings;
+		_presenterPoolRobotFactoryGray = presenterPoolRobotFactoryGray;
 	}
 
 	public override void Initialize()
@@ -32,9 +38,6 @@ public class ModelSpawnEnemy : ModelSpawnBase<IEnemy>, ITickable
 	public void Tick()
 	{
 		SpawnEnemy();
-
-		foreach (var enemy in Presenters)
-			enemy.Tick();
 	}
 
 	public void SpawnEnemy()
@@ -50,7 +53,7 @@ public class ModelSpawnEnemy : ModelSpawnBase<IEnemy>, ITickable
 
 		var presenterEnemy = CreateRobot(speed, spawnPoint).AddTo(Disposables);
 		presenterEnemy.SetEnemyData(speed, maxHealth, IdHandler.GetNext());
-		Presenters.Add(presenterEnemy);
+		_modelEnemyObjects.AddElement(presenterEnemy);
 
 		var timeOut = UnityEngine.Random.Range(_gameSettings.EnemyTimeOutMin, _gameSettings.EnemyTimeOutMax);
 
@@ -58,7 +61,7 @@ public class ModelSpawnEnemy : ModelSpawnBase<IEnemy>, ITickable
 		_nextSpawnTime = DateTime.Now.AddSeconds(timeOut);
 	}
 
-	protected override void Reset()
+	public override void Reset()
 	{
 		base.Reset();
 
