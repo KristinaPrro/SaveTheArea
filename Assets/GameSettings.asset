@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <EnemyCountMin>k__BackingField: 3
   <EnemyCountMax>k__BackingField: 10
-  <EnemyTimeOutMin>k__BackingField: 2
+  <EnemyTimeOutMin>k__BackingField: 6
   <EnemyTimeOutMax>k__BackingField: 6
   <EnemySpeedMin>k__BackingField: 2
   <EnemySpeedMax>k__BackingField: 6
   <EnemyHealth>k__BackingField: 3
   <CharacterHealth>k__BackingField: 3
-  <CharacterRadiusFire>k__BackingField: 3.5
-  <CharacterRateFire>k__BackingField: 0.5
+  <CharacterRadiusFire>k__BackingField: 4.5
+  <CharacterRateFire>k__BackingField: 5
   <CharacterDamagePerShot>k__BackingField: 5
-  <CharacterBulletSpeed>k__BackingField: 2.5
+  <CharacterBulletSpeed>k__BackingField: 5
   <CharacterSpeed>k__BackingField: 8
   <ViewAstronaut>k__BackingField: {fileID: 4986881947272165851, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
   <PoolItemDatas>k__BackingField:
@@ -34,4 +34,4 @@ MonoBehaviour:
   - _name: 
     <PoolItemType>k__BackingField: 3
     <Count>k__BackingField: 20
-    <ItemGameObject>k__BackingField: {fileID: 0}
+    <ItemGameObject>k__BackingField: {fileID: 6449979737764153704, guid: a2e921916b6a70543bc9042830e9f9d7, type: 3}
