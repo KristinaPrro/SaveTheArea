@@ -13,11 +13,12 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 
 	private float _speed;
 	private Vector2 _directionMovement;
-	private int CharacterDamagePerShot => 1;//todo
-
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 
 	public int Id { get; private set; }
+	public float Speed => _speed;
+	public Vector2 DirectionMovement => _directionMovement;
+	public Vector2 Position => View.transform.position;
 	public IObservable<int> HealthStream => _health;
 	public int Health => _health.Value;
 
@@ -43,7 +44,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	{
 		_speed = speed;
 		_health.Value = health;
+
 		Id = id;
+		View.SetId(id);
 
 		OnDirectionChange(Vector2.down);
 	}
@@ -75,7 +78,6 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 
 	public void Explode()//todo
 	{
-		_signalBus.Fire(new SignalPlayerDamage());
 		//fx, destroy
 	}
 
@@ -85,9 +87,6 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		{
 			case ObjectUtils.FINISH_TAG:
 				Explode();
-				break;
-			case ObjectUtils.BULLET_TAG:
-				SetDamage(CharacterDamagePerShot); //todo
 				break;
 		}
 	}

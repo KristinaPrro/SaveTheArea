@@ -1,38 +1,44 @@
-﻿using DG.Tweening;
-using UniRx;
+﻿using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
 public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 {
 	private readonly IInputModel _inputModel;
+	private readonly SignalBus _signalBus;
 	private readonly CompositeDisposable _disposables = new();
 	private readonly GameSettings _gameSettings;
+	private readonly ModelPlayerAttack _modelPlayerAttack;
 
 	private Vector2 _directionMovement;
-
+	private float Speed => _gameSettings.CharacterSpeed;
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 
 	public PresenterAstronaut(
 		ViewAstronaut view,
 		GameSettings gameSettings,
+		ModelPlayerAttack modelPlayerAttack,
+		SignalBus signalBus,
 		IInputModel inputModel)
 		: base(view)
 	{
 		_inputModel = inputModel;
+		_signalBus = signalBus;
 		_gameSettings = gameSettings;
-
-		this.LogDebug($"Move({View?.gameObject?.name})");
+		_modelPlayerAttack = modelPlayerAttack;
 	}
 
 	public override void Initialize()
 	{
-		_inputModel.DirectionMovementStream.Subscribe(Move).AddTo(_disposables);
-	}
+		_signalBus.GetStream<SignalPlayerFire>().Subscribe(OnFire).AddTo(_disposables);
 
-	public void Tick()
-	{
-		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * _gameSettings.CharacterSpeed);
+		_inputModel.DirectionMovementStream.Subscribe(OnDirectionChange).AddTo(_disposables);
+
+		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter).AddTo(_disposables);
+		View.Collider.OnTriggerExit2DAsObservable().Subscribe(OnTriggerExit).AddTo(_disposables);
+
+		_modelPlayerAttack.SetContainer(View.ContainerBullet);
 	}
 
 	public override void Dispose()
@@ -43,13 +49,49 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		StopMoving();
 	}
 
-	public void Fire(int damage)
+	public void Tick()
 	{
-		View.AnimationComponent.Fire();
-		//pool Bullet
+		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * Speed * Time.deltaTime);
 	}
 
-	public void Move(Vector2 direction)
+	private void OnTriggerEnter(Collider2D other)
+	{
+		switch (other.tag)
+		{
+			case ObjectUtils.ROBOT_TAG:
+				if(!other.TryGetComponent<ISpawnElementsView>(out var enemy))
+				{
+					this.LogError($"{nameof(ISpawnElementsView)} component not found on object with {other.tag} tag!");
+					break;
+				}
+
+				_modelPlayerAttack.AddTarget(enemy);
+				break;
+		}
+	}
+
+	private void OnTriggerExit(Collider2D other)
+	{
+		switch (other.tag)
+		{
+			case ObjectUtils.ROBOT_TAG:
+				if(!other.TryGetComponent<ISpawnElementsView>(out var enemy))
+				{
+					this.LogError($"{nameof(ISpawnElementsView)} component not found on object with {other.tag} tag!");
+					break;
+				}
+
+				_modelPlayerAttack.RemoveTarget(enemy);
+				break;
+		}
+	}
+
+	private void OnFire(SignalPlayerFire signalData)
+	{		
+		View.AnimationComponent.Fire();
+	}
+
+	public void OnDirectionChange(Vector2 direction)
 	{
 		if (direction == Vector2.zero)
 		{
@@ -61,7 +103,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		_directionMovement = direction;
 	}
 
-	public void StopMoving()
+	private void StopMoving()
 	{
 		View.AnimationComponent.StopMoving();
 		_directionMovement = Vector2.zero;
