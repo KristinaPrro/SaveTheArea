@@ -93,9 +93,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6303278392302881315}
+  - component: {fileID: 1864882418379293963}
   - component: {fileID: 5257746908092878967}
   - component: {fileID: 6570855709542482906}
-  - component: {fileID: 6626910658608532785}
   - component: {fileID: 8156341780580186593}
   - component: {fileID: 1966327534551580696}
   m_Layer: 0
@@ -121,6 +121,18 @@ Transform:
   m_Father: {fileID: 302652217118992639}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1864882418379293963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947883260136705552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6580b795ce77cde4097717a0a1fdbc29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5257746908092878967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,41 +167,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!58 &6626910658608532785
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947883260136705552}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.05}
-  serializedVersion: 2
-  m_Radius: 0.55
 --- !u!70 &8156341780580186593
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -299,4 +276,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Rigidbody>k__BackingField: {fileID: 1966327534551580696}
   <AnimationComponent>k__BackingField: {fileID: 5257746908092878967}
-  <Collider>k__BackingField: {fileID: 6626910658608532785}
+  <Trigger>k__BackingField: {fileID: 1864882418379293963}

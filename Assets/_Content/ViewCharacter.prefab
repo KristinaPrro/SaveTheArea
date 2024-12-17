@@ -98,7 +98,7 @@ Transform:
   m_Children:
   - {fileID: 9215961556584589179}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4986881947272165851
 MonoBehaviour:
@@ -116,6 +116,7 @@ MonoBehaviour:
   <ContainerWeapon>k__BackingField: {fileID: 1437783802629649722}
   <ContainerBullet>k__BackingField: {fileID: 1383329479405436074}
   <AnimationComponent>k__BackingField: {fileID: 186298211636530767}
+  <Collider>k__BackingField: {fileID: 1552169562077306897}
 --- !u!1 &2303052841284754249
 GameObject:
   m_ObjectHideFlags: 0
