@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ed15c376fddb54bba141654278cac8, type: 3}
   m_Name: GameUiSettings
   m_EditorClassIdentifier: 
+  <ViewEnemyDamageElement>k__BackingField: {fileID: 7904299865226270432, guid: 486fb4e89f472b74ebbec82ed3e7d265, type: 3}
+  <ViewStatusScreen>k__BackingField: {fileID: 2033685350127394837, guid: c3e50474ea311ba45bdecc41c7ea2d00, type: 3}
+  <ViewResultScreen>k__BackingField: {fileID: 2175278917973959343, guid: f12abebe2c9dfee47a11f4af089b45ba, type: 3}
