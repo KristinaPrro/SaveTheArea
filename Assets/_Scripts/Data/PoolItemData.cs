@@ -13,7 +13,7 @@ public struct PoolItemData
 	[field: SerializeField]
 	public GameObject ItemGameObject { get; private set; }
 
-	public void UpdateNameForCollectionDisplaying()
+	public void SetName()
 	{
 		_name = PoolItemType.ToString();
 	}

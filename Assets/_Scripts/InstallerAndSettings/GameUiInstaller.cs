@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class GameUiInstaller : MonoInstaller
@@ -25,19 +24,40 @@ public class GameUiInstaller : MonoInstaller
 	{
 		Container.BindInstances(_uiSettings);
 
-		//Model
-		//Container.Bind(typeof(IInitializable), typeof(IDisposable))
-		//	.To<SceneUiModel>()
-		//	.AsSingle()
-		//	.NonLazy();
+		InstallSignals();
+		InstallModels();
+		InstallPools();
+		InstallPresenters();
+		
+		//at the end
+		Container.BindInterfacesAndSelfTo<ModelLevelUiInit>().AsSingle().NonLazy();
+	}
 
-		//Screens
-		//Container.BindViewController<UiViewStatusScreen, UiPresenterStatusScreen>(
-		//	_uiSettings.ViewStatusScreen, _containerScreenPrefabs);
-		//Container.BindViewController<UiViewResultScreen, UiPresenterResultScreen>(
-		//	_uiSettings.ViewResultScreen, _containerScreenPrefabs);
+	private void InstallSignals()
+	{
+	}
 
-		//Pools
-		//Container.BindMemoryPool<>()
+	private void InstallModels()
+	{
+		Container.BindInterfacesAndSelfTo<ModelLevelUi>().AsSingle().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelLevelUiAutoWindowChange>().AsSingle().NonLazy();
+	}
+
+	private void InstallPools()
+	{
+		//UiPresenterEnemyDamageElement: UiPresenterBase<UiViewEnemyDamageElement>
+		//Container.BindMemoryPool<ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>()
+		//	.WithInitialSize(_settings.GetPoolItem(PoolItemType.Bullet).Count)
+		//	.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.Bullet).ItemGameObject)
+		//	.UnderTransform(_containerDefaultElementPrefabs);
+
+		//Container.BindFactory<Transform, PresenterPoolDamageBullet, PresenterPoolDamageBullet.Factory>()
+		//	.FromFactory<PooledViewPresenterFactory<PresenterPoolDamageBullet, ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>>();
+	}
+
+	private void InstallPresenters()
+	{
+		Container.BindViewController<UiViewGameStatusScreen, UiPresenterGameStatusScreen>(_uiSettings.ViewStatusScreen, _containerScreenPrefabs);
+		Container.BindViewController<UiViewResultScreen, UiPresenterResultScreen>(_uiSettings.ViewResultScreen, _containerScreenPrefabs);
 	}
 }

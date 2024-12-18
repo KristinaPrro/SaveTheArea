@@ -14,6 +14,8 @@ public class GameInstaller : MonoInstaller
 	private Transform _containerBulletSpawn;
 	[SerializeField]
 	private Transform _containerDefaultElementPrefabs;
+	[SerializeField]
+	private ViewFinishLine _viewFinishLine;
 
 	private void OnDestroy()
 	{
@@ -30,15 +32,23 @@ public class GameInstaller : MonoInstaller
 		InstallModels();
 		InstallPools();
 		InstallPresenters();
+
+		//at the end
+		Container.BindInterfacesAndSelfTo<ModelResetLevel>().AsSingle().NonLazy(); 
 	}
 
 	private void InstallSignals()
 	{
 		Container.DeclareSignal<SignalPlayerDamage>();
-		Container.DeclareSignal<SignalEnemyDamage>();
-		Container.DeclareSignal<SignalEnemyReachedFinish>();
 		Container.DeclareSignal<SignalPlayerFire>();
 		Container.DeclareSignal<SignalDisappearanceDamageElement>();
+
+		Container.DeclareSignal<SignalEnemyReachedFinish>();
+		Container.DeclareSignal<SignalEnemyDamage>();
+		Container.DeclareSignal<SignalEnemyDie>();
+
+		Container.DeclareSignal<SignalGameResults>();
+		Container.DeclareSignal<SignalGameNew>();
 	}
 
 	private void InstallModels()
@@ -62,8 +72,7 @@ public class GameInstaller : MonoInstaller
 		Container.BindInterfacesAndSelfTo<ModelPlayerTargetEnemys>().AsSingle().NonLazy();
 		Container.BindInterfacesAndSelfTo<ModelPlayerAttack>().AsSingle().NonLazy();
 
-		//Container.BindInterfacesAndSelfTo<FinishModel>().NonLazy();
-		//Container.BindInterfacesAndSelfTo<PlayerModel>().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelLevel>().AsSingle().NonLazy();
 	}
 
 	private void InstallPools()
@@ -87,6 +96,11 @@ public class GameInstaller : MonoInstaller
 
 	private void InstallPresenters()
 	{
+		Container.BindInterfacesAndSelfTo<PresenterFinishLine>()
+			.AsSingle()
+			.WithArguments(_viewFinishLine)
+			.NonLazy();
+
 		Container.BindViewController<ViewAstronaut, PresenterAstronaut>(
 			_settings.ViewAstronaut, _containerCharacterSpawn);
 	}

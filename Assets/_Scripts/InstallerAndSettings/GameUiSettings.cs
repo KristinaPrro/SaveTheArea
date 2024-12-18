@@ -8,7 +8,7 @@ public class GameUiSettings : ScriptableObject
 
 	[field: Header("Screen:") ]
 	[field: SerializeField]
-	public UiViewStatusScreen ViewStatusScreen { get; private set; }
+	public UiViewGameStatusScreen ViewStatusScreen { get; private set; }
 	[field: SerializeField]
 	public UiViewResultScreen ViewResultScreen { get; private set; }
 }
