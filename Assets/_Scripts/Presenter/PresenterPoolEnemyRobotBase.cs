@@ -34,7 +34,7 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		base.Dispose();
 	}
 
-	public void SetEnemyData(float speed, int health, int id)
+	public void SetEnemyData(float speed, int health, int id, Transform startPosition)
 	{
 		_speed = speed;
 		_health.Value = health;
@@ -42,6 +42,7 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		Id = id;
 		View.Trigger.SetId(id);
 
+		View.transform.position = startPosition.position;
 		OnDirectionChange(Vector2.down);
 	}
 
