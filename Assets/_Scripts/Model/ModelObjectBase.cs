@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ModelObjectBase<T> : IDisposable, IReset where T : ISpawnElements
+public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnElements
 {
 	private readonly List<T> _presenters = new();
 

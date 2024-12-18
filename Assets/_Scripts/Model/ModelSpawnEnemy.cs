@@ -12,14 +12,14 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 
 	private DateTime _nextSpawnTime;
 	private int _countEnemy;
-	private int _necessaryCountEnemy;
 	private float _middleSpeed;
 
 	public ModelSpawnEnemy(List<Transform> containerEnemySpawn,
 		ModelEnemyObjects modelEnemyObjects,
+		ModelLevel modelLevel,
 		PresenterPoolEnemyRobotGray.Factory presenterPoolRobotFactoryGray, 
 		GameSettings gameSettings) 
-		: base()
+		: base(modelLevel)
 	{
 		_containerEnemySpawn = containerEnemySpawn;
 		_modelEnemyObjects = modelEnemyObjects;
@@ -36,12 +36,23 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 
 	public void Tick()
 	{
+		if (OutGame)
+			return;
+
 		SpawnEnemy();
+	}
+
+	public override void Reset()
+	{
+		base.Reset();
+
+		_nextSpawnTime = DateTime.MinValue;
+		_countEnemy = 0;
 	}
 
 	public void SpawnEnemy()
 	{
-		if (_nextSpawnTime > DateTime.Now || _countEnemy >= _necessaryCountEnemy)
+		if (_nextSpawnTime > DateTime.Now || _countEnemy >= ModelLevel.MaxEnemyCount)
 			return;
 
 		this.Log($"Enemy spown");
@@ -58,15 +69,6 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 
 		_countEnemy ++;
 		_nextSpawnTime = DateTime.Now.AddSeconds(timeOut);
-	}
-
-	public override void Reset()
-	{
-		base.Reset();
-
-		_necessaryCountEnemy = UnityEngine.Random.Range(_gameSettings.EnemyCountMin, _gameSettings.EnemyCountMax);
-		_nextSpawnTime = DateTime.MinValue;
-		_countEnemy = 0;
 	}
 
 	private IEnemy CreateRobot(float speed, int spawnPoint)

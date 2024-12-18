@@ -19,11 +19,12 @@ public class ModelPlayerAttack : ModelBase, ITickable
 	protected float RateFire => _gameSettings.CharacterRateFire;
 
 	public ModelPlayerAttack(
+		ModelLevel modelLevel,
 		SignalBus signalBus,
 		GameSettings gameSettings,
 		ModelEnemyObjects modelEnemyObjects,
 		ModelPlayerTargetEnemys modelPlayerTargetEnemys,
-		ModelPlayerSpawnDamageElement modelPlayerSpawnDamageElement) : base()
+		ModelPlayerSpawnDamageElement modelPlayerSpawnDamageElement) : base(modelLevel)
 	{
 		_signalBus = signalBus;
 		_gameSettings = gameSettings;
@@ -43,6 +44,9 @@ public class ModelPlayerAttack : ModelBase, ITickable
 
 	public void Tick()
 	{
+		if (OutGame)
+			return;
+
 		_isAttackTimeProperty.Value = _nextAttackTime < DateTime.Now;
 	}
 
@@ -72,6 +76,9 @@ public class ModelPlayerAttack : ModelBase, ITickable
 
 	public void TryFire()
 	{
+		if (OutGame)
+			return;
+
 		if (!_isAttackTimeProperty.Value)
 			return;
 
@@ -94,8 +101,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 
 		_nextAttackTime = DateTime.Now.AddSeconds(RateFire);
 	}
-
-	
+		
 	public override void Reset()
 	{
 		base.Reset();

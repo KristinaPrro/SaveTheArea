@@ -8,9 +8,10 @@ public class ModelEnemy : ModelBase, ITickable
 	private readonly GameSettings _gameSettings;
 
 	public ModelEnemy(
+		ModelLevel modelLevel,
 		SignalBus signalBus,
 		GameSettings gameSettings,
-		ModelEnemyObjects modelPlayerDamageElements) : base()
+		ModelEnemyObjects modelPlayerDamageElements) : base(modelLevel)
 	{
 		_signalBus = signalBus;
 		_gameSettings = gameSettings;
@@ -28,6 +29,9 @@ public class ModelEnemy : ModelBase, ITickable
 
 	public void Tick()
 	{
+		if (OutGame)
+			return;
+
 		foreach (var enemy in _modelEnemyObjects.Presenters)
 			enemy.Tick();
 	}
@@ -45,7 +49,10 @@ public class ModelEnemy : ModelBase, ITickable
 		enemy.SetDamage(signalData.Damage);
 
 		if (enemy.Health <= 0)
+		{
+			_signalBus.Fire(new SignalEnemyDie(signalData.EnemyId));
 			DisposeById(signalData.EnemyId);
+		}
 	}
 
 	private void DisposeById(int id)

@@ -7,9 +7,10 @@ public class ModelPlayerDamageElementBullets : ModelBase, ITickable
 	private readonly ModelPlayerDamageElements _modelPlayerDamageElements;
 
 	public ModelPlayerDamageElementBullets(
+		ModelLevel modelLevel,
 		SignalBus signalBus,
 		GameSettings gameSettings,
-		ModelPlayerDamageElements modelPlayerDamageElements) : base()
+		ModelPlayerDamageElements modelPlayerDamageElements) : base(modelLevel)
 	{
 		_signalBus = signalBus;
 		_modelPlayerDamageElements = modelPlayerDamageElements;
@@ -21,16 +22,16 @@ public class ModelPlayerDamageElementBullets : ModelBase, ITickable
 
 		_signalBus.GetStream<SignalDisappearanceDamageElement>().Subscribe(OnDisappearance).AddTo(Disposables);
 		_signalBus.GetStream<SignalEnemyDamage>().Subscribe(OnEnemyDamage).AddTo(Disposables);
-		Reset();
 	}
-
 
 	public void Tick()
 	{
+		if (OutGame)
+			return; 
+		
 		foreach (var enemy in _modelPlayerDamageElements.Presenters)
 			enemy.Tick();
 	}
-
 
 	private void OnDisappearance(SignalDisappearanceDamageElement signalData)
 	{
