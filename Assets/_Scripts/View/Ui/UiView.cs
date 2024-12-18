@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class UiView : MonoBehaviour
+public class UiView : View
 {
 	public virtual void Show(bool isShow = true)
 	{

@@ -1,8 +1,8 @@
-﻿public abstract class UiPresenterScreenBase<TView>: UiPresenterBase<TView> where TView: UiView
+﻿public abstract class UiPresenterScreenBase<TView>: UiPresenterBase<TView>, IUiPresenter where TView: UiView
 {
-	public abstract WindowViewType ViewType { get; }
+	public abstract WindowType WindowType { get; }
 	
-	protected UiPresenterScreenBase(TView view, SceneUiModel sceneUiModel) : base(view, sceneUiModel)
+	protected UiPresenterScreenBase(TView view, ModelLevelUi sceneUiModel) : base(view, sceneUiModel)
 	{
 	}
 }

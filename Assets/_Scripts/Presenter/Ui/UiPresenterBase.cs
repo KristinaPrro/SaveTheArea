@@ -3,13 +3,13 @@
 public abstract class UiPresenterBase<TView>: Presenter where TView: UiView
 {
 	protected readonly BoolReactiveProperty IsShownProperty = new();
-	protected readonly SceneUiModel SceneUiModel;
+	protected readonly ModelLevelUi SceneUiModel;
 
 	public TView View { get;}
 
 	public bool IsShown => IsShownProperty.Value;
 
-	protected UiPresenterBase(TView view, SceneUiModel sceneUiModel)
+	protected UiPresenterBase(TView view, ModelLevelUi sceneUiModel)
 	{
 		View = view;
 		SceneUiModel = sceneUiModel;
