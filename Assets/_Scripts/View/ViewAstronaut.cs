@@ -14,6 +14,8 @@ public class ViewAstronaut : View
 	[field: SerializeField]
 	public CircleCollider2D CircleCollider { get; private set; }
 
+	public Vector3 StartPosition { get; private set; }
+
 	public void Awake()
 	{
 		Assert.IsNotNull(Rigidbody);
@@ -21,5 +23,7 @@ public class ViewAstronaut : View
 		Assert.IsNotNull(AnimationComponent);
 		Assert.IsNotNull(ContainerBullet);
 		Assert.IsNotNull(CircleCollider);
+
+		StartPosition = Rigidbody.transform.position;
 	}
 }

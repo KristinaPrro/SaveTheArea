@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using System;
+using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
@@ -31,6 +32,9 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 
 	public override void Initialize()
 	{
+		base.Initialize();
+
+		_signalBus.GetStream<SignalGameNew>().Subscribe(OnGameNew).AddTo(_disposables);
 		_signalBus.GetStream<SignalPlayerFire>().Subscribe(OnFire).AddTo(_disposables);
 
 		_inputModel.DirectionMovementStream.Subscribe(OnDirectionChange).AddTo(_disposables);
@@ -40,6 +44,11 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 
 		View.CircleCollider.radius = _gameSettings.CharacterRadiusFire;
 		_modelPlayerAttack.SetContainer(View.ContainerBullet);
+	}
+
+	private void OnGameNew(SignalGameNew @new)
+	{
+		View.Rigidbody.transform.position = View.StartPosition;
 	}
 
 	public override void Dispose()
