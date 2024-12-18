@@ -11,6 +11,8 @@ public class GameInstaller : MonoInstaller
 	[SerializeField]
 	private Transform _containerCharacterSpawn;
 	[SerializeField]
+	private Transform _containerBulletSpawn;
+	[SerializeField]
 	private Transform _containerDefaultElementPrefabs;
 
 	private void OnDestroy()
@@ -55,7 +57,8 @@ public class GameInstaller : MonoInstaller
 
 		Container.BindInterfacesAndSelfTo<ModelPlayerDamageElementBullets>().AsSingle().NonLazy();
 		Container.BindInterfacesAndSelfTo<ModelPlayerDamageElements>().AsSingle();
-		Container.BindInterfacesAndSelfTo<ModelPlayerSpawnDamageElement>().AsSingle();
+		Container.BindInterfacesAndSelfTo<ModelPlayerSpawnDamageElement>()
+			.AsSingle().WithArguments(_containerBulletSpawn);
 		Container.BindInterfacesAndSelfTo<ModelPlayerTargetEnemys>().AsSingle().NonLazy();
 		Container.BindInterfacesAndSelfTo<ModelPlayerAttack>().AsSingle().NonLazy();
 

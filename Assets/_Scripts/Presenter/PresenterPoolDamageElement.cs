@@ -29,7 +29,6 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 
 	public override void Dispose()
 	{
-
 		_disposables.Dispose();
 		StopMoving();
 
@@ -46,6 +45,7 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		Speed = speed;
 		Damage = damage;
 		Id = id;
+		
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -60,7 +60,7 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 					break;
 				}
 
-				_signalBus.Fire(new SignalEnemyDamage(Damage, enemy.Id, Damage));
+				_signalBus.Fire(new SignalEnemyDamage(Id, enemy.Id, Damage));
 				break;
 
 			case ObjectUtils.DISAPPEARANCE_TAG:
@@ -70,16 +70,18 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		}
 	}
 
-	public void SetTarget(Vector2 targetPosition,
+	public void SetTarget(Transform targetPosition,
 	float speed,
-	Vector2 targetDirectionMovement)
+	Vector2 targetDirectionMovement, Transform startPosition)
 	{
 		//var time = 1;//todo
 		//var d = (targetPosition + targetDirectionMovement*speed*time -View.transform.position)/speed;
 		//var direction = new Vector2 ((targetPosition));
-		var direction = Vector2.ClampMagnitude((targetPosition - targetDirectionMovement), 1);
+		var direction = Vector3.ClampMagnitude((targetPosition.position - startPosition.position), 1);
 
 		_directionMovement = direction;
+		
+		View.transform.position = startPosition.position;
 	}
 
 	public void StopMoving()
@@ -87,7 +89,7 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		_directionMovement = Vector2.zero;
 	}
 
-	public void Disappear() //todo
+	public void Disappear()
 	{
 
 	}

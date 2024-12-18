@@ -17,7 +17,7 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	public int Id { get; private set; }
 	public float Speed => _speed;
 	public Vector2 DirectionMovement => _directionMovement;
-	public Vector2 Position => View.transform.position;
+	public Transform TransformPosition => View.transform;
 	public IObservable<int> HealthStream => _health;
 	public int Health => _health.Value;
 

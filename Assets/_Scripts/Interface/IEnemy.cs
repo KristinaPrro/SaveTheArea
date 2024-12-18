@@ -2,7 +2,7 @@
 
 public interface IEnemy : ISpawnElements
 {
-	public Vector2 Position { get;}
+	public Transform TransformPosition { get;}
 	public float Speed { get;}
 	public int Health { get;}
 	public Vector2 DirectionMovement { get; }

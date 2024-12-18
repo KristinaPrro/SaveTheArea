@@ -78,19 +78,19 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		if (!_modelPlayerTargetEnemys.TryGetFirstElementAfterCheckDistanse(_containerSpawn.position, out var enemy))
 			return;
 
-		this.LogDebug($"Fire! {enemy.DirectionMovement}; {enemy.Id};");
-		SpawnDamageElementWithTarget(_containerSpawn, enemy.Position, enemy.Speed, enemy.DirectionMovement);
+		this.LogDebug($"Fire! {enemy.TransformPosition}; {enemy.Id};");
+		SpawnDamageElementWithTarget(_containerSpawn, enemy.TransformPosition, enemy.Speed, enemy.DirectionMovement);
 
 		_signalBus.Fire(new SignalPlayerFire());
 	}
 
 	public void SpawnDamageElementWithTarget(Transform containerSpawnDamageElement,
-		Vector2 targetPosition,
+		Transform targetPosition,
 		float speed,
 		Vector2 targetDirectionMovement)
 	{
-		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement(containerSpawnDamageElement).AddTo(Disposables);
-		presenter.SetTarget(targetPosition, speed, targetDirectionMovement);
+		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement().AddTo(Disposables);
+		presenter.SetTarget(targetPosition, speed, targetDirectionMovement, containerSpawnDamageElement);
 
 		_nextAttackTime = DateTime.Now.AddSeconds(RateFire);
 	}
