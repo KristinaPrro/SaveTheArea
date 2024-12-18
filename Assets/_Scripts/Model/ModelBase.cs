@@ -2,12 +2,16 @@
 using UniRx;
 using Zenject;
 
-public abstract class ModelBase: IInitializable, IDisposable, IReset
+public abstract class ModelBase: IInitializable, IDisposable, IResettable
 {
 	protected readonly CompositeDisposable Disposables = new();
+	protected readonly ModelLevel ModelLevel;
 
-	public ModelBase()
+	protected bool OutGame => ModelLevel.OutGame;
+
+	public ModelBase(ModelLevel modelLevel)
 	{
+		ModelLevel = modelLevel;
 	}
 
 	public virtual void Initialize()
