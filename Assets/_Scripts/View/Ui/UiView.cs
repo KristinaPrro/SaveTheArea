@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class UiView : View
+﻿public class UiView : View
 {
 	public virtual void Show(bool isShow = true)
 	{

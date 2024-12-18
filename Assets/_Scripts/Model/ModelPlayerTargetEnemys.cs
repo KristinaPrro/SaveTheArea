@@ -21,10 +21,6 @@ public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 			=> Vector2.Distance((Vector2)e.TransformPosition.position, startPosition)).ToList();
 		enemy = sortPresenters[0];
 
-		this.LogDebug($"{Presenters.Count}: " +
-			$"({Vector2.Distance(sortPresenters[0].TransformPosition.position, startPosition)} ; " +
-			$"{Vector2.Distance(sortPresenters[count - 1].TransformPosition.position, startPosition)})");
-
 		return true;
 	}
 }

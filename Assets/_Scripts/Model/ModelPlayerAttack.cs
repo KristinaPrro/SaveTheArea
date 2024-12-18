@@ -85,7 +85,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		if (!_modelPlayerTargetEnemys.TryGetFirstElementAfterCheckDistanse(_containerSpawn.position, out var enemy))
 			return;
 
-		this.LogDebug($"Fire! {enemy.TransformPosition}; {enemy.Id};");
+		this.Log($"Fire! {enemy.Id};");
 		SpawnDamageElementWithTarget(_containerSpawn, enemy.TransformPosition, enemy.Speed, enemy.DirectionMovement);
 
 		_signalBus.Fire(new SignalPlayerFire());

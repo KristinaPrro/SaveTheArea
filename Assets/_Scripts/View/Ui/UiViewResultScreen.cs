@@ -14,7 +14,6 @@ public class UiViewResultScreen : UiView
 	[field: SerializeField]
 	public TextMeshProUGUI TextDebug { get; private set; }
 
-
 	public void Awake()
 	{
 		Assert.IsNotNull(ButtonNewGame);

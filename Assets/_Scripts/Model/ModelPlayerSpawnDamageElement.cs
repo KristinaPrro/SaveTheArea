@@ -28,8 +28,6 @@ public class ModelPlayerSpawnDamageElement
 			_gameSettings.CharacterDamagePerShot,
 			IdHandler.GetNext());
 
-		this.LogDebug($"CreateDamageElement");
-
 		_modelPlayerDamageElements.AddElement(presenter);
 
 		return presenter;

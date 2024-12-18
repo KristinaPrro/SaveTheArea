@@ -71,9 +71,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 			Die();
 	}
 
-	public void Explode()//todo
+	public void Explode()
 	{
-		//fx, destroy
+		View.AnimationComponent.Die();
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -86,10 +86,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		}
 	}
 
-	private void Die() //todo
+	private void Die()
 	{
 		_directionMovement = Vector2.zero;
-		//View.SelfRelease();
 		View.AnimationComponent.Die();
 	}
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class Logs
 {
-	private static bool IsDebagLogs = true;
+	private static bool IsDebagLogs = false;
 
 	public static void LogDebug(this object obj,
 		string message = "",
