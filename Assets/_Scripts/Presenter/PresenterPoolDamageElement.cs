@@ -45,7 +45,6 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		Speed = speed;
 		Damage = damage;
 		Id = id;
-		
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -71,15 +70,35 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 	}
 
 	public void SetTarget(Transform targetPosition,
-	float speed,
-	Vector2 targetDirectionMovement, Transform startPosition)
+		float speed,
+		Vector2 targetDirectionMovement,
+		Transform startPosition)
 	{
-		//var time = 1;//todo
-		//var d = (targetPosition + targetDirectionMovement*speed*time -View.transform.position)/speed;
-		//var direction = new Vector2 ((targetPosition));
-		var direction = Vector3.ClampMagnitude((targetPosition.position - startPosition.position), 1);
+		Vector2 startTargetPosition = targetPosition.position;
+		var acceptableError = targetPosition.lossyScale.y / 2;
+		var sumSpeed = Speed + speed;
 
-		_directionMovement = direction;
+		var shiftTargetPosition = startTargetPosition;
+		var meetPosition = startTargetPosition;
+
+		do
+		{
+			meetPosition = shiftTargetPosition;
+			var distance = Vector2.Distance(meetPosition, startTargetPosition) 
+				+ Vector2.Distance(meetPosition, startPosition.position);
+
+			var time = distance / sumSpeed;
+			shiftTargetPosition = startTargetPosition + targetDirectionMovement * speed * time;
+
+			//shiftTargetPosition = meetPosition + targetDirectionMovement * speed * time;
+			//meetPosition += targetDirectionMovement * speed * time;
+			//new Vector2(targetPosition.position.y - speed * time, targetPosition.position.x);
+			//meetPosition = new Vector2(targetPosition.position.y - speed * time, targetPosition.position.x);
+			//targetWayDistance = (Vector2)startPosition.position + targetDirectionMovement * speed * time;
+		}
+		while (Vector2.Distance(meetPosition, shiftTargetPosition) < acceptableError);
+
+		_directionMovement = Vector3.ClampMagnitude(shiftTargetPosition - (Vector2)startPosition.position, 1);
 		
 		View.transform.position = startPosition.position;
 	}
@@ -87,10 +106,5 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 	public void StopMoving()
 	{
 		_directionMovement = Vector2.zero;
-	}
-
-	public void Disappear()
-	{
-
 	}
 }
