@@ -26,7 +26,7 @@ public class ModelPlayerSpawnDamageElement
 		presenter.SetData(
 			_gameSettings.CharacterBulletSpeed,
 			_gameSettings.CharacterDamagePerShot,
-			IdHandler.GetNext());
+			SpawnIdUtils.GetNext());
 
 		this.LogDebug($"CreateDamageElement");
 

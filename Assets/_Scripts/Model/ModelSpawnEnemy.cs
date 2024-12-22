@@ -62,7 +62,7 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 		int spawnPoint = UnityEngine.Random.Range(0, _containerEnemySpawn.Count);
 
 		var presenterEnemy = CreateRobot(speed, spawnPoint);
-		presenterEnemy.SetEnemyData(speed, maxHealth, IdHandler.GetNext(), _containerEnemySpawn[spawnPoint]);
+		presenterEnemy.SetEnemyData(speed, maxHealth, SpawnIdUtils.GetNext(), _containerEnemySpawn[spawnPoint]);
 		_modelEnemyObjects.AddElement(presenterEnemy);
 
 		var timeOut = UnityEngine.Random.Range(_gameSettings.EnemyTimeOutMin, _gameSettings.EnemyTimeOutMax);
