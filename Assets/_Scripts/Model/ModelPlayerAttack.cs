@@ -92,12 +92,12 @@ public class ModelPlayerAttack : ModelBase, ITickable
 	}
 
 	public void SpawnDamageElementWithTarget(Transform containerSpawnDamageElement,
-		Transform targetPosition,
+		Transform transformTarget,
 		float speed,
 		Vector2 targetDirectionMovement)
 	{
-		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement().AddTo(Disposables);
-		presenter.SetTarget(targetPosition, speed, targetDirectionMovement, containerSpawnDamageElement);
+		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement(containerSpawnDamageElement, 
+			new TargetData(transformTarget, speed, targetDirectionMovement));
 
 		_nextAttackTime = DateTime.Now.AddSeconds(RateFire);
 	}

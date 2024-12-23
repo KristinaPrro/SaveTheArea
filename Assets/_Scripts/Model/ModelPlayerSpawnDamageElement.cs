@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ModelPlayerSpawnDamageElement
 {
@@ -20,15 +19,16 @@ public class ModelPlayerSpawnDamageElement
 		_modelPlayerDamageElements = modelPlayerDamageElementObjects;
 	}
 
-	public IDamageElement CreateDamageElement()
+	public IDamageElement CreateDamageElement(Transform containerSpawnDamageElement, TargetData targetData)
 	{
-		var presenter = _presenterPoolDamageBulletFactory.Create(_containerBulletSpawn);
-		presenter.SetData(
-			_gameSettings.CharacterBulletSpeed,
-			_gameSettings.CharacterDamagePerShot,
-			SpawnIdUtils.GetNext());
+		var presenter = _presenterPoolDamageBulletFactory.Create(_containerBulletSpawn, 
+			new DamageElementData(SpawnIdUtils.GetNext(),
+				_gameSettings.CharacterDamagePerShot,
+				_gameSettings.CharacterBulletSpeed,
+				containerSpawnDamageElement),
+			targetData);
 
-		this.LogDebug($"CreateDamageElement");
+		this.Log($"Fire! ({nameof(PresenterPoolDamageBullet)})");
 
 		_modelPlayerDamageElements.AddElement(presenter);
 

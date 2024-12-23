@@ -94,10 +94,11 @@ public class GameInstaller : MonoInstaller
 			.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.Bullet).ItemGameObject)
 			.UnderTransform(_containerDefaultElementPrefabs);
 
-		Container.BindFactory<Transform, PresenterPoolDamageBullet, PresenterPoolDamageBullet.Factory>()
+		Container.BindFactory<Transform, DamageElementData, PresenterPoolDamageBullet, PresenterPoolDamageBullet.Factory>()
 			.FromFactory<PooledViewPresenterFactory<PresenterPoolDamageBullet, 
 			ViewPoolDamageBullet, 
-			ViewPoolDamageBullet.Pool>>();
+			ViewPoolDamageBullet.Pool,
+			DamageElementData>> ();
 	}
 
 	private void InstallPresenters()

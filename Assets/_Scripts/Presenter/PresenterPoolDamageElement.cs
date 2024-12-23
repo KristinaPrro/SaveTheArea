@@ -6,45 +6,42 @@ using Zenject;
 public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TView>, ITickable, IDamageElement
 	 where TView : ViewPoolDamageElement
 {
-	private readonly CompositeDisposable _disposables = new();
-	private readonly SignalBus _signalBus;
+	protected readonly CompositeDisposable Disposables = new();
+	protected readonly SignalBus SignalBus;
+	protected readonly DamageElementData DamageElementData;
 
-	private Vector2 _directionMovement;
+	protected Vector2 DirectionMovement;
 
-	protected int Damage { get; set; }
-	protected float Speed { get; set; }
 	protected Rigidbody2D Rigidbody => View.Rigidbody;
+	protected int Damage => DamageElementData.Damage;
+	protected float Speed => DamageElementData.Speed;
 
-	public int Id { get; private set; }
+	public int Id => DamageElementData.Id;
 
-	public PresenterPoolDamageElement(TView view, SignalBus signalBus) : base(view)
+	public PresenterPoolDamageElement(TView view, DamageElementData damageElementData, SignalBus signalBus) 
+		: base(view)
 	{
-		_signalBus = signalBus;
+		SignalBus = signalBus;
+		DamageElementData = damageElementData;
 	}
 
 	public override void Initialize()
 	{
-		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter2D).AddTo(_disposables);
+		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter2D).AddTo(Disposables);
+		View.transform.position = DamageElementData.StartPosition.position;
 	}
 
 	public override void Dispose()
 	{
-		_disposables.Dispose();
-		StopMoving();
+		DirectionMovement = Vector2.zero;
+		Disposables.Dispose();
 
 		base.Dispose();
 	}
 
 	public void Tick()
 	{
-		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * Speed * Time.deltaTime);
-	}
-
-	public void SetData(float speed, int damage, int id)
-	{
-		Speed = speed;
-		Damage = damage;
-		Id = id;
+		Rigidbody.MovePosition(Rigidbody.position + DirectionMovement * Speed * Time.deltaTime);
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -59,51 +56,13 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 					break;
 				}
 
-				_signalBus.Fire(new SignalEnemyDamage(Id, enemy.Id, Damage));
+				SignalBus.Fire(new SignalEnemyDamage(Id, enemy.Id, Damage));
 				break;
 
 			case ObjectUtils.DISAPPEARANCE_TAG:
 
-				_signalBus.Fire(new SignalDisappearanceDamageElement(Id));
+				SignalBus.Fire(new SignalDisappearanceDamageElement(Id));
 				break;
 		}
-	}
-
-	public void SetTarget(Transform targetPosition,
-		float speed,
-		Vector2 targetDirectionMovement,
-		Transform startPosition)
-	{
-		_directionMovement = GetDirection(targetPosition, speed, targetDirectionMovement, startPosition);
-
-		View.transform.position = startPosition.position;
-	}
-
-	public void StopMoving()
-	{
-		_directionMovement = Vector2.zero;
-	}
-
-	private Vector3 GetDirection(Transform targetPosition, float speed, Vector2 targetDirectionMovement, Transform startPosition)
-	{
-		Vector2 startTargetPosition = targetPosition.position;
-		var acceptableError = targetPosition.lossyScale.y / 2;
-		var sumSpeed = Speed + speed;
-
-		var shiftTargetPosition = startTargetPosition;
-		var meetPosition = startTargetPosition;
-
-		do
-		{
-			meetPosition = shiftTargetPosition;
-			var distance = Vector2.Distance(meetPosition, startTargetPosition)
-				+ Vector2.Distance(meetPosition, startPosition.position);
-
-			var time = distance / sumSpeed;
-			shiftTargetPosition = startTargetPosition + targetDirectionMovement * speed * time;
-		}
-		while (Vector2.Distance(meetPosition, shiftTargetPosition) < acceptableError);
-
-		return Vector3.ClampMagnitude(shiftTargetPosition - (Vector2)startPosition.position, 1);
 	}
 }
