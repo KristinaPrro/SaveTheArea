@@ -82,8 +82,12 @@ public class GameInstaller : MonoInstaller
 			.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.RobotGray).ItemGameObject)
 			.UnderTransform(_containerDefaultElementPrefabs);
 
-		Container.BindFactory<Transform, PresenterPoolEnemyRobotGray, PresenterPoolEnemyRobotGray.Factory>()
-			.FromFactory<PooledViewPresenterFactory<PresenterPoolEnemyRobotGray, ViewPoolEnemyRobotGray, ViewPoolEnemyRobotGray.Pool>>();
+		Container.BindFactory<Transform, EnemyData, PresenterPoolEnemyRobotGray, PresenterPoolEnemyRobotGray.Factory>()
+			.FromFactory<PooledViewPresenterFactory<
+				PresenterPoolEnemyRobotGray, 
+				ViewPoolEnemyRobotGray, 
+				ViewPoolEnemyRobotGray.Pool, 
+				EnemyData>>();
 
 		Container.BindMemoryPool<ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>()
 			.WithInitialSize(_settings.GetPoolItem(PoolItemType.Bullet).Count)
@@ -91,7 +95,9 @@ public class GameInstaller : MonoInstaller
 			.UnderTransform(_containerDefaultElementPrefabs);
 
 		Container.BindFactory<Transform, PresenterPoolDamageBullet, PresenterPoolDamageBullet.Factory>()
-			.FromFactory<PooledViewPresenterFactory<PresenterPoolDamageBullet, ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>>();
+			.FromFactory<PooledViewPresenterFactory<PresenterPoolDamageBullet, 
+			ViewPoolDamageBullet, 
+			ViewPoolDamageBullet.Pool>>();
 	}
 
 	private void InstallPresenters()

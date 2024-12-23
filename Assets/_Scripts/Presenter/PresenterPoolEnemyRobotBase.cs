@@ -9,21 +9,33 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	private readonly ReactiveProperty<int> _health = new();
 	private readonly CompositeDisposable _disposables = new();
 	private readonly SignalBus _signalBus;
+	private readonly EnemyData _startEnemyData;
 
-	private float _speed;
 	private Vector2 _directionMovement;
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 
-	public int Id { get; private set; }
-	public float Speed => _speed;
+	public int Id => _startEnemyData.Id;
+	public float Speed => _startEnemyData.Speed;
 	public Vector2 DirectionMovement => _directionMovement;
 	public Transform TransformPosition => View.transform;
 	public IObservable<int> HealthStream => _health;
 	public int Health => _health.Value;
 
-	public PresenterPoolEnemyRobotBase(TView view, SignalBus signalBus) : base(view)
+	public PresenterPoolEnemyRobotBase(TView view, EnemyData enemyData, SignalBus signalBus) : base(view)
 	{
 		_signalBus = signalBus;
+		_startEnemyData = enemyData;
+		View.Trigger.SetId(enemyData.Id);
+	}
+
+	public override void Initialize()
+	{
+		base.Initialize();
+
+		_health.Value = _startEnemyData.Health;
+
+		View.transform.position = _startEnemyData.StartPosition.position;
+		OnDirectionChange(Vector2.down);
 	}
 
 	public override void Dispose()
@@ -34,21 +46,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		base.Dispose();
 	}
 
-	public void SetEnemyData(float speed, int health, int id, Transform startPosition)
-	{
-		_speed = speed;
-		_health.Value = health;
-
-		Id = id;
-		View.Trigger.SetId(id);
-
-		View.transform.position = startPosition.position;
-		OnDirectionChange(Vector2.down);
-	}
-
 	public void Tick()
 	{
-		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * _speed * Time.deltaTime);
+		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * _startEnemyData.Speed * Time.deltaTime);
 	}
 
 	public void OnDirectionChange(Vector2 direction)

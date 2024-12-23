@@ -61,8 +61,7 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 		var maxHealth = _gameSettings.EnemyHealth;
 		int spawnPoint = UnityEngine.Random.Range(0, _containerEnemySpawn.Count);
 
-		var presenterEnemy = CreateRobot(speed, spawnPoint);
-		presenterEnemy.SetEnemyData(speed, maxHealth, SpawnIdUtils.GetNext(), _containerEnemySpawn[spawnPoint]);
+		var presenterEnemy = CreateRobot(spawnPoint, maxHealth, speed);
 		_modelEnemyObjects.AddElement(presenterEnemy);
 
 		var timeOut = UnityEngine.Random.Range(_gameSettings.EnemyTimeOutMin, _gameSettings.EnemyTimeOutMax);
@@ -71,8 +70,9 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 		_nextSpawnTime = DateTime.Now.AddSeconds(timeOut);
 	}
 
-	private IEnemy CreateRobot(float speed, int spawnPoint)
+	private IEnemy CreateRobot(int spawnPoint, int maxHealth, float speed)
 	{
-		return _presenterPoolRobotFactoryGray.Create(_containerEnemySpawn[spawnPoint]);
+		return _presenterPoolRobotFactoryGray.Create(_containerEnemySpawn[spawnPoint], 
+			new EnemyData(SpawnIdUtils.GetNext(), _containerEnemySpawn[spawnPoint], maxHealth, speed));
 	}
 }
