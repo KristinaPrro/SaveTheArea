@@ -64,10 +64,14 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 		_currentPlayerHealth.Value--;
 		_currentEnemyCount.Value--;
 
-		if (_currentPlayerHealth.Value > 0)
+		if (_currentPlayerHealth.Value <= 0)
+		{
+			FinishGame(false);
 			return;
+		}
 
-		FinishGame(false);
+		if (_currentEnemyCount.Value <= 0)
+			FinishGame(true);
 	}
 	
 	private void OnEnemyDie(SignalEnemyDie signalData)
