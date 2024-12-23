@@ -11,7 +11,7 @@ public static class Logs
 		if (!LogsUtils.IS_DEBUG_MODE)
 			return;
 
-		var channelInfo = CheckChannelInfo(logChannel);
+		var channelInfo = LogsUtils.GetChannelInfo(logChannel);
 
 		if (!channelInfo.isActive)
 			return;
