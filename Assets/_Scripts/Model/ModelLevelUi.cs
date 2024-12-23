@@ -37,7 +37,7 @@ public class ModelLevelUi: IDisposable
 		if (!TryGetPresenter(windowType, out var presenter))
 			return;
 
-		this.LogDebug($"Open({presenter?.WindowType})");
+		this.Log($"Open({presenter?.WindowType})");
 		presenter?.Show();
 
 		_presenterCurrentWindow = presenter;
@@ -59,7 +59,7 @@ public class ModelLevelUi: IDisposable
 
 	private void Close(IUiPresenter presenter) 
 	{
-		this.LogDebug($"Close({presenter?.WindowType})");
+		this.Log($"Close({presenter?.WindowType})");
 		presenter?.Hide();
 	}
 

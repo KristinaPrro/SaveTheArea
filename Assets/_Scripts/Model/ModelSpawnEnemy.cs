@@ -55,7 +55,7 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 		if (_nextSpawnTime > DateTime.Now || _countEnemy >= ModelLevel.MaxEnemyCount)
 			return;
 
-		this.Log($"Enemy spown");
+		this.LogDebug($"Enemy spawn", LogChannel.SpawnObject);
 
 		var speed = UnityEngine.Random.Range(_gameSettings.EnemySpeedMin, _gameSettings.EnemySpeedMax);
 		var maxHealth = _gameSettings.EnemyHealth;

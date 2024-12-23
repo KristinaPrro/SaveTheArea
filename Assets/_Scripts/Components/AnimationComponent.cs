@@ -7,26 +7,26 @@ public class AnimationComponent : MonoBehaviour
 
 	public void Move(Vector2 direction)
 	{
-		this.Log($"Move({direction})");
+		this.LogDebug($"Move({direction})", LogChannel.Animation);
 	}
 
 	public void StopMoving()
 	{
-		this.Log($"StopMoving()");
+		this.LogDebug($"StopMoving()", LogChannel.Animation);
 	}
 
 	public void Fire()
 	{
-		this.Log($"Fire()");
+		this.LogDebug($"Fire()", LogChannel.Animation);
 	}
 
 	public void Hit()
 	{
-		this.Log($"Hit()");
+		this.LogDebug($"Hit()", LogChannel.Animation);
 	}
 
 	public void Die()
 	{
-		this.Log($"Die()");
+		this.LogDebug($"Die()", LogChannel.Animation);
 	}
 }

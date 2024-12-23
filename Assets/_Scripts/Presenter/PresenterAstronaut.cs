@@ -110,11 +110,15 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 
 		View.AnimationComponent.Move(direction);
 		_directionMovement = Vector2.ClampMagnitude(direction, 1);
+
+		this.LogDebug($"{_directionMovement}", LogChannel.Moving);
 	}
 
 	private void StopMoving()
 	{
 		View.AnimationComponent.StopMoving();
 		_directionMovement = Vector2.zero;
+
+		this.LogDebug($"{_directionMovement}", LogChannel.Moving);
 	}
 }
