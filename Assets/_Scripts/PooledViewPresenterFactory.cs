@@ -41,7 +41,24 @@ public class PooledViewPresenterFactory<TPresenter, TView, TPool>
 	}
 }
 
-public class MonoMemoryPoolWithTransform<TView> : SimpleMonoMemoryPool<Transform, TView> //MonoPoolableMemoryPool
+public class PooledViewPresenterFactory<TPresenter, TView, TPool, TParam1>
+  : PooledViewPresenterFactory<TPresenter, TView, TPool>, IFactory<Transform, TParam1, TPresenter>
+ where TPresenter : PresenterPoolBase<TView>
+  where TView : ViewPool
+  where TPool : MonoMemoryPoolWithTransform<TView>
+{
+	public PooledViewPresenterFactory(IInstantiator instantiator, TPool pool)
+	  : base(instantiator, pool)
+	{
+	}
+
+	public TPresenter Create(Transform viewParent, TParam1 param1)
+	{
+		return BaseCreate(viewParent, new object[] { param1 });
+	}
+}
+
+public class MonoMemoryPoolWithTransform<TView> : SimpleMonoMemoryPool<Transform, TView>
   where TView : ViewPool
 {
 	protected override void OnCreated(TView item)
@@ -75,22 +92,3 @@ public class SimpleMonoMemoryPool<TParam1, TValue> : MonoMemoryPool<TParam1, TVa
 		item.gameObject.SetActive(false);
 	}
 }
-
-
-//MonoPoolableMemoryPool
-
-//public class MonoMemoryPoolWithTransform<TView> : SimpleMonoMemoryPool<Transform, TView> //MonoPoolableMemoryPool
-//  where TView : ViewPool
-//{
-//	protected override void OnCreated(TView item)
-//	{
-//		base.OnCreated(item);
-//		item.SetPool(this);
-//	}
-
-//	protected override void Reinitialize(Transform parent, TView item)
-//	{
-//		base.Reinitialize(parent, item);
-//		item.transform.SetParent(parent, false);
-//	}
-//}
