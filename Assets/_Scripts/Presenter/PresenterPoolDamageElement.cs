@@ -23,12 +23,13 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 	{
 		SignalBus = signalBus;
 		DamageElementData = damageElementData;
+		View.transform.position = damageElementData.StartPosition.position;
 	}
 
 	public override void Initialize()
 	{
+		base.Initialize();
 		View.Collider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter2D).AddTo(Disposables);
-		View.transform.position = DamageElementData.StartPosition.position;
 	}
 
 	public override void Dispose()

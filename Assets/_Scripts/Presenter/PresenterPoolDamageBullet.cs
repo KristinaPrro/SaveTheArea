@@ -40,8 +40,6 @@ public class PresenterPoolDamageBullet : PresenterPoolDamageElement<ViewPoolDama
 		public PresenterPoolDamageBullet Create(Transform param, DamageElementData data, TargetData targetData)
 		{
 			 var presenter = base.Create(param, data);
-
-			presenter.Initialize();
 			presenter.SetTarget(targetData);
 
 			return presenter;
