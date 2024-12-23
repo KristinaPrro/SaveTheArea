@@ -1,25 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public static class Logs
 {
-	private static bool IsDebagMode = true;
-	private readonly static Dictionary<LogChannel, (bool isActive, string color)> _types = new()
-	{
-			[LogChannel.Debug] = (true, "ff00ffff"),
-			[LogChannel.Default] = (true, "ffffffff"),
-			[LogChannel.SpawnObject] = (false, "a0ffddff"),
-			[LogChannel.Moving] = (false, "ffeaa0ff"),
-			[LogChannel.Animation] = (false, "6f6f6fff"),
-	};
-
 	public static void LogDebug(this object obj,
 		string message,
 		LogChannel logChannel = LogChannel.Debug,
 		[CallerMemberName] string callerMethodName = "")
 	{
-		if (!IsDebagMode)
+		if (!LogsUtils.IS_DEBUG_MODE)
 			return;
 
 		var channelInfo = CheckChannelInfo(logChannel);
@@ -51,17 +40,6 @@ public static class Logs
 		[CallerMemberName] string callerMethodName = "")
 	{
 		Debug.LogErrorFormat(GetMessage(obj, callerMethodName, message));
-	}
-
-	private static (bool isActive, string color) CheckChannelInfo(LogChannel logChannel)
-	{
-		if(!_types.TryGetValue(logChannel, out var info))
-		{
-			Debug.LogErrorFormat($"Not found '{logChannel}'!");
-			return (false, "#ff0000ff") ;
-		}
-
-		return info;
 	}
 
 	private static string GetMessage(object obj, string callerMethodName, string message)
