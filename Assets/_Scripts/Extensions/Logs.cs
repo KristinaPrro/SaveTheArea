@@ -9,20 +9,20 @@ public static class Logs
 	{
 			[LogChannel.Debug] = (true, "ff00ffff"),
 			[LogChannel.Default] = (true, "ffffffff"),
-			[LogChannel.SpawnObject] = (true, "a0ffddff"),
-			[LogChannel.Moving] = (true, "ffeaa0ff"),
-			[LogChannel.Animation] = (true, "b0b0b0ff"),
+			[LogChannel.SpawnObject] = (false, "a0ffddff"),
+			[LogChannel.Moving] = (false, "ffeaa0ff"),
+			[LogChannel.Animation] = (false, "6f6f6fff"),
 	};
 
 	public static void LogDebug(this object obj,
-		string message = "",
-		LogChannel logType = LogChannel.Debug,
+		string message,
+		LogChannel logChannel = LogChannel.Debug,
 		[CallerMemberName] string callerMethodName = "")
 	{
 		if (!IsDebagMode)
 			return;
 
-		var channelInfo = CheckChannelInfo(logType);
+		var channelInfo = CheckChannelInfo(logChannel);
 
 		if (!channelInfo.isActive)
 			return;
@@ -33,7 +33,7 @@ public static class Logs
 
 	public static void Log(this object obj,
 		string message = "",
-		LogChannel logType = LogChannel.Default,
+		LogChannel logChannel = LogChannel.Default,
 		[CallerMemberName] string callerMethodName = "")
 	{
 		Debug.LogFormat(GetMessage(obj, callerMethodName, message));
@@ -41,7 +41,6 @@ public static class Logs
 
 	public static void LogWarning(this object obj,
 		string message = "",
-		LogChannel logType = LogChannel.Default,
 		[CallerMemberName] string callerMethodName = "")
 	{
 		Debug.LogWarningFormat(GetMessage(obj, callerMethodName, message));
