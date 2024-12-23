@@ -17,17 +17,23 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		ClearElements();
 	}
 
-	public virtual void AddElement(T element) => Presenters.Add(element);
-	public virtual void ClearElements() => DisposeSpownElements(Presenters);
-	public virtual void RemoveElement(T enemy)
+	public virtual void AddElement(T element)
 	{
-		if(!Presenters.Contains(enemy))
+		_presenters.Add(element);
+		this.Log($": {element.Id} ({_presenters.Count})");
+	}
+
+	public virtual void ClearElements() => DisposeSpownElements(_presenters);
+	public virtual void RemoveElement(T element)
+	{
+		if(!_presenters.Contains(element))
 		{
-			this.LogError($"{nameof(T)} not found!");
+			this.LogError($"{nameof(T)} not found! ({_presenters.Count})");
 			return;
 		}
 
-		Presenters.Remove(enemy);
+		_presenters.Remove(element);
+		this.Log($": {element.Id} ({_presenters.Count})");
 	}
 
 	public virtual void RemoveElementById(int id)
@@ -35,7 +41,8 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		if(!TryGetElementById(id, out var element))
 			return;
 
-		Presenters.Remove(element);
+		_presenters.Remove(element);
+		this.Log($": {element.Id} ({_presenters.Count})");
 	}
 
 	public virtual void DisposeElementById(int id)
@@ -43,17 +50,19 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		if(!TryGetElementById(id, out var element))
 			return;
 
-		Presenters.Remove(element);
+		_presenters.Remove(element);
 		element.Dispose();
+
+		this.Log($": {element.Id} ({_presenters.Count})");
 	}
 
 	public virtual bool TryGetElementById(int id, out T element)
 	{
-		element = Presenters.Find(e => e.Id == id);
+		element = _presenters.Find(e => e.Id == id);
 
 		if (element == null)
 		{
-			this.LogError($"DamageElement by Id {id} is null!");
+			this.LogError($"Object by Id {id} not found! ({_presenters.Count})");
 			return false;
 		}
 
