@@ -102,9 +102,9 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		}
 	}
 
-	private void OnGameStateChange(bool isOutGame)
+	private void OnGameStateChange(GameState gameState)
 	{
-		if (isOutGame)
+		if (IsOutGame)
 		{
 			ChangeDirection(Vector2.zero);
 			return;

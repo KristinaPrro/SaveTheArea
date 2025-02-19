@@ -1,25 +1,29 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 public class ModelLevel: IInitializable, IDisposable, IResettable
 {
+	private const float DELAYED_FINISH_LEVEL_TIME = 2;
+	
 	private readonly SignalBus _signalBus;
 	private readonly GameSettings _gameSettings;
 	private readonly CompositeDisposable _disposables = new();
 
-	private readonly ReactiveProperty<bool> _outGame = new();
+	private readonly ReactiveProperty<GameState> _gameState = new();
 	private readonly ReactiveProperty<int> _currentPlayerHealth = new();
 	private readonly ReactiveProperty<int> _currentEnemyCount = new();
 	private readonly ReactiveProperty<int> _maxPlayerHealth = new();
 	private readonly ReactiveProperty<int> _maxEnemyCount = new();
 
-	public IObservable<bool> OutGameStream => _outGame;
+	private Tween _delayedFinish;
+	public IObservable<GameState> OutGameStream => _gameState;
 	public IObservable<int> CurrentPlayerHealthStream => _currentPlayerHealth;
 	public IObservable<int> CurrentEnemyCountStream => _currentEnemyCount;
 
-	public bool IsOutGame => _outGame.Value;
+	public bool IsOutGame => (_gameState.Value == GameState.Defeat || _gameState.Value == GameState.Win);
 	public int CurrentPlayerHealt => _currentPlayerHealth.Value;
 	public int CurrentEnemyCount => _currentEnemyCount.Value;
 	public int MaxPlayerHealt => _maxPlayerHealth.Value;
@@ -37,10 +41,15 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 
 		_signalBus.GetStream<SignalEnemyReachedFinish>().Subscribe(OnEnemyReachedFinish).AddTo(_disposables);
 		_signalBus.GetStream<SignalEnemyDie>().Subscribe(OnEnemyDie).AddTo(_disposables);
+
+		_delayedFinish = DOVirtual.DelayedCall(DELAYED_FINISH_LEVEL_TIME, SetResults)
+			.SetAutoKill(false)
+			.Pause();
 	}
 
 	public void Dispose()
 	{
+		_delayedFinish.Kill();
 		_disposables.Dispose();
 	}
 
@@ -54,7 +63,7 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 		_currentEnemyCount.Value = enemyCount;
 		_maxEnemyCount.Value = enemyCount;
 
-		_outGame.Value = false;
+		_gameState.Value = GameState.InGame;
 	}
 
 	public void Exit()
@@ -89,8 +98,20 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 
 	private void FinishGame(bool isWin)
 	{
-		_outGame.Value = true;
-		_signalBus.Fire(new SignalGameResults(isWin,
+		_gameState.Value = isWin ? GameState.Win : GameState.Defeat;
+
+		_delayedFinish.Restart();
+	}
+
+	private void SetResults()
+	{
+		if (!IsOutGame)
+		{
+			this.LogError($"attempt to end game does not match {_gameState.Value} game state!");
+			return;
+		}
+		
+		_signalBus.Fire(new SignalGameResults(_gameState.Value == GameState.Win,
 			new GameResultsData(
 				_currentPlayerHealth.Value, _maxPlayerHealth.Value,
 				_currentEnemyCount.Value, _maxEnemyCount.Value)));
