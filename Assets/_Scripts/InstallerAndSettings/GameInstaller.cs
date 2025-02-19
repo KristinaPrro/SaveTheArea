@@ -16,6 +16,8 @@ public class GameInstaller : MonoInstaller
 	private Transform _containerDefaultElementPrefabs;
 	[SerializeField]
 	private ViewFinishLine _viewFinishLine;
+	[SerializeField]
+	private ViewLevelParticle _viewLevelParticle;
 
 	private void OnDestroy()
 	{
@@ -103,6 +105,11 @@ public class GameInstaller : MonoInstaller
 
 	private void InstallPresenters()
 	{
+		Container.BindInterfacesAndSelfTo<PresenterLevelParticle>()
+			.AsSingle()
+			.WithArguments(_viewLevelParticle)
+			.NonLazy();
+		
 		Container.BindInterfacesAndSelfTo<PresenterFinishLine>()
 			.AsSingle()
 			.WithArguments(_viewFinishLine)
@@ -110,5 +117,6 @@ public class GameInstaller : MonoInstaller
 
 		Container.BindViewController<ViewAstronaut, PresenterAstronaut>(
 			_settings.ViewAstronaut, _containerCharacterSpawn);
+
 	}
 }
