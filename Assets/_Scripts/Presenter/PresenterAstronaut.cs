@@ -55,7 +55,6 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 	public override void Dispose()
 	{
 		_disposables.Dispose();
-		ChangeDirection(Vector2.zero);
 
 		base.Dispose();
 	}

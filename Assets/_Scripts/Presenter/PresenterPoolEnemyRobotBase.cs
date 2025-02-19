@@ -89,7 +89,6 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	private void Die() //todo
 	{
 		_directionMovement = Vector2.zero;
-		//View.SelfRelease();
 		View.AnimationComponent.Die();
 	}
 }
