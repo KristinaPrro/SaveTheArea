@@ -114,7 +114,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 
 	private void OnFire(SignalPlayerFire signalData)
 	{		
-		View.AnimationComponent.Fire();
+		View.AnimationComponent.Attack();
 	}
 
 	private void OnPlayerHealthChange(int health)

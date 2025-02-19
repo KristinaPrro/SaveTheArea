@@ -32,12 +32,7 @@ public class AnimationComponent : MonoBehaviour
 		SetTrigger(ANIM_NAME_MOVE);
 	}
 
-	public void StopMoving()
-	{
-		Move(ANIM_MOVE_IDLE, ANIM_MOVE_IDLE);
-	}
-
-	public void Fire()
+	public void Attack()
 	{
 		SetTrigger(ANIM_NAME_ATTACK);
 	}

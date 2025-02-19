@@ -7,7 +7,7 @@ public interface IEnemy : ISpawnElements
 	public int Health { get;}
 	public Vector2 DirectionMovement { get; }
 	public void Tick();
-	public void OnDirectionChange(Vector2 vector);
 	public void SetDamage(int damage);
-	public void Explode();
+	public void Attack();
+	public void Die();
 }

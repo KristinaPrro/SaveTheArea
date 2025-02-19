@@ -9,11 +9,12 @@ public class PresenterLevelParticle : PresenterBase<ViewLevelParticle>
 
 	public PresenterLevelParticle(
 		SignalBus signalBus,
-		ModelLevel _modelLevel,
+		ModelLevel modelLevel,
 		ViewLevelParticle view) 
 		: base(view)
 	{
 		_signalBus = signalBus;
+		_modelLevel = modelLevel;
 	}
 
 	public override void Initialize()
