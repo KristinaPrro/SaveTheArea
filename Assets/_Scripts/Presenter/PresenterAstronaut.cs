@@ -9,9 +9,11 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 	private readonly SignalBus _signalBus;
 	private readonly CompositeDisposable _disposables = new();
 	private readonly GameSettings _gameSettings;
+	private readonly ModelLevel _modelLevel;
 	private readonly ModelPlayerAttack _modelPlayerAttack;
 
 	private Vector2 _directionMovement;
+	private bool IsOutGame => _modelLevel.IsOutGame;
 	private float Speed => _gameSettings.CharacterSpeed;
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 
@@ -19,6 +21,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		ViewAstronaut view,
 		GameSettings gameSettings,
 		ModelPlayerAttack modelPlayerAttack,
+		ModelLevel modelLevel,
 		SignalBus signalBus,
 		IInputModel inputModel)
 		: base(view)
@@ -26,6 +29,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		_inputModel = inputModel;
 		_signalBus = signalBus;
 		_gameSettings = gameSettings;
+		_modelLevel = modelLevel;
 		_modelPlayerAttack = modelPlayerAttack;
 	}
 
@@ -36,7 +40,10 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		_signalBus.GetStream<SignalGameNew>().Subscribe(OnGameNew).AddTo(_disposables);
 		_signalBus.GetStream<SignalPlayerFire>().Subscribe(OnFire).AddTo(_disposables);
 
-		_inputModel.DirectionMovementStream.Subscribe(OnDirectionChange).AddTo(_disposables);
+		_modelLevel.CurrentPlayerHealthStream.AsObservable().Subscribe(OnPlayerHealthChange).AddTo(_disposables);
+		_modelLevel.OutGameStream.AsObservable().Subscribe(OnGameStateChange).AddTo(_disposables);
+
+		_inputModel.DirectionMovementStream.Subscribe(OnChangeDirection).AddTo(_disposables);
 
 		View.CircleCollider.OnTriggerEnter2DAsObservable().Subscribe(OnTriggerEnter).AddTo(_disposables);
 		View.CircleCollider.OnTriggerExit2DAsObservable().Subscribe(OnTriggerExit).AddTo(_disposables);
@@ -45,15 +52,10 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		_modelPlayerAttack.SetContainer(View.ContainerBullet);
 	}
 
-	private void OnGameNew(SignalGameNew @new)
-	{
-		View.Rigidbody.transform.position = View.StartPosition;
-	}
-
 	public override void Dispose()
 	{
 		_disposables.Dispose();
-		StopMoving();
+		ChangeDirection(Vector2.zero);
 
 		base.Dispose();
 	}
@@ -61,6 +63,11 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 	public void Tick()
 	{
 		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * Speed * Time.deltaTime);
+	}
+
+	private void OnGameNew(SignalGameNew @new)
+	{
+		View.Rigidbody.transform.position = View.StartPosition;
 	}
 
 	private void OnTriggerEnter(Collider2D other)
@@ -95,26 +102,44 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		}
 	}
 
+	private void OnGameStateChange(bool isOutGame)
+	{
+		if (isOutGame)
+		{
+			ChangeDirection(Vector2.zero);
+			return;
+		}
+
+		View.AnimationComponent.Restart();
+	}
+
 	private void OnFire(SignalPlayerFire signalData)
 	{		
 		View.AnimationComponent.Fire();
 	}
 
-	public void OnDirectionChange(Vector2 direction)
+	private void OnPlayerHealthChange(int health)
 	{
-		if (direction == Vector2.zero)
-		{
-			StopMoving();
+		if (IsOutGame || health == _modelLevel.MaxPlayerHealt)
 			return;
-		}
-
-		View.AnimationComponent.Move(direction);
-		_directionMovement = Vector2.ClampMagnitude(direction, 1);
+		
+		if (health <= 0)
+			View.AnimationComponent.Die();
+		else
+			View.AnimationComponent.Hit();
 	}
 
-	private void StopMoving()
+	private void OnChangeDirection(Vector2 direction)
 	{
-		View.AnimationComponent.StopMoving();
-		_directionMovement = Vector2.zero;
+		if (IsOutGame)
+			return;
+
+		ChangeDirection(direction);
+	}
+
+	private void ChangeDirection(Vector2 direction)
+	{
+		View.AnimationComponent.Move(direction);
+		_directionMovement = Vector2.ClampMagnitude(direction, 1);
 	}
 }

@@ -2,6 +2,7 @@
 
 public class AnimationComponent : MonoBehaviour
 {
+	private const string ANIM_NAME_START = "START";
 	private const string ANIM_NAME_MOVE = "Move";
 	private const string ANIM_NAME_MOVE_X = "MoveX";
 	private const string ANIM_NAME_MOVE_Y = "MoveY";
@@ -14,6 +15,11 @@ public class AnimationComponent : MonoBehaviour
 	[field: SerializeField]
 	public Animator Animator { get; private set; }
 
+	public void Restart()
+	{
+		SetTrigger(ANIM_NAME_START);
+	}
+			
 	public void Move(Vector2 direction)
 	{
 		Move(direction.x,direction.y);
@@ -21,8 +27,8 @@ public class AnimationComponent : MonoBehaviour
 
 	public void Move(float x, float y)
 	{
-		Animator.SetFloat(ANIM_NAME_MOVE_X, x);
-		Animator.SetFloat(ANIM_NAME_MOVE_Y, y);
+		SetFloat(ANIM_NAME_MOVE_X, x);
+		SetFloat(ANIM_NAME_MOVE_Y, y);
 		SetTrigger(ANIM_NAME_MOVE);
 	}
 
@@ -50,5 +56,10 @@ public class AnimationComponent : MonoBehaviour
 	{
 		Animator.SetTrigger(name);
 		Animator.SetTrigger(name);
+	}
+	
+	private void SetFloat(string name, float value)
+	{
+		Animator.SetFloat(name, value);
 	}
 }
