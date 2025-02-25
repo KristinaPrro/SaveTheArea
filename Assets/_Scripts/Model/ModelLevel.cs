@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+﻿using Cysharp.Threading.Tasks;
 using System;
 using UniRx;
 using UnityEngine;
@@ -6,8 +6,6 @@ using Zenject;
 
 public class ModelLevel: IInitializable, IDisposable, IResettable
 {
-	private const float DELAYED_FINISH_LEVEL_TIME = 2;
-	
 	private readonly SignalBus _signalBus;
 	private readonly GameSettings _gameSettings;
 	private readonly CompositeDisposable _disposables = new();
@@ -18,7 +16,6 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 	private readonly ReactiveProperty<int> _maxPlayerHealth = new();
 	private readonly ReactiveProperty<int> _maxEnemyCount = new();
 
-	private Tween _delayedFinish;
 	public IObservable<GameState> OutGameStream => _gameState;
 	public IObservable<int> CurrentPlayerHealthStream => _currentPlayerHealth;
 	public IObservable<int> CurrentEnemyCountStream => _currentEnemyCount;
@@ -41,15 +38,10 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 
 		_signalBus.GetStream<SignalEnemyReachedFinish>().Subscribe(OnEnemyReachedFinish).AddTo(_disposables);
 		_signalBus.GetStream<SignalEnemyDie>().Subscribe(OnEnemyDie).AddTo(_disposables);
-
-		_delayedFinish = DOVirtual.DelayedCall(DELAYED_FINISH_LEVEL_TIME, SetResults)
-			.SetAutoKill(false)
-			.Pause();
 	}
 
 	public void Dispose()
 	{
-		_delayedFinish.Kill();
 		_disposables.Dispose();
 	}
 
@@ -100,17 +92,19 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 	{
 		_gameState.Value = isWin ? GameState.Win : GameState.Defeat;
 
-		_delayedFinish.Restart();
+		SetResults().Forget();
 	}
 
-	private void SetResults()
+	private async UniTaskVoid SetResults()
 	{
 		if (!IsOutGame)
 		{
 			this.LogError($"attempt to end game does not match {_gameState.Value} game state!");
 			return;
 		}
-		
+
+		await UniTask.Delay(AnimationUtils.DELAYED_FINISH_LEVEL_TIME);
+
 		_signalBus.Fire(new SignalGameResults(_gameState.Value == GameState.Win,
 			new GameResultsData(
 				_currentPlayerHealth.Value, _maxPlayerHealth.Value,
