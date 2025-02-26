@@ -33,13 +33,11 @@ public class PresenterFinishLine: PresenterBase<ViewFinishLine>
 		switch (other.tag)
 		{
 			case ObjectUtils.ROBOT_TAG:
-				if (!other.TryGetComponent<TriggerComponent>(out var trigger))
-				{
-					this.LogError($"{nameof(TriggerComponent)} component not found on object with {other.tag} tag!");
-					break;
-				}
 
-				_signalBus.Fire(new SignalEnemyReachedFinish(trigger.Id));
+				if (!other.TryGetTriggerId(out int id))
+					break;
+
+				_signalBus.Fire(new SignalEnemyReachedFinish(id));
 				break;
 		}
 	}

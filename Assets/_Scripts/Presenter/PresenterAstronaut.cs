@@ -74,13 +74,11 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		switch (other.tag)
 		{
 			case ObjectUtils.ROBOT_TAG:
-				if (!other.TryGetComponent<TriggerComponent>(out var trigger))
-				{
-					this.LogError($"{nameof(TriggerComponent)} component not found on object with {other.tag} tag!");
-					break;
-				}
 
-				_modelPlayerAttack.AddTarget(trigger.Id);
+				if (!other.TryGetTriggerId(out int id))
+					break;
+
+				_modelPlayerAttack.AddTarget(id);
 				break;
 		}
 	}
@@ -90,13 +88,11 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		switch (other.tag)
 		{
 			case ObjectUtils.ROBOT_TAG:
-				if (!other.TryGetComponent<ITriggerComponent>(out var enemy))
-				{
-					this.LogError($"{nameof(ITriggerComponent)} component not found on object with {other.tag} tag!");
-					break;
-				}
 
-				_modelPlayerAttack.RemoveTarget(enemy.Id);
+				if (!other.TryGetTriggerId(out int id))
+					break;
+
+				_modelPlayerAttack.RemoveTarget(id);//todo relocate
 				break;
 		}
 	}
