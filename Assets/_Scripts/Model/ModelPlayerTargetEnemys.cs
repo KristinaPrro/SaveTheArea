@@ -17,8 +17,10 @@ public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 			return false;
 		}
 
-		var sortPresenters = Presenters.OrderBy(e 
-			=> Vector2.Distance((Vector2)e.TransformPosition.position, startPosition)).ToList();
+		var sortPresenters = Presenters
+			.OrderBy(e => Vector2.Distance((Vector2)e.TransformPosition.position, startPosition))
+			.ToList();
+
 		enemy = sortPresenters[0];
 
 		this.LogDebug($"{Presenters.Count}: " +

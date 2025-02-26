@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public interface IDamageElement : ISpawnElements
+﻿public interface IDamageElement : ISpawnElements
 {
 	public void Tick();
 }

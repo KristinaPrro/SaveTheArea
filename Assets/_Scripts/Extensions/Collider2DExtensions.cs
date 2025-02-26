@@ -20,13 +20,11 @@ public static class Collider2DExtensions
 
 		if (!trigger.IsVisible)
 		{
-			collider.LogWarning($"{nameof(TriggerComponent)} component with {other.tag} tag and {trigger.Id} id is not visible!");
+			collider.LogWarning($"{nameof(TriggerComponent)} component with {collider.tag} tag and {trigger.Id} id is not visible!");
 			return false;
 		}
 
 		id = trigger.Id;
 		return true;
 	}
-
-	
 }
