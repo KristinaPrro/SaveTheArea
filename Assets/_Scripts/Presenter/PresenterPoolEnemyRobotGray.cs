@@ -3,8 +3,12 @@ using Zenject;
 
 public class PresenterPoolEnemyRobotGray : PresenterPoolEnemyRobotBase<ViewPoolEnemyRobotGray>
 {
-	public PresenterPoolEnemyRobotGray(ViewPoolEnemyRobotGray view, EnemyData enemyData, SignalBus signalBus)
-		: base(view, enemyData, signalBus)
+	public PresenterPoolEnemyRobotGray(
+		ViewPoolEnemyRobotGray view, 
+		EnemyData enemyData, 
+		SignalBus signalBus, 
+		GameSettings gameSettings)
+		: base(view, enemyData, signalBus, gameSettings)
 	{
 	}
 

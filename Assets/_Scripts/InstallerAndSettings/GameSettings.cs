@@ -35,6 +35,11 @@ public class GameSettings : ScriptableObject
 	public float CharacterSpeed { get; private set; } = 0.1f;
 
 	[field: Space]
+	[field: Header("_______________________________________________")]
+	[field: SerializeField, Tooltip("position between death and spawn")]
+	public Vector3 DefaultPosition { get; private set; } = new(0, 7, 0);
+
+	[field: Space]
 	[field: Space]
 	[field: SerializeField]
 	public ViewAstronaut ViewAstronaut { get; private set; }

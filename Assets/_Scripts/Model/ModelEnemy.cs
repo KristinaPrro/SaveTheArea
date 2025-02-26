@@ -1,4 +1,5 @@
-﻿using UniRx;
+﻿using Cysharp.Threading.Tasks;
+using UniRx;
 using Zenject;
 
 public class ModelEnemy : ModelBase, ITickable
@@ -6,16 +7,19 @@ public class ModelEnemy : ModelBase, ITickable
 	private readonly SignalBus _signalBus;
 	private readonly ModelEnemyObjects _modelEnemyObjects;
 	private readonly GameSettings _gameSettings;
+	private readonly ModelPlayerTargetEnemys _modelPlayerTargetEnemys;
 
 	public ModelEnemy(
 		ModelLevel modelLevel,
 		SignalBus signalBus,
 		GameSettings gameSettings,
+		ModelPlayerTargetEnemys modelPlayerTargetEnemys,
 		ModelEnemyObjects modelPlayerDamageElements) : base(modelLevel)
 	{
 		_signalBus = signalBus;
 		_gameSettings = gameSettings;
 		_modelEnemyObjects = modelPlayerDamageElements;
+		_modelPlayerTargetEnemys = modelPlayerTargetEnemys;
 	}
 
 	public override void Initialize()
@@ -38,25 +42,46 @@ public class ModelEnemy : ModelBase, ITickable
 
 	private void OnEnemyReachedFinish(SignalEnemyReachedFinish signalData)
 	{
-		DisposeById(signalData.EnemyId);
+		if (!_modelEnemyObjects.TryGetElementById(signalData.EnemyId, out var enemy))
+			return;
+
+		enemy.Attack();
+
+		EnemyDie(enemy).Forget();
 	}
 
 	private void OnEnemyDamage(SignalEnemyDamage signalData)
 	{
+		this.LogDebug($"{signalData.EnemyId}");
+
 		if (!_modelEnemyObjects.TryGetElementById(signalData.EnemyId, out var enemy))
 			return;
 
-		enemy.SetDamage(signalData.Damage);
+		enemy.SetDamage(signalData.Damage, out bool isAlive);
 
-		if (enemy.Health <= 0)
+		if (isAlive)
 		{
-			_signalBus.Fire(new SignalEnemyDie(signalData.EnemyId));
-			DisposeById(signalData.EnemyId);
+			this.Log($" EnemyId:{signalData.EnemyId}; isAlive:{isAlive};");
+			return;
 		}
+
+		_modelPlayerTargetEnemys.RemoveElement(enemy);
+
+		_signalBus.Fire(new SignalEnemyDie(signalData.EnemyId));
+
+		EnemyDie(enemy).Forget();
 	}
 
-	private void DisposeById(int id)
+	private async UniTaskVoid EnemyDie(IEnemy enemy)
 	{
-		_modelEnemyObjects.DisposeElementById(id);
+		try
+		{
+			await UniTask.Delay(AnimationUtils.DELAYED_DISTROY_ROBOT_TIME);
+		}
+		finally
+		{
+			enemy?.DelayedDispose();
+			_modelEnemyObjects?.RemoveElement(enemy);
+		}
 	}
 }

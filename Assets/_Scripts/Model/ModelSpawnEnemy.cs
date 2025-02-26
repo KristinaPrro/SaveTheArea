@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -48,6 +49,7 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 
 		_nextSpawnTime = DateTime.MinValue;
 		_countEnemy = 0;
+		_modelEnemyObjects.Reset();
 	}
 
 	public void SpawnEnemy()
@@ -61,7 +63,7 @@ public class ModelSpawnEnemy : ModelBase, ITickable
 		var maxHealth = _gameSettings.EnemyHealth;
 		int spawnPoint = UnityEngine.Random.Range(0, _containerEnemySpawn.Count);
 
-		var presenterEnemy = CreateRobot(spawnPoint, maxHealth, speed);
+		var presenterEnemy = CreateRobot(spawnPoint, maxHealth, speed).AddTo(Disposables);
 		_modelEnemyObjects.AddElement(presenterEnemy);
 
 		var timeOut = UnityEngine.Random.Range(_gameSettings.EnemyTimeOutMin, _gameSettings.EnemyTimeOutMax);
