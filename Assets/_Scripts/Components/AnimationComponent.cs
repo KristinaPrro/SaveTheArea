@@ -2,22 +2,12 @@
 
 public class AnimationComponent : MonoBehaviour
 {
-	private const string ANIM_NAME_START = "START";
-	private const string ANIM_NAME_MOVE = "Move";
-	private const string ANIM_NAME_MOVE_X = "MoveX";
-	private const string ANIM_NAME_MOVE_Y = "MoveY";
-	private const string ANIM_NAME_ATTACK = "Attack";
-	private const string ANIM_NAME_HIT = "Hit";
-	private const string ANIM_NAME_DIE = "Die";
-
-	private const float ANIM_MOVE_IDLE = 0;
-	
 	[field: SerializeField]
 	public Animator Animator { get; private set; }
 
 	public void Restart()
 	{
-		SetTrigger(ANIM_NAME_START);
+		SetTrigger(AnimationUtils.ANIM_NAME_START);
 	}
 			
 	public void Move(Vector2 direction)
@@ -27,24 +17,24 @@ public class AnimationComponent : MonoBehaviour
 
 	public void Move(float x, float y)
 	{
-		SetFloat(ANIM_NAME_MOVE_X, x);
-		SetFloat(ANIM_NAME_MOVE_Y, y);
-		SetTrigger(ANIM_NAME_MOVE);
+		SetFloat(AnimationUtils.ANIM_NAME_MOVE_X, x);
+		SetFloat(AnimationUtils.ANIM_NAME_MOVE_Y, y);
+		SetTrigger(AnimationUtils.ANIM_NAME_MOVE);
 	}
 
 	public void Attack()
 	{
-		SetTrigger(ANIM_NAME_ATTACK);
+		SetTrigger(AnimationUtils.ANIM_NAME_ATTACK);
 	}
 
 	public void Hit()
 	{
-		SetTrigger(ANIM_NAME_HIT);
+		SetTrigger(AnimationUtils.ANIM_NAME_HIT);
 	}
 
 	public void Die()
 	{
-		SetTrigger(ANIM_NAME_DIE);
+		SetTrigger(AnimationUtils.ANIM_NAME_DIE);
 	}
 
 	private void SetTrigger(string name)
