@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3509297
 Transform:
   m_ObjectHideFlags: 0
@@ -6207,7 +6207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2242655406027195026, guid: c3e50474ea311ba45bdecc41c7ea2d00, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5900205946904553304, guid: c3e50474ea311ba45bdecc41c7ea2d00, type: 3}
       propertyPath: m_Pivot.x
@@ -6406,6 +6406,14 @@ PrefabInstance:
     - target: {fileID: 3444118335736650427, guid: d3394bef84c75a145924420c895a8d95, type: 3}
       propertyPath: m_Name
       value: ViewPoolRobotGray
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280105814953925409, guid: d3394bef84c75a145924420c895a8d95, type: 3}
+      propertyPath: m_Size.x
+      value: 3.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280105814953925409, guid: d3394bef84c75a145924420c895a8d95, type: 3}
+      propertyPath: m_Size.y
+      value: 3.17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
