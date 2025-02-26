@@ -117,6 +117,5 @@ public class GameInstaller : MonoInstaller
 
 		Container.BindViewController<ViewAstronaut, PresenterAstronaut>(
 			_settings.ViewAstronaut, _containerCharacterSpawn);
-
 	}
 }
