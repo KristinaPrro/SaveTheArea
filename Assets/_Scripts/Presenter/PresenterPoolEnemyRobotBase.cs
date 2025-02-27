@@ -32,16 +32,16 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	{
 		_signalBus = signalBus;
 		_startEnemyData = enemyData;
+		_gameSettings = gameSettings;
 
 		Trigger.SetId(enemyData.Id);
-		_gameSettings = gameSettings;
 	}
 
 	public override void Initialize()
 	{
 		base.Initialize();
-		View.transform.position = _startEnemyData.StartPosition.position;
 
+		View.transform.position = _startEnemyData.StartPosition.position;
 		Trigger.SetVisible(true);
 		ChangeMoveDirection(Vector2.down);
 		_health.Value = _startEnemyData.Health;

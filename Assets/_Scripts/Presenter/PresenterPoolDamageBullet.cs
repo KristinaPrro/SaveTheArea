@@ -11,12 +11,12 @@ public class PresenterPoolDamageBullet : PresenterPoolDamageElement<ViewPoolDama
 	{
 	}
 
-	public void SetTarget(TargetData targetData)
+	public void SetTarget(TargetData targetData)//todo
 	{
 		Vector2 startTargetPosition = targetData.Transform.position;
 		Vector2 startPosition = View.transform.position;
 		var acceptableError = targetData.Transform.lossyScale.y / 2;
-		var sumSpeed = Speed + targetData.Speed;//!?
+		var sumSpeed = Speed + targetData.Speed;//todo
 
 		var shiftTargetPosition = startTargetPosition;
 		var meetPosition = startTargetPosition;
