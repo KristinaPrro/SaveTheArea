@@ -26,7 +26,7 @@ public class ModelLevelUiAutoWindowChange: ModelBase
 
 	private void OnGameNew(SignalGameNew signalData)
 	{
-		this.LogDebug($"OnGameNew()");
+		this.Log($"");
 		_modelLevelUi.ChangeScreen(WindowType.GameStatusScreencreen);		
 	}
 

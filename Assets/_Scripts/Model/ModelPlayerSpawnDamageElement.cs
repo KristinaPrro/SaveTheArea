@@ -28,7 +28,7 @@ public class ModelPlayerSpawnDamageElement
 				containerSpawnDamageElement),
 			targetData);
 
-		this.Log($"Fire! ({nameof(PresenterPoolDamageBullet)})");
+		this.Log($"Fire! ({nameof(PresenterPoolDamageBullet)})", LogChannel.SpawnObject);
 
 		_modelPlayerDamageElements.AddElement(presenter);
 

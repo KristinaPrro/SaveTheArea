@@ -21,7 +21,8 @@ public class PresenterPoolDamageBullet : PresenterPoolDamageElement<ViewPoolDama
 		var shiftTargetPosition = startTargetPosition;
 		var meetPosition = startTargetPosition;
 
-		this.LogDebug($"! start {startTargetPosition}, {startPosition}, {acceptableError}, {sumSpeed}, {shiftTargetPosition}, {meetPosition}");
+		this.LogDebug($"! start {startTargetPosition}, {startPosition}, {acceptableError}, " +
+			$"{sumSpeed}, {shiftTargetPosition}, {meetPosition}", LogChannel.Todo);
 		var i = 0; //todo
 
 		do
@@ -33,13 +34,15 @@ public class PresenterPoolDamageBullet : PresenterPoolDamageElement<ViewPoolDama
 			var time = distance / sumSpeed;
 			shiftTargetPosition = startTargetPosition + targetData.DirectionMovement * targetData.Speed * time;
 
-			this.LogDebug($"! do {meetPosition}, {shiftTargetPosition}, {Vector2.Distance(meetPosition, shiftTargetPosition)} < {acceptableError};     " +
-				$"{distance}({Vector2.Distance(meetPosition, startTargetPosition)}+{Vector2.Distance(meetPosition, startPosition)}), {time}, ");
+			this.LogDebug($"! do {meetPosition}, {shiftTargetPosition}, " +
+				$"{Vector2.Distance(meetPosition, shiftTargetPosition)} < {acceptableError};     " +
+				$"{distance}({Vector2.Distance(meetPosition, startTargetPosition)}+" +
+				$"{Vector2.Distance(meetPosition, startPosition)}), {time}, ", LogChannel.Todo);
 		}
 		while (Vector2.Distance(meetPosition, shiftTargetPosition) > acceptableError && i++<5);
 
 		DirectionMovement = Vector3.ClampMagnitude(shiftTargetPosition - startPosition, 1);
-		this.LogDebug($"! finish {DirectionMovement}");
+		this.LogDebug($"! finish {DirectionMovement}", LogChannel.Todo);
 	}
 
 	public class Factory : PlaceholderFactory<Transform, DamageElementData, PresenterPoolDamageBullet>
