@@ -12,6 +12,7 @@ public static class LogsUtils
 		[LogChannel.SpawnObject] = (false, "a0ffddff"),
 		[LogChannel.Moving] = (false, "ffeaa0ff"),
 		[LogChannel.Animation] = (false, "6f6f6fff"),
+		[LogChannel.Todo] = (true, "ff0000ff"),
 	};
 
 	public static (bool isActive, string color) GetChannelInfo(LogChannel logChannel)

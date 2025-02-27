@@ -1,5 +1,6 @@
 ﻿public enum LogChannel
 {
+	Todo = -2,
 	Debug = -1,
 	Default = 0,
 	SpawnObject = 1,
