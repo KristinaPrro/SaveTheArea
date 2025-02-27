@@ -77,10 +77,16 @@ public class ModelPlayerAttack : ModelBase, ITickable
 	public void TryFire()
 	{
 		if (OutGame)
+		{
+			this.LogWarning("try fire outside the game!");
 			return;
+		}
 
 		if (!_isAttackTimeProperty.Value)
+		{
+			this.LogWarning("It's not time to shoot yet!");
 			return;
+		}
 
 		if (!_modelPlayerTargetEnemys.TryGetFirstElementAfterCheckDistanse(_containerSpawn.position, out var enemy))
 			return;
@@ -96,7 +102,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		float speed,
 		Vector2 targetDirectionMovement)
 	{
-		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement(containerSpawnDamageElement, 
+		var presenter = _modelPlayerSpawnDamageElement.CreateDamageElement(containerSpawnDamageElement,
 			new TargetData(transformTarget, speed, targetDirectionMovement));
 
 		_nextAttackTime = DateTime.Now.AddSeconds(RateFire);

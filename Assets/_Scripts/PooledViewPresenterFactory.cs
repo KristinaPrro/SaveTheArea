@@ -89,6 +89,6 @@ public class SimpleMonoMemoryPool<TParam1, TValue> : MonoMemoryPool<TParam1, TVa
 
 	protected override void OnDespawned(TValue item)
 	{
-		item.gameObject.SetActive(false);
+		item?.gameObject?.SetActive(false);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -9,18 +10,21 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 	private readonly GameSettings _gameSettings;
 	private readonly CompositeDisposable _disposables = new();
 
-	private ReactiveProperty<int> _currentPlayerHealth = new();
-	private ReactiveProperty<int> _currentEnemyCount = new();
-	private ReactiveProperty<int> _maxPlayerHealth = new();
-	private ReactiveProperty<int> _maxEnemyCount = new();
+	private readonly ReactiveProperty<GameState> _gameState = new();
+	private readonly ReactiveProperty<int> _currentPlayerHealth = new();
+	private readonly ReactiveProperty<int> _currentEnemyCount = new();
+	private readonly ReactiveProperty<int> _maxPlayerHealth = new();
+	private readonly ReactiveProperty<int> _maxEnemyCount = new();
 
+	public IObservable<GameState> OutGameStream => _gameState;
 	public IObservable<int> CurrentPlayerHealthStream => _currentPlayerHealth;
 	public IObservable<int> CurrentEnemyCountStream => _currentEnemyCount;
+
+	public bool IsOutGame => (_gameState.Value == GameState.Defeat || _gameState.Value == GameState.Win);
 	public int CurrentPlayerHealt => _currentPlayerHealth.Value;
 	public int CurrentEnemyCount => _currentEnemyCount.Value;
 	public int MaxPlayerHealt => _maxPlayerHealth.Value;
 	public int MaxEnemyCount => _maxEnemyCount.Value;
-	public bool OutGame { get; private set; }
 
 	public ModelLevel(SignalBus signalBus, GameSettings gameSettings)
 	{
@@ -51,7 +55,7 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 		_currentEnemyCount.Value = enemyCount;
 		_maxEnemyCount.Value = enemyCount;
 
-		OutGame = false;
+		_gameState.Value = GameState.InGame;
 	}
 
 	public void Exit()
@@ -86,8 +90,22 @@ public class ModelLevel: IInitializable, IDisposable, IResettable
 
 	private void FinishGame(bool isWin)
 	{
-		OutGame = true;
-		_signalBus.Fire(new SignalGameResults(isWin,
+		_gameState.Value = isWin ? GameState.Win : GameState.Defeat;
+
+		SetResults().Forget();
+	}
+
+	private async UniTaskVoid SetResults()
+	{
+		if (!IsOutGame)
+		{
+			this.LogError($"attempt to end game does not match {_gameState.Value} game state!");
+			return;
+		}
+
+		await UniTask.Delay(AnimationUtils.DELAYED_FINISH_LEVEL_TIME);
+
+		_signalBus.Fire(new SignalGameResults(_gameState.Value == GameState.Win,
 			new GameResultsData(
 				_currentPlayerHealth.Value, _maxPlayerHealth.Value,
 				_currentEnemyCount.Value, _maxEnemyCount.Value)));

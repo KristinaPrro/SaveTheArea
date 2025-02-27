@@ -7,7 +7,7 @@ public abstract class ModelBase: IInitializable, IDisposable, IResettable
 	protected readonly CompositeDisposable Disposables = new();
 	protected readonly ModelLevel ModelLevel;
 
-	protected bool OutGame => ModelLevel.OutGame;
+	protected bool OutGame => ModelLevel.IsOutGame;
 
 	public ModelBase(ModelLevel modelLevel)
 	{

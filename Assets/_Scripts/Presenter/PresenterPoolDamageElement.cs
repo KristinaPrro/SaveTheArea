@@ -51,13 +51,10 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		{
 			case ObjectUtils.ROBOT_TAG:
 
-				if (!other.TryGetComponent<ITriggerComponent>(out var enemy))
-				{
-					this.LogError($"{nameof(ITriggerComponent)} component not found on object with {other.tag} tag!");
+				if (!other.TryGetTriggerId(out int id))
 					break;
-				}
 
-				SignalBus.Fire(new SignalEnemyDamage(Id, enemy.Id, Damage));
+				SignalBus.Fire(new SignalEnemyDamage(Id, id, Damage));
 				break;
 
 			case ObjectUtils.DISAPPEARANCE_TAG:
