@@ -78,7 +78,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 	{
 		if (OutGame)
 		{
-			this.LogWarning("try fire outside the game!");
+			this.LogWarning("Try fire outside the game!");
 			return;
 		}
 
@@ -91,7 +91,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 		if (!_modelPlayerTargetEnemys.TryGetFirstElementAfterCheckDistanse(_containerSpawn.position, out var enemy))
 			return;
 
-		this.LogDebug($"Fire! {enemy.TransformPosition}; {enemy.Id};");
+		this.LogDebug($"Fire! {enemy.TransformPosition}; {enemy.Id};", LogChannel.SpawnObject);
 		SpawnDamageElementWithTarget(_containerSpawn, enemy.TransformPosition, enemy.Speed, enemy.DirectionMovement);
 
 		_signalBus.Fire(new SignalPlayerFire());

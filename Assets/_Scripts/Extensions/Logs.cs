@@ -3,41 +3,52 @@ using UnityEngine;
 
 public static class Logs
 {
-	private static bool IsDebagLogs = true;
-
 	public static void LogDebug(this object obj,
-		string message = "",
+		string message,
+		LogChannel logChannel = LogChannel.Debug,
 		[CallerMemberName] string callerMethodName = "")
 	{
-		if (!IsDebagLogs)
+		if (!LogsUtils.IS_DEBUG_MODE)
 			return;
 
-		Debug.LogWarningFormat(GetMessage(obj, callerMethodName, $"<color=#ff00ffff>/// {message}</color>"));
+		var channelInfo = LogsUtils.GetChannelInfo(logChannel);
+
+		if (!channelInfo.isActive)
+			return;
+
+		Debug.LogWarningFormat(GetMessage(obj, callerMethodName, $"<color=#{channelInfo.color}> [Debug] {message}</color>")
+			.AddActualTimeLogs());
 	}
 
 	public static void Log(this object obj,
 		string message = "",
+		LogChannel logChannel = LogChannel.Default,
 		[CallerMemberName] string callerMethodName = "")
 	{
-		Debug.LogFormat(GetMessage(obj, callerMethodName, message));
+		Debug.LogFormat(GetMessage(obj, callerMethodName, $"[Log] {message}"));
 	}
 
 	public static void LogWarning(this object obj,
 		string message = "",
 		[CallerMemberName] string callerMethodName = "")
 	{
-		Debug.LogWarningFormat(GetMessage(obj, callerMethodName, message));
+		Debug.LogWarningFormat(GetMessage(obj, callerMethodName, $"[Warning] {message}"));
 	}
 
 	public static void LogError(this object obj,
 		string message = "",
 		[CallerMemberName] string callerMethodName = "")
 	{
-		Debug.LogErrorFormat(GetMessage(obj, callerMethodName, message));
+		Debug.LogErrorFormat(GetMessage(obj, callerMethodName, $"[Error] {message}").AddActualTimeLogs());
 	}
 
 	private static string GetMessage(object obj, string callerMethodName, string message)
 	{
 		return $"[{obj?.GetType()}] {callerMethodName}() {message}";
+	}
+
+	private static string AddActualTimeLogs(this string log)
+	{
+		return $"{log} \n realtimeSinceStartup: {Time.realtimeSinceStartup} frame: {Time.frameCount}";
 	}
 }
