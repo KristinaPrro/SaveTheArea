@@ -41,6 +41,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	{
 		base.Initialize();
 
+		View.ViewSlider.gameObject.SetActive(true);
+		View.ViewSlider.SetStartValue(_startEnemyData.Health, _startEnemyData.Health);
+
 		View.transform.position = _startEnemyData.StartPosition.position;
 		Trigger.SetVisible(true);
 		ChangeMoveDirection(Vector2.down);
@@ -74,26 +77,27 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		isAlive = _health.Value > 0;
 
 		if (isAlive)
-			AnimationComponent.Hit();
-		else
-			Die();
+		{
+			View.ViewSlider.SetCurrentValue(_health.Value, false);
+			return;
+		}
+
+		View.ViewSlider.SetCurrentValue(0f);
+		View.ViewSlider.gameObject.SetActive(false);
+		ChangeMoveDirection(Vector2.zero);
+		Trigger.SetVisible(false);
+
+		AnimationComponent.Die();
+		View.ParticleSystemDie.Play();
 	}
 
 	public void Attack()
 	{
 		ChangeMoveDirection(Vector2.zero);
 		Trigger.SetVisible(false);
+		View.ViewSlider.gameObject.SetActive(false);
 
 		AnimationComponent.Attack();
-	}
-
-	public void Die()
-	{
-		ChangeMoveDirection(Vector2.zero);
-		Trigger.SetVisible(false);
-
-		AnimationComponent.Die();
-		View.ParticleSystemDie.Play();
 	}
 
 	private void ChangeMoveDirection(Vector2 direction)

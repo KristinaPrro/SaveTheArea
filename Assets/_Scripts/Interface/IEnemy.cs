@@ -9,5 +9,4 @@ public interface IEnemy : ISpawnElements
 	public void SetDamage(int damage, out bool isAlive);
 	public void DelayedDispose();
 	public void Attack();
-	public void Die();
 }
