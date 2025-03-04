@@ -6,18 +6,13 @@ public class GameUiInstaller : MonoInstaller
 	[SerializeField]
 	private GameUiSettings _uiSettings;
 	[SerializeField]
-	private GameSettings _settings;
-	[SerializeField]
 	private Transform _containerScreenPrefabs;
-	[SerializeField]
-	private Transform _containerDefaultElementPrefabs;
+
 
 	private void OnDestroy()
 	{
 		_uiSettings = null;
-		_settings = null;
 		_containerScreenPrefabs = null;
-		_containerDefaultElementPrefabs = null;
 	}
 
 	public override void InstallBindings()
@@ -45,14 +40,6 @@ public class GameUiInstaller : MonoInstaller
 
 	private void InstallPools()
 	{
-		//UiPresenterEnemyDamageElement: UiPresenterBase<UiViewEnemyDamageElement>
-		//Container.BindMemoryPool<ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>()
-		//	.WithInitialSize(_settings.GetPoolItem(PoolItemType.Bullet).Count)
-		//	.FromComponentInNewPrefab(_settings.GetPoolItem(PoolItemType.Bullet).ItemGameObject)
-		//	.UnderTransform(_containerDefaultElementPrefabs);
-
-		//Container.BindFactory<Transform, PresenterPoolDamageBullet, PresenterPoolDamageBullet.Factory>()
-		//	.FromFactory<PooledViewPresenterFactory<PresenterPoolDamageBullet, ViewPoolDamageBullet, ViewPoolDamageBullet.Pool>>();
 	}
 
 	private void InstallPresenters()
