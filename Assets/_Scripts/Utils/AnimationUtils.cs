@@ -11,6 +11,5 @@
 	public const string ANIM_NAME_HIT = "Hit";
 	public const string ANIM_NAME_DIE = "Die";
 
-	public const float ANIM_SLIDER_CHANGE = 1f;
 	public const float ANIM_MOVE_IDLE = 0;
 }
