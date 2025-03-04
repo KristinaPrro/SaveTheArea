@@ -11,6 +11,8 @@ public abstract class ViewPoolEnemyRobot : ViewPool
 
 	[field: SerializeField]
 	public ParticleSystem ParticleSystemDie { get; private set; }
+	[field: SerializeField]
+	public ViewSlider2D ViewSlider { get; private set; }
 
 	public Rigidbody2D Rigidbody
 	{
@@ -38,5 +40,6 @@ public abstract class ViewPoolEnemyRobot : ViewPool
 	{
 		Assert.IsNotNull(AnimationComponent);
 		Assert.IsNotNull(ParticleSystemDie);
+		Assert.IsNotNull(ViewSlider);
 	}
 }

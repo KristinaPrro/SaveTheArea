@@ -204,10 +204,6 @@ PrefabInstance:
       value: BlockRed (3)
       objectReference: {fileID: 0}
     - target: {fileID: 4012802197485935270, guid: 5ba5e5164eaa0e94d8ae89f5f7acff39, type: 3}
-      propertyPath: m_RootOrder
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4012802197485935270, guid: 5ba5e5164eaa0e94d8ae89f5f7acff39, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.86
       objectReference: {fileID: 0}
@@ -5464,9 +5460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiSettings: {fileID: 11400000, guid: ebc82bd3d978e2740b1dbbae93f12213, type: 2}
-  _settings: {fileID: 11400000, guid: ea50fbd4a2ce3ed4fa275615ec596d05, type: 2}
   _containerScreenPrefabs: {fileID: 320465063}
-  _containerDefaultElementPrefabs: {fileID: 320465063}
 --- !u!114 &1991898903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5655,9 +5649,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: ViewCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
-      propertyPath: m_RootOrder
-      value: -1
+    - target: {fileID: 1548222992966782571, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5665,7 +5659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -17.73
+      value: -9.84
       objectReference: {fileID: 0}
     - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6141,10 +6135,6 @@ PrefabInstance:
       value: ViewBullet
       objectReference: {fileID: 0}
     - target: {fileID: 8346125170010575059, guid: a2e921916b6a70543bc9042830e9f9d7, type: 3}
-      propertyPath: m_RootOrder
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8346125170010575059, guid: a2e921916b6a70543bc9042830e9f9d7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.88
       objectReference: {fileID: 0}
@@ -6407,13 +6397,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: ViewPoolRobotGray
       objectReference: {fileID: 0}
-    - target: {fileID: 4280105814953925409, guid: d3394bef84c75a145924420c895a8d95, type: 3}
-      propertyPath: m_Size.x
-      value: 3.17
-      objectReference: {fileID: 0}
-    - target: {fileID: 4280105814953925409, guid: d3394bef84c75a145924420c895a8d95, type: 3}
-      propertyPath: m_Size.y
-      value: 3.17
+    - target: {fileID: 3444118335736650427, guid: d3394bef84c75a145924420c895a8d95, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

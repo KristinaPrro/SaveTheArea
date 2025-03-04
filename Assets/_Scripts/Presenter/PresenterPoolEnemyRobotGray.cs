@@ -7,8 +7,9 @@ public class PresenterPoolEnemyRobotGray : PresenterPoolEnemyRobotBase<ViewPoolE
 		ViewPoolEnemyRobotGray view, 
 		EnemyData enemyData, 
 		SignalBus signalBus, 
-		GameSettings gameSettings)
-		: base(view, enemyData, signalBus, gameSettings)
+		GameSettings gameSettings,
+		IInstantiator instantiator)
+		: base(view, enemyData, signalBus, gameSettings, instantiator)
 	{
 	}
 

@@ -11,8 +11,10 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	private readonly SignalBus _signalBus;
 	private readonly GameSettings _gameSettings;
 	private readonly EnemyData _startEnemyData;
+	private readonly IInstantiator _instantiator;
 
 	private Vector2 _directionMovement;
+	private PresenterSlider2D _presenterSlider;
 
 	private Rigidbody2D Rigidbody => View.Rigidbody;
 	private TriggerComponent Trigger => View.Trigger;
@@ -28,18 +30,24 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		TView view, 
 		EnemyData enemyData,
 		SignalBus signalBus,
-		GameSettings gameSettings) : base(view)
+		GameSettings gameSettings,
+		IInstantiator instantiator) : base(view)
 	{
 		_signalBus = signalBus;
 		_startEnemyData = enemyData;
 		_gameSettings = gameSettings;
 
 		Trigger.SetId(enemyData.Id);
+		_instantiator = instantiator;
 	}
 
 	public override void Initialize()
 	{
 		base.Initialize();
+
+		_presenterSlider = _instantiator.Instantiate<PresenterSlider2D>( new object[] { View.ViewSlider })
+			.AddTo(_disposables);
+		_presenterSlider.SetStartValue(_startEnemyData.Health, _startEnemyData.Health);
 
 		View.transform.position = _startEnemyData.StartPosition.position;
 		Trigger.SetVisible(true);
@@ -74,26 +82,29 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		isAlive = _health.Value > 0;
 
 		if (isAlive)
-			AnimationComponent.Hit();
-		else
-			Die();
+		{
+			_presenterSlider.SetCurrentValue(_health.Value, false);
+			return;
+		}
+
+		Hide();
+
+		AnimationComponent.Die();
+		View.ParticleSystemDie.Play();
 	}
 
 	public void Attack()
 	{
-		ChangeMoveDirection(Vector2.zero);
-		Trigger.SetVisible(false);
+		Hide();
 
 		AnimationComponent.Attack();
 	}
 
-	public void Die()
+	private void Hide()
 	{
 		ChangeMoveDirection(Vector2.zero);
 		Trigger.SetVisible(false);
-
-		AnimationComponent.Die();
-		View.ParticleSystemDie.Play();
+		_presenterSlider.SetVisible(false);
 	}
 
 	private void ChangeMoveDirection(Vector2 direction)
