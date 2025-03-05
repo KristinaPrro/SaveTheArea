@@ -74,7 +74,9 @@ public class ModelEnemy : ModelBase, ITickable
 	{
 		try
 		{
-			_modelPlayerTargetEnemys.RemoveTarget(enemy);
+			if(enemy.IsUnderGun)
+				_modelPlayerTargetEnemys.RemoveTarget(enemy);
+
 			await UniTask.Delay(AnimationUtils.DELAYED_DISTROY_ROBOT_TIME);
 		}
 		finally

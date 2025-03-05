@@ -4,9 +4,27 @@ using UnityEngine;
 public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 {
 	protected override void ClearElements() => Presenters.Clear();
-	public void AddTarget(IEnemy element) => AddElement(element);
-	public void RemoveTarget(IEnemy element) => RemoveElement(element);
-	public void RemoveTarget(int id) => RemoveElementById(id);
+	public void AddTarget(IEnemy element)
+	{
+		AddElement(element);
+		element.SetTargetState(true);
+	}
+
+	public void RemoveTarget(IEnemy element)
+	{
+		element.SetTargetState(false);
+		RemoveElement(element);
+	}
+
+	public void RemoveTarget(int id)
+	{
+		if (!TryGetElementById(id, out var element))
+			return;
+
+		element.SetTargetState(false);
+		Presenters.Remove(element);
+		this.LogDebug($": {element.Id} ({Presenters.Count}:  {Debug()})", LogChannel.SpawnObject); 
+	}
 
 	public bool TryGetFirstElementAfterCheckDistanse(Vector2 startPosition, out IEnemy enemy)
 	{
