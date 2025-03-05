@@ -45,6 +45,37 @@ public class PresenterPoolDamageBullet : PresenterPoolDamageElement<ViewPoolDama
 		this.LogDebug($"! finish {DirectionMovement}", LogChannel.Todo);
 	}
 
+	public void SetTarget2(TargetData targetData)
+	{
+		Vector2 startTargetPosition = targetData.Transform.position;
+		Vector2 bulletStartPosition = View.transform.position;
+
+		var toTarget = startTargetPosition - bulletStartPosition;
+		var targetMovement = targetData.DirectionMovement.normalized * targetData.Speed;
+
+		var a = Vector2.Dot(targetMovement, targetMovement) - Speed * Speed;
+		var b = 2 * Vector2.Dot(targetMovement, toTarget);
+		var c = Vector2.Dot(toTarget, toTarget);
+
+		var discriminant = b * b - 4 * a * c;
+
+		if (discriminant < 0)
+		{
+			this.LogError("Target is unattainable");
+			return;
+		}
+
+		var t1 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
+		var t2 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
+
+		var timToHit = Mathf.Max(t1, t2);
+
+		var predictedTargetPosition = startTargetPosition + targetMovement * timToHit;
+
+		DirectionMovement = (predictedTargetPosition - bulletStartPosition).normalized;
+		this.LogDebug($"! finish {DirectionMovement}", LogChannel.Todo);
+	}
+
 	public class Factory : PlaceholderFactory<Transform, DamageElementData, PresenterPoolDamageBullet>
 	{
 		public PresenterPoolDamageBullet Create(Transform param, DamageElementData data, TargetData targetData)
