@@ -84,7 +84,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 	{
 		string s = "";
 
-		foreach (var p in Presenters)
+		foreach (var p in _presenters)
 			s = $"{s} {p.Id.ToString()};";
 
 		return s;
