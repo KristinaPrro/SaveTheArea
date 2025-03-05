@@ -20,7 +20,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 	public virtual void AddElement(T element)
 	{
 		_presenters.Add(element);
-		this.LogDebug($": {element.Id} ({_presenters.Count})", LogChannel.SpawnObject);
+		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
 	public virtual void ClearElements() => DisposeSpownElements(_presenters);
@@ -28,12 +28,12 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 	{
 		if(!_presenters.Contains(element))
 		{
-			this.LogError($"{nameof(T)} not found! ({_presenters.Count})");
+			this.LogError($"{nameof(T)} not found! ({_presenters.Count}:  {Debug()})");
 			return;
 		}
 
 		_presenters.Remove(element);
-		this.LogDebug($": {element.Id} ({_presenters.Count})", LogChannel.SpawnObject);
+		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
 	public virtual void RemoveElementById(int id)
@@ -42,7 +42,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 			return;
 
 		_presenters.Remove(element);
-		this.LogDebug($": {element.Id} ({_presenters.Count})", LogChannel.SpawnObject);
+		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
 	public virtual void DisposeElementById(int id)
@@ -53,7 +53,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		_presenters.Remove(element);
 		element.Dispose();
 
-		this.LogDebug($": {element.Id} ({_presenters.Count})", LogChannel.SpawnObject);
+		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
 	public virtual bool TryGetElementById(int id, out T element)
@@ -62,7 +62,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 
 		if (element == null)
 		{
-			this.LogError($"Object by Id {id} not found! ({_presenters.Count})");
+			this.LogError($"Object by Id {id} not found! ({_presenters.Count}:  {Debug()})");
 			return false;
 		}
 
@@ -78,5 +78,15 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 			element.Dispose();
 			presenters.RemoveAt(idx);
 		}
+	}
+
+	protected string Debug()
+	{
+		string s = "";
+
+		foreach (var p in Presenters)
+			s = $"{s} {p.Id.ToString()};";
+
+		return s;
 	}
 }

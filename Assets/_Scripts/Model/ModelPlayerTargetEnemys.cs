@@ -8,8 +8,8 @@ public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 	public bool TryGetFirstElementAfterCheckDistanse(Vector2 startPosition, out IEnemy enemy)
 	{
 		var count = Presenters.Count;
-		
-		if(Presenters == null || count == 0)
+
+		if (Presenters == null || count == 0)
 		{
 			this.LogWarning($"{nameof(Presenters)} is null!");
 
@@ -25,7 +25,8 @@ public class ModelPlayerTargetEnemys : ModelObjectBase<IEnemy>
 
 		this.LogDebug($"{Presenters.Count}: " +
 			$"({Vector2.Distance(sortPresenters[0].TransformPosition.position, startPosition)} ; " +
-			$"{Vector2.Distance(sortPresenters[count - 1].TransformPosition.position, startPosition)})");
+			$"{Vector2.Distance(sortPresenters[count - 1].TransformPosition.position, startPosition)})" +
+			$"         {Debug()}; ", LogChannel.Attack);
 
 		return true;
 	}
