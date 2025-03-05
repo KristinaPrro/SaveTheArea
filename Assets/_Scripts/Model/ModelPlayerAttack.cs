@@ -92,6 +92,7 @@ public class ModelPlayerAttack : ModelBase, ITickable
 			return;
 
 		this.LogDebug($"Fire! {enemy.TransformPosition}; {enemy.Id};", LogChannel.SpawnObject);
+
 		SpawnDamageElementWithTarget(_containerSpawn, enemy.TransformPosition, enemy.Speed, enemy.DirectionMovement);
 
 		_signalBus.Fire(new SignalPlayerFire());
