@@ -65,8 +65,6 @@ public class ModelEnemy : ModelBase, ITickable
 			return;
 		}
 
-		_modelPlayerTargetEnemys.RemoveElement(enemy);
-
 		_signalBus.Fire(new SignalEnemyDie(signalData.EnemyId));
 
 		EnemyDie(enemy).Forget();
@@ -76,12 +74,13 @@ public class ModelEnemy : ModelBase, ITickable
 	{
 		try
 		{
+			_modelPlayerTargetEnemys.RemoveElement(enemy);
 			await UniTask.Delay(AnimationUtils.DELAYED_DISTROY_ROBOT_TIME);
 		}
 		finally
 		{
-			enemy?.DelayedDispose();
 			_modelEnemyObjects?.RemoveElement(enemy);
+			enemy?.DelayedDispose();
 		}
 	}
 }
