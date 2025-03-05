@@ -57,16 +57,16 @@ public class ModelPlayerAttack : ModelBase, ITickable
 
 	public void AddTarget(int id)
 	{
-		if (!_modelEnemyObjects.TryGetElementById(id, out var element))
+		if (!_modelEnemyObjects.TryGetEnemy(id, out var element))
 			return;
 
-		_modelPlayerTargetEnemys.AddElement(element);
+		_modelPlayerTargetEnemys.AddTarget(element);
 		TryFire();
 	}
 
 	public void RemoveTarget(int id)
 	{
-		_modelPlayerTargetEnemys.RemoveElementById(id);
+		_modelPlayerTargetEnemys.RemoveTarget(id);
 	}
 
 	private void OnCheckTarget(bool isSpawnTime)

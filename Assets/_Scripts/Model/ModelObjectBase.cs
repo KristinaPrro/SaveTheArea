@@ -17,14 +17,14 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		ClearElements();
 	}
 
-	public virtual void AddElement(T element)
+	protected virtual void AddElement(T element)
 	{
 		_presenters.Add(element);
 		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
-	public virtual void ClearElements() => DisposeSpownElements(_presenters);
-	public virtual void RemoveElement(T element)
+	protected virtual void ClearElements() => DisposeSpownElements(_presenters);
+	protected virtual void RemoveElement(T element)
 	{
 		if(!_presenters.Contains(element))
 		{
@@ -36,7 +36,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
-	public virtual void RemoveElementById(int id)
+	protected virtual void RemoveElementById(int id)
 	{
 		if(!TryGetElementById(id, out var element))
 			return;
@@ -45,7 +45,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
-	public virtual void DisposeElementById(int id)
+	protected virtual void DisposeElementById(int id)
 	{
 		if(!TryGetElementById(id, out var element))
 			return;
@@ -56,7 +56,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 		this.LogDebug($": {element.Id} ({_presenters.Count}:  {Debug()})", LogChannel.SpawnObject);
 	}
 
-	public virtual bool TryGetElementById(int id, out T element)
+	protected virtual bool TryGetElementById(int id, out T element)
 	{
 		element = _presenters.Find(e => e.Id == id);
 
