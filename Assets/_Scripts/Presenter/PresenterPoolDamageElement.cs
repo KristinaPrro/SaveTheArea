@@ -3,16 +3,15 @@ using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
-public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TView>, ITickable, IDamageElement
+public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TView>, IFixedTickable, IDamageElement
 	 where TView : ViewPoolDamageElement
 {
 	protected readonly CompositeDisposable Disposables = new();
 	protected readonly SignalBus SignalBus;
 	protected readonly DamageElementData DamageElementData;
 
-	protected Vector2 DirectionMovement;
+	protected Vector3 DirectionMovement;
 
-	protected Rigidbody2D Rigidbody => View.Rigidbody;
 	protected int Damage => DamageElementData.Damage;
 	protected float Speed => DamageElementData.Speed;
 
@@ -40,9 +39,8 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		base.Dispose();
 	}
 
-	public void Tick()
+	public virtual void FixedTick()
 	{
-		Rigidbody.MovePosition(Rigidbody.position + DirectionMovement * Speed * Time.deltaTime);
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)

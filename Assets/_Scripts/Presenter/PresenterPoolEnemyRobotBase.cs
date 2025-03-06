@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, ITickable
+public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TView>, IEnemy
 	 where TView : ViewPoolEnemyRobot
 {
 	private readonly ReactiveProperty<int> _health = new();
@@ -52,9 +52,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		_presenterSlider.SetStartValue(_startEnemyData.Health, _startEnemyData.Health);
 
 		View.transform.position = _startEnemyData.StartPosition.position;
-		Trigger.SetVisible(true);
-		ChangeMoveDirection(Vector2.down);
 		_health.Value = _startEnemyData.Health;
+		ChangeMoveDirection(Vector2.down);
+		SetVisibleState(true);
 	}
 
 	public override void Dispose()
@@ -71,10 +71,10 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		Dispose();
 	}
 
-	public void Tick()
+	public void FixedTick()
 	{
 		Rigidbody.MovePosition(Rigidbody.position 
-			+ _directionMovement * _startEnemyData.Speed * Time.deltaTime);
+			+ _directionMovement * _startEnemyData.Speed * Time.fixedDeltaTime);
 	}
 
 	public void SetDamage(int damage, out bool isAlive)
@@ -110,8 +110,14 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	private void Hide()
 	{
 		ChangeMoveDirection(Vector2.zero);
-		Trigger.SetVisible(false);
-		_presenterSlider.SetVisible(false);
+		SetVisibleState(false);
+	}
+
+	private void SetVisibleState(bool isVisible)
+	{
+		View.Collider.enabled = isVisible;
+		_presenterSlider.SetVisible(isVisible);
+		Trigger.SetVisible(isVisible);
 	}
 
 	private void ChangeMoveDirection(Vector2 direction)

@@ -2,7 +2,7 @@
 using UniRx;
 using Zenject;
 
-public class ModelEnemy : ModelBase, ITickable
+public class ModelEnemy : ModelBase, IFixedTickable
 {
 	private readonly SignalBus _signalBus;
 	private readonly ModelEnemyObjects _modelEnemyObjects;
@@ -31,13 +31,13 @@ public class ModelEnemy : ModelBase, ITickable
 		Reset();
 	}
 
-	public void Tick()
+	public void FixedTick()
 	{
 		if (OutGame)
 			return;
 
 		foreach (var enemy in _modelEnemyObjects.Presenters)
-			enemy.Tick();
+			enemy.FixedTick();
 	}
 
 	private void OnEnemyReachedFinish(SignalEnemyReachedFinish signalData)

@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5fef2b30afb1843867c6cdc61a487c, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  <EnemyCountMin>k__BackingField: 6
+  <EnemyCountMin>k__BackingField: 10
   <EnemyCountMax>k__BackingField: 10
-  <EnemyTimeOutMin>k__BackingField: 2
-  <EnemyTimeOutMax>k__BackingField: 5
-  <EnemySpeedMin>k__BackingField: 4
-  <EnemySpeedMax>k__BackingField: 6
+  <EnemyTimeOutMin>k__BackingField: 1.4
+  <EnemyTimeOutMax>k__BackingField: 2.5
+  <EnemySpeedMin>k__BackingField: 2.5
+  <EnemySpeedMax>k__BackingField: 3.5
   <EnemyHealth>k__BackingField: 3
   <CharacterHealth>k__BackingField: 3
-  <CharacterRadiusFire>k__BackingField: 4.5
-  <CharacterRateFire>k__BackingField: 1.5
+  <CharacterRadiusFire>k__BackingField: 4
+  <CharacterRateFire>k__BackingField: 0.6
   <CharacterDamagePerShot>k__BackingField: 2
-  <CharacterBulletSpeed>k__BackingField: 15
-  <CharacterSpeed>k__BackingField: 8
+  <CharacterBulletSpeed>k__BackingField: 10
+  <CharacterSpeed>k__BackingField: 4
   <DefaultPosition>k__BackingField: {x: 0, y: 7, z: 0}
   <ViewAstronaut>k__BackingField: {fileID: 4986881947272165851, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
   <PoolItemDatas>k__BackingField:

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7018810181729167301}
   - component: {fileID: 1244450303379881928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CharacterHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 216425075147416534}
   - component: {fileID: 1552169562077306897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FireArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7884750131970335947}
   - component: {fileID: 4986881947272165851}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ViewCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1548222992966782571}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -212,7 +212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6771537208276303168}
   - component: {fileID: 4761128872213623168}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 353953131401767574}
   - component: {fileID: 4140022486554856337}
   - component: {fileID: 1911824778201637114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -431,7 +431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1383329479405436074}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ContainerBullet
   m_TagString: Untagged
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
@@ -463,7 +463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2804565420572230343}
   - component: {fileID: 1406889239229413652}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CharacterBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -546,7 +546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1437783802629649722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WeaponContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -579,7 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7397287371268125370}
   - component: {fileID: 3260047298938117968}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MuzzleFlashGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -663,7 +663,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7047170809874686980}
   - component: {fileID: 239545620797079780}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GunUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -749,7 +749,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7561021604646992956}
   - component: {fileID: 6725875913862215952}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GunUpAnim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
