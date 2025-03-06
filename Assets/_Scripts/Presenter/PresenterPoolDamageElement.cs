@@ -39,11 +39,8 @@ public abstract class PresenterPoolDamageElement<TView> : PresenterPoolBase<TVie
 		base.Dispose();
 	}
 
-	public void FixedTick()
+	public virtual void FixedTick()
 	{
-		View.transform.position = Vector2.MoveTowards(View.transform.position,
-			View.transform.position + DirectionMovement * Speed * Time.fixedDeltaTime,
-			Speed * Time.fixedDeltaTime);
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)

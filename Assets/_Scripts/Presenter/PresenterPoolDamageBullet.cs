@@ -11,6 +11,15 @@ public class PresenterPoolDamageBullet : PresenterPoolDamageElement<ViewPoolDama
 	{
 	}
 
+	public override void FixedTick()
+	{
+		base.FixedTick();
+
+		View.transform.position = Vector2.MoveTowards(View.transform.position,
+			View.transform.position + DirectionMovement * Speed * Time.fixedDeltaTime,
+			Speed * Time.fixedDeltaTime);
+	}
+
 	public void SetTarget(TargetData targetData)
 	{
 		Vector2 startTargetPosition = targetData.Transform.position;
