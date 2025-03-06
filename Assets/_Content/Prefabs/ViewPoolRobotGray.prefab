@@ -318,8 +318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6580b795ce77cde4097717a0a1fdbc29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _myLayer: Enemy
   <Id>k__BackingField: -1
-  <IsVisible>k__BackingField: 0
 --- !u!70 &8476602263283894290
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
