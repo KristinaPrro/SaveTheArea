@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4009676536389995160}
   - component: {fileID: 8316421315919191658}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RobotGray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6303278392302881315}
   - component: {fileID: 5257746908092878967}
   - component: {fileID: 6570855709542482906}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Robot
   m_TagString: Robot
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 3983658273592776446}
   - component: {fileID: 9038531183169385910}
   - component: {fileID: 6841445643295393374}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SliderHP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 5806735021505655361}
   - component: {fileID: 8476602263283894290}
   - component: {fileID: 644749552469839656}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ViewPoolRobotGray
   m_TagString: Robot
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 5326772455724901619}
   - component: {fileID: 1744208620928453350}
   - component: {fileID: 5199432026006205559}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5281,7 +5281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3188362019343385458}
   - component: {fileID: 1700331751497682747}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FillArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5365,7 +5365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7246861728659590511}
   - component: {fileID: 4280105814953925409}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1214,7 +1214,7 @@ GameObject:
   - component: {fileID: 885729164}
   - component: {fileID: 885729163}
   - component: {fileID: 885729162}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Walls
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -1470,7 +1470,7 @@ GameObject:
   - component: {fileID: 1032235330}
   - component: {fileID: 1032235332}
   - component: {fileID: 1032235331}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ViewFinishLine
   m_TagString: Finish
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
@@ -1631,7 +1631,7 @@ GameObject:
   - component: {fileID: 1255584587}
   - component: {fileID: 1255584586}
   - component: {fileID: 1255584585}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DisappearanceLines
   m_TagString: Disappearance
   m_Icon: {fileID: 0}
@@ -5689,10 +5689,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ViewCharacter
       objectReference: {fileID: 0}
-    - target: {fileID: 1548222992966782571, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.3699999
@@ -5700,6 +5696,26 @@ PrefabInstance:
     - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
       propertyPath: m_LocalPosition.y
       value: -18.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7884750131970335947, guid: 0f8d231390907aa4a8c69e6049f36e14, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6053,10 +6069,6 @@ PrefabInstance:
     - target: {fileID: 3444118335736650427, guid: d3394bef84c75a145924420c895a8d95, type: 3}
       propertyPath: m_Name
       value: ViewPoolRobotGray
-      objectReference: {fileID: 0}
-    - target: {fileID: 3444118335736650427, guid: d3394bef84c75a145924420c895a8d95, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
