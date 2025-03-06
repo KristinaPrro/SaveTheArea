@@ -201,9 +201,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <FillArea>k__BackingField: {fileID: 6313289000237469198}
-  <MaxValue>k__BackingField: -1
-  <MinValue>k__BackingField: -1
-  <CurrentValue>k__BackingField: -1
   <AnimationTime>k__BackingField: 0.5
 --- !u!212 &6841445643295393374
 SpriteRenderer:
@@ -366,7 +363,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3444118335736650427}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
