@@ -52,9 +52,9 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		_presenterSlider.SetStartValue(_startEnemyData.Health, _startEnemyData.Health);
 
 		View.transform.position = _startEnemyData.StartPosition.position;
-		Trigger.SetVisible(true);
-		ChangeMoveDirection(Vector2.down);
 		_health.Value = _startEnemyData.Health;
+		ChangeMoveDirection(Vector2.down);
+		SetVisibleState(true);
 	}
 
 	public override void Dispose()
@@ -110,8 +110,14 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	private void Hide()
 	{
 		ChangeMoveDirection(Vector2.zero);
-		Trigger.SetVisible(false);
-		_presenterSlider.SetVisible(false);
+		SetVisibleState(false);
+	}
+
+	private void SetVisibleState(bool isVisible)
+	{
+		View.Collider.enabled = isVisible;
+		_presenterSlider.SetVisible(isVisible);
+		Trigger.SetVisible(isVisible);
 	}
 
 	private void ChangeMoveDirection(Vector2 direction)

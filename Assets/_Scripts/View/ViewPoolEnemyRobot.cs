@@ -5,6 +5,7 @@ public abstract class ViewPoolEnemyRobot : ViewPool
 {
 	private Rigidbody2D _rigidbody;
 	private TriggerComponent _trigger;
+	private Collider2D _collider;
 
 	[field: SerializeField]
 	public AnimationComponent AnimationComponent { get; private set; }
@@ -22,6 +23,17 @@ public abstract class ViewPoolEnemyRobot : ViewPool
 				_rigidbody = GetComponent<Rigidbody2D>();
 
 			return _rigidbody;
+		}
+	}
+
+	public Collider2D Collider
+	{
+		get
+		{
+			if (_collider == null)
+				_collider = GetComponent<Collider2D>();
+
+			return _collider;
 		}
 	}
 
