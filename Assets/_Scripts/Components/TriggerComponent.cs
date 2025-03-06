@@ -3,9 +3,13 @@ using UnityEngine;
 public class TriggerComponent : MonoBehaviour, ITriggerComponent
 {
 	[field: SerializeField]
-	public int Id { get; private set; } = ObjectUtils.DEFAULT_ID;
+	private string _myLayer = ObjectUtils.IGNOR_COLLISIONS_LAYER;
+	
 	[field: SerializeField]
-	public bool IsVisible { get; private set; }
+	public int Id { get; private set; } = ObjectUtils.DEFAULT_ID;
+
+	public int MyLayerId => LayerMask.NameToLayer(_myLayer);
+	public bool IsVisible => MyLayerId == MyLayerId && MyLayerId != ObjectUtils.IGNOR_COLLISIONS_LAYER_ID;
 
 	public void SetId(int id)
 	{
@@ -14,6 +18,6 @@ public class TriggerComponent : MonoBehaviour, ITriggerComponent
 
 	public void SetVisible(bool isVisible)
 	{
-		IsVisible = isVisible;
+		gameObject.layer = isVisible ? MyLayerId : ObjectUtils.IGNOR_COLLISIONS_LAYER_ID;
 	}
 }
