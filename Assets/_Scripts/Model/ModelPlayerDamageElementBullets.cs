@@ -45,6 +45,6 @@ public class ModelPlayerDamageElementBullets : ModelBase, ITickable
 
 	private void DisposeById(int id)
 	{
-		_modelPlayerDamageElements.DisposeElementById(id);
+		_modelPlayerDamageElements.DisposeDamageElement(id);
 	}
 }

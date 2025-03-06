@@ -92,7 +92,7 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 				if (!other.TryGetTriggerId(out int id))
 					break;
 
-				_modelPlayerAttack.RemoveTarget(id);//todo relocate
+				_modelPlayerAttack.RemoveTarget(id);
 				break;
 		}
 	}

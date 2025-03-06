@@ -30,7 +30,7 @@ public class ModelPlayerSpawnDamageElement
 
 		this.Log($"Fire! ({nameof(PresenterPoolDamageBullet)})", LogChannel.SpawnObject);
 
-		_modelPlayerDamageElements.AddElement(presenter);
+		_modelPlayerDamageElements.AddDamageElement(presenter);
 
 		return presenter;
 	}

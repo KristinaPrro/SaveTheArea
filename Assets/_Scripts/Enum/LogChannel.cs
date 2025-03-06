@@ -6,4 +6,5 @@
 	SpawnObject = 1,
 	Moving = 2,
 	Animation = 3,
+	Attack = 4,
 }

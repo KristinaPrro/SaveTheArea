@@ -13,6 +13,7 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 	private readonly EnemyData _startEnemyData;
 	private readonly IInstantiator _instantiator;
 
+	private bool _isUnderGun;
 	private Vector2 _directionMovement;
 	private PresenterSlider2D _presenterSlider;
 
@@ -22,6 +23,7 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 
 	public int Id => _startEnemyData.Id;
 	public float Speed => _startEnemyData.Speed;
+	public bool IsUnderGun => _isUnderGun;
 	public Vector2 DirectionMovement => _directionMovement;
 	public Transform TransformPosition => View.transform;
 	public IObservable<int> HealthStream => _health;
@@ -98,6 +100,11 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		Hide();
 
 		AnimationComponent.Attack();
+	}
+
+	public void SetTargetState(bool isUnderGun)
+	{
+		_isUnderGun = isUnderGun;
 	}
 
 	private void Hide()

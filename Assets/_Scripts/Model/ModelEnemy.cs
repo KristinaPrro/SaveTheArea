@@ -42,7 +42,7 @@ public class ModelEnemy : ModelBase, ITickable
 
 	private void OnEnemyReachedFinish(SignalEnemyReachedFinish signalData)
 	{
-		if (!_modelEnemyObjects.TryGetElementById(signalData.EnemyId, out var enemy))
+		if (!_modelEnemyObjects.TryGetEnemy(signalData.EnemyId, out var enemy))
 			return;
 
 		enemy.Attack();
@@ -54,7 +54,7 @@ public class ModelEnemy : ModelBase, ITickable
 	{
 		this.LogDebug($"{signalData.EnemyId}");
 
-		if (!_modelEnemyObjects.TryGetElementById(signalData.EnemyId, out var enemy))
+		if (!_modelEnemyObjects.TryGetEnemy(signalData.EnemyId, out var enemy))
 			return;
 
 		enemy.SetDamage(signalData.Damage, out bool isAlive);
@@ -65,8 +65,6 @@ public class ModelEnemy : ModelBase, ITickable
 			return;
 		}
 
-		_modelPlayerTargetEnemys.RemoveElement(enemy);
-
 		_signalBus.Fire(new SignalEnemyDie(signalData.EnemyId));
 
 		EnemyDie(enemy).Forget();
@@ -76,12 +74,15 @@ public class ModelEnemy : ModelBase, ITickable
 	{
 		try
 		{
+			if(enemy.IsUnderGun)
+				_modelPlayerTargetEnemys.RemoveTarget(enemy);
+
 			await UniTask.Delay(AnimationUtils.DELAYED_DISTROY_ROBOT_TIME);
 		}
 		finally
 		{
+			_modelEnemyObjects?.RemoveEnemy(enemy);
 			enemy?.DelayedDispose();
-			_modelEnemyObjects?.RemoveElement(enemy);
 		}
 	}
 }
