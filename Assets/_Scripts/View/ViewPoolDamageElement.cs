@@ -3,14 +3,15 @@ using UnityEngine;
 
 public abstract class ViewPoolDamageElement : ViewPool
 {
-	[field: SerializeField]
-	public Rigidbody2D Rigidbody { get; private set; }
-	[field: SerializeField]
-	public Collider2D Collider { get; private set; }
-
-	public void Awake()
+	public Collider2D _collider { get; private set; }
+	public Collider2D Collider
 	{
-		Assert.IsNotNull(Rigidbody);
-		Assert.IsNotNull(Collider);
+		get
+		{
+			if (_collider == null)
+				_collider = GetComponent<Collider2D>();
+
+			return _collider;
+		}
 	}
 }
