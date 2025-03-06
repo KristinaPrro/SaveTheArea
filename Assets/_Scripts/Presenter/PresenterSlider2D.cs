@@ -33,8 +33,6 @@ public class PresenterSlider2D : PresenterBase<ViewSlider2D>
 
 	public void SetStartValue(float value, float maxValue, float minValue = 0)
 	{
-		SetVisible(true);
-
 		_maxValue = maxValue;
 		_minValue = minValue;
 		_range = maxValue - minValue;
