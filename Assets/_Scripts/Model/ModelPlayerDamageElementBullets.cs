@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using Zenject;
 
-public class ModelPlayerDamageElementBullets : ModelBase, ITickable
+public class ModelPlayerDamageElementBullets : ModelBase, IFixedTickable
 {
 	private readonly SignalBus _signalBus;
 	private readonly ModelPlayerDamageElements _modelPlayerDamageElements;
@@ -24,13 +24,13 @@ public class ModelPlayerDamageElementBullets : ModelBase, ITickable
 		_signalBus.GetStream<SignalEnemyDamage>().Subscribe(OnEnemyDamage).AddTo(Disposables);
 	}
 
-	public void Tick()
+	public void FixedTick()
 	{
 		if (OutGame)
-			return; 
-		
+			return;
+
 		foreach (var enemy in _modelPlayerDamageElements.Presenters)
-			enemy.Tick();
+			enemy.FixedTick();
 	}
 
 	private void OnDisappearance(SignalDisappearanceDamageElement signalData)
