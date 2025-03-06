@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TView>, IEnemy, ITickable
+public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TView>, IEnemy
 	 where TView : ViewPoolEnemyRobot
 {
 	private readonly ReactiveProperty<int> _health = new();
@@ -71,10 +71,10 @@ public abstract class PresenterPoolEnemyRobotBase<TView> : PresenterPoolBase<TVi
 		Dispose();
 	}
 
-	public void Tick()
+	public void FixedTick()
 	{
 		Rigidbody.MovePosition(Rigidbody.position 
-			+ _directionMovement * _startEnemyData.Speed * Time.deltaTime);
+			+ _directionMovement * _startEnemyData.Speed * Time.fixedDeltaTime);
 	}
 
 	public void SetDamage(int damage, out bool isAlive)

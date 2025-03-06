@@ -6,7 +6,7 @@ public interface IEnemy : ISpawnElements
 	public float Speed { get;}
 	public bool IsUnderGun { get;}
 	public Vector2 DirectionMovement { get; }
-	public void Tick();
+	public void FixedTick();
 	public void SetDamage(int damage, out bool isAlive);
 	public void DelayedDispose();
 	public void Attack();

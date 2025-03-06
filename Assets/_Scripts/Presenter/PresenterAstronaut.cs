@@ -3,7 +3,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
-public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
+public class PresenterAstronaut : PresenterBase<ViewAstronaut>, IFixedTickable
 {
 	private readonly IInputModel _inputModel;
 	private readonly SignalBus _signalBus;
@@ -59,9 +59,9 @@ public class PresenterAstronaut : PresenterBase<ViewAstronaut>, ITickable
 		base.Dispose();
 	}
 
-	public void Tick()
+	public void FixedTick()
 	{
-		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * Speed * Time.deltaTime);
+		Rigidbody.MovePosition(Rigidbody.position + _directionMovement * Speed * Time.fixedDeltaTime);
 	}
 
 	private void OnGameNew(SignalGameNew @new)
