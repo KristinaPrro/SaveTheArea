@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a5f137564c0cfb44a0c255a8d38a739, type: 3}
-  m_Name: ProjectUiSettings
+  m_Script: {fileID: 11500000, guid: bafac7fdfa8b3cc4aa62c694b16a4b4d, type: 3}
+  m_Name: CoreSettings
   m_EditorClassIdentifier: 
+  <PoolItemDatas>k__BackingField: []
