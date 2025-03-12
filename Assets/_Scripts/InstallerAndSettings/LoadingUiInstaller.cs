@@ -4,7 +4,7 @@ using Zenject;
 public class LoadingUiInstaller : MonoInstaller
 {
 	[SerializeField]
-	private MenuUiSettings _uiSettings;
+	private LoadingUiSettings _uiSettings;
 	[SerializeField]
 	private Transform _containerScreenPrefabs;
 

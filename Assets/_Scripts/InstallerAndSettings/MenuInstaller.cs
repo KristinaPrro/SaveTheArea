@@ -5,8 +5,6 @@ public class MenuInstaller : MonoInstaller
 {
 	[SerializeField]
 	private MenuSettings _settings;
-	[SerializeField]
-	private Transform _containerDefaultElementPrefabs;
 
 	private void OnDestroy()
 	{
