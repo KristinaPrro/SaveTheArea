@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class ProjectInstaller : MonoInstaller
+public class CoreInstaller : MonoInstaller
 {
 	[SerializeField]
-	private ProjectSettings _settings;
+	private CoreSettings _settings;
 	[SerializeField]
 	private Transform _containerDefaultElementPrefabs;
 
@@ -34,6 +34,7 @@ public class ProjectInstaller : MonoInstaller
 
 	private void InstallModels()
 	{
+		Container.BindInterfacesAndSelfTo<ModelSceneLoader>().AsSingle().NonLazy();
 	}
 
 	private void InstallPools()

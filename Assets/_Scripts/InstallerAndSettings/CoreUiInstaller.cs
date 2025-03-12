@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class ProjectUiInstaller : MonoInstaller
+public class CoreUiInstaller : MonoInstaller
 {
 	[SerializeField]
-	private ProjectUiSettings _uiSettings;
+	private CoreUiSettings _uiSettings;
 	[SerializeField]
 	private Transform _containerScreenPrefabs;
 
