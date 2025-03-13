@@ -30,11 +30,12 @@ public class CoreInstaller : MonoInstaller
 
 	private void InstallSignals()
 	{
+		Container.DeclareSignal<SignalCoreChangeScene>();
 	}
 
 	private void InstallModels()
 	{
-		//Container.BindInterfacesAndSelfTo<ModelSceneLoader>().AsSingle().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelSceneLoader>().AsSingle().NonLazy();
 	}
 
 	private void InstallPools()
