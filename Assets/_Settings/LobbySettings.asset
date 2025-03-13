@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 789702802d9f0f345984cbd6fb4adaed, type: 3}
-  m_Name: MenuSettings
+  m_Script: {fileID: 11500000, guid: 5fbfa6f68c429464bbb064b98620dbc1, type: 3}
+  m_Name: LobbySettings
   m_EditorClassIdentifier: 
   <PoolItemDatas>k__BackingField: []

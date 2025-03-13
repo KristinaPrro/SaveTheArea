@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f0b4c47adce3584cb30afb3c884ea9f, type: 3}
-  m_Name: MenuUiSettings
+  m_Script: {fileID: 11500000, guid: 3600c0c58f60fa94eb00c0b3d8b5ce21, type: 3}
+  m_Name: LobbyUiSettings
   m_EditorClassIdentifier: 
-  <ViewStatusScreen>k__BackingField: {fileID: 0}
-  <ViewResultScreen>k__BackingField: {fileID: 0}
