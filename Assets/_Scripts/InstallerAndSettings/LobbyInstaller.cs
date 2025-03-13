@@ -1,30 +1,29 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class MenuUiInstaller : MonoInstaller
+public class LobbyInstaller : MonoInstaller
 {
 	[SerializeField]
-	private MenuUiSettings _uiSettings;
-	[SerializeField]
-	private Transform _containerScreenPrefabs;
+	private LobbySettings _settings;
 
 	private void OnDestroy()
 	{
-		_uiSettings = null;
-		_containerScreenPrefabs = null;
+		_settings = null;
 	}
 
 	public override void InstallBindings()
 	{
-		Container.BindInstances(_uiSettings);
+		Container.BindInstances(_settings);
+
+		SignalBusInstaller.Install(Container);
 
 		InstallSignals();
 		InstallModels();
 		InstallPools();
 		InstallPresenters();
-		
+
 		//at the end
-		//Container.BindInterfacesAndSelfTo<ModelLevelUiInit>().AsSingle().NonLazy();
+		//Container.BindInterfacesAndSelfTo<ModelResetLevel>().AsSingle().NonLazy(); 
 	}
 
 	private void InstallSignals()

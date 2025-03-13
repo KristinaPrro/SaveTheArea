@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "MenuSettings", menuName = "MenuSettings", order = 1)]
-public class MenuSettings : ScriptableObject
+[CreateAssetMenu(fileName = "LobbySettings", menuName = "LobbySettings", order = 1)]
+public class LobbySettings : ScriptableObject
 {
 	[field: SerializeField]
 	public List<PoolItemData> PoolItemDatas { get; private set; } = new();
