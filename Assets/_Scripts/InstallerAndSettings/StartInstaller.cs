@@ -27,7 +27,7 @@ public class StartInstaller : MonoInstaller
 
 	private void InstallModels()
 	{
-		Container.BindInterfacesAndSelfTo<StartSceneModel>().AsSingle(); 
+		Container.BindInterfacesAndSelfTo<ModelStartScene>().AsSingle(); 
 	}
 
 	private void InstallPools()
