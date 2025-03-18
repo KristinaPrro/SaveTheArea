@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameSettings", menuName = "GameSettings", order = 1)]
+[CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObject_Settings/Game/GameSettings", order = 1)]
 public class GameSettings : ScriptableObject
 {
 	[field: Header("Enemy:")]
