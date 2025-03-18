@@ -15,8 +15,6 @@ public class LobbyInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
-		SignalBusInstaller.Install(Container);
-
 		InstallSignals();
 		InstallModels();
 		InstallPools();

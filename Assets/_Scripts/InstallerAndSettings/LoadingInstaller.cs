@@ -15,15 +15,10 @@ public class LoadingInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
-		SignalBusInstaller.Install(Container);
-
 		InstallSignals();
 		InstallModels();
 		InstallPools();
 		InstallPresenters();
-
-		//at the end
-		//Container.BindInterfacesAndSelfTo<ModelResetLevel>().AsSingle().NonLazy(); 
 	}
 
 	private void InstallSignals()
