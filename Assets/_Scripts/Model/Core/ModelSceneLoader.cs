@@ -50,9 +50,9 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		this.Log($"state:{state}; elapsedTime:{Time.realtimeSinceStartup - _startTime};");
 	}
 
-	private void LoadScene(SceneType type)
+	private void LoadScene(SceneType type, bool isFast = false)
 	{
-		if (SceneUtils.TryGetSceneName(type, out var sceneName))
+		if (!SceneUtils.TryGetSceneName(type, out var sceneName))
 		{
 			this.LogError($"Scene with {type} type is unknown!");
 			return;
@@ -65,7 +65,11 @@ public class ModelSceneLoader : IInitializable, IDisposable
 			return;
 		}
 
-		LoadTargetSceneAsync(newSceneIndex).Forget();
+		this.LogDebug("Add resource loading and progress animation to the UI!", LogChannel.Todo);
+		if (isFast)
+			LoadTargetSceneAsyncFast(newSceneIndex).Forget();
+		else
+			LoadTargetSceneAsync(newSceneIndex).Forget();
 	}
 
 	private async UniTaskVoid LoadTargetSceneAsync(int newSceneIndex)
@@ -107,20 +111,41 @@ public class ModelSceneLoader : IInitializable, IDisposable
 
 			return;
 		}
-		//var loadingIntermediateSceneTask = UniTask.WaitUntil(() => loadLoadingSceneOperation.isDone);
-		//var (_, _) = await UniTask.WhenAny(loadingIntermediateSceneTask, timeoutTask);
-		//await loadNewSceneOperation;
+
 		_loadingState.Value = SceneLoadingState.FinishLoadingNewScene;
 
+		await UniTask.Delay(SceneUtils.MIN_TIMEOUT_FOR_LOADING_SCENE_MLS);
 
 		_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;
 		var unloadIntermediateSceneOperation = SceneManager.UnloadSceneAsync(_loadingSceneIndex);
 
 		var unloadingIntermediateSceneTask = UniTask.WaitUntil(() => unloadIntermediateSceneOperation.isDone);
 		await unloadIntermediateSceneOperation;
-		_loadingState.Value = SceneLoadingState.FinishUnloadingOldScene;
+		_loadingState.Value = SceneLoadingState.FinishUnloadingIntermediateScene;
+		// signal?
+		_loadingState.Value = SceneLoadingState.Done;
+	}
+	
+	private async UniTaskVoid LoadTargetSceneAsyncFast(int newSceneIndex)
+	{
+		_startTime = Time.realtimeSinceStartup;
+		var currentScene = SceneManager.GetActiveScene();
+		var timeoutTask = UniTask.Delay(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE_MLS); 
 
-		await UniTask.Delay(SceneUtils.MIN_TIMEOUT_FOR_LOADING_SCENE_MLS);
+		_loadingState.Value = SceneLoadingState.StartLoadingIntermediateScene;
+		var loadLoadingSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
+
+		await loadLoadingSceneOperation;
+		_loadingState.Value = SceneLoadingState.FinishLoadingIntermediateScene;
+
+		if (currentScene != null)
+		{
+			_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;			
+			var unloadOldSceneOperation = SceneManager.UnloadSceneAsync(currentScene);
+
+			await unloadOldSceneOperation;
+			_loadingState.Value = SceneLoadingState.FinishUnloadingOldScene;
+		}
 
 		_loadingState.Value = SceneLoadingState.Done;
 	}
