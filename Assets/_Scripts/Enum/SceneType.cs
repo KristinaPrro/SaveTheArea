@@ -1,8 +1,8 @@
 ﻿public enum SceneType
 {
 	None = -1,
-
-	SaveArea = 1,
+	Start = 0,
+	Loading = 1,
 	Lobby = 2,
-	Loading = 3,
+	SaveArea = 3,
 }

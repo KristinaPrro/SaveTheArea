@@ -4,6 +4,11 @@
 	public const float MAX_TIMEOUT_FOR_LOADING_SCENE = 10f;
 	public const float MIN_TIMEOUT_FOR_LOADING_SCENE = 1f;
 
+	public const int MAX_TIMEOUT_FOR_LOADING_SCENE_MLS = 
+		(int)MAX_TIMEOUT_FOR_LOADING_SCENE * Utils.TIME_MILLISECONDS_PER_SECOND;
+	public const int MIN_TIMEOUT_FOR_LOADING_SCENE_MLS = 
+		(int)MIN_TIMEOUT_FOR_LOADING_SCENE * Utils.TIME_MILLISECONDS_PER_SECOND;
+
 	public const string LOBBY_SCENE_NAME = "LobbyScene";
 	public const string LOADING_SCENE_NAME = "LoadingScene";
 	public const string SAVE_AREA_SCENE_NAME = "GameScene";
@@ -16,12 +21,12 @@
 			case SceneType.Lobby:
 				sceneName = LOBBY_SCENE_NAME;
 				break;
-			case SceneType.Loading:
-				sceneName = LOADING_SCENE_NAME;
-				break;
+
 			case SceneType.SaveArea:
 				sceneName = SAVE_AREA_SCENE_NAME;
 				break;
+
+			case SceneType.Loading: //only intermediate
 			default:
 				return false;
 		}
