@@ -9,8 +9,9 @@
 	public const int MIN_TIMEOUT_FOR_LOADING_SCENE_MLS = 
 		(int)MIN_TIMEOUT_FOR_LOADING_SCENE * Utils.TIME_MILLISECONDS_PER_SECOND;
 
-	public const string LOBBY_SCENE_NAME = "LobbyScene";
+	public const string START_SCENE_NAME = "StartScene";
 	public const string LOADING_SCENE_NAME = "LoadingScene";
+	public const string LOBBY_SCENE_NAME = "LobbyScene";
 	public const string SAVE_AREA_SCENE_NAME = "GameScene";
 
 	public static bool TryGetSceneName(SceneType type, out string sceneName)
@@ -18,6 +19,10 @@
 		sceneName = "";
 		switch (type)
 		{
+			case SceneType.Start:
+				sceneName = START_SCENE_NAME;
+				break;
+
 			case SceneType.Lobby:
 				sceneName = LOBBY_SCENE_NAME;
 				break;
