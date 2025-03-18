@@ -23,7 +23,7 @@ public class ModelLevelUi: IDisposable
 		Disposables.Dispose();
 	}
 
-	public virtual void ChangeScreen(WindowType windowType)
+	public virtual void ChangeScreen(LevelWindowType windowType)
 	{
 		if (_presenterCurrentWindow?.WindowType == windowType)
 			return;
@@ -32,7 +32,7 @@ public class ModelLevelUi: IDisposable
 		Open(windowType);
 	}
 
-	public void Open(WindowType windowType)
+	public void Open(LevelWindowType windowType)
 	{
 		if (!TryGetPresenter(windowType, out var presenter))
 			return;
@@ -49,7 +49,7 @@ public class ModelLevelUi: IDisposable
 			Close(presenter);
 	}
 
-	private void Close(WindowType windowType) 
+	private void Close(LevelWindowType windowType) 
 	{
 		if (!TryGetPresenter(windowType, out var presenter))
 			return;
@@ -63,7 +63,7 @@ public class ModelLevelUi: IDisposable
 		presenter?.Hide();
 	}
 
-	private bool TryGetPresenter(WindowType windowType, out IUiPresenter presenter)
+	private bool TryGetPresenter(LevelWindowType windowType, out IUiPresenter presenter)
 	{
 		presenter = _presenters.FirstOrDefault(p => p.WindowType == windowType);
 

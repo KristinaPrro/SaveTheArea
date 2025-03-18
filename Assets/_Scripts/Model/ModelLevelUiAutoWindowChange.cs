@@ -21,17 +21,17 @@ public class ModelLevelUiAutoWindowChange: ModelBase
 		_signalBus.GetStream<SignalGameResults>().Subscribe(OnGameResults).AddTo(Disposables);
 
 		_modelLevelUi.CloseAll();
-		_modelLevelUi.Open(WindowType.GameStatusScreencreen);
+		_modelLevelUi.Open(LevelWindowType.GameStatusScreencreen);
 	}
 
 	private void OnGameNew(SignalGameNew signalData)
 	{
 		this.Log($"");
-		_modelLevelUi.ChangeScreen(WindowType.GameStatusScreencreen);		
+		_modelLevelUi.ChangeScreen(LevelWindowType.GameStatusScreencreen);		
 	}
 
 	private void OnGameResults(SignalGameResults signalData)
 	{
-		_modelLevelUi.ChangeScreen(WindowType.ResultScreen);
+		_modelLevelUi.ChangeScreen(LevelWindowType.ResultScreen);
 	}
 }
