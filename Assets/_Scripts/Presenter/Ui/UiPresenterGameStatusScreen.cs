@@ -5,7 +5,7 @@ public class UiPresenterGameStatusScreen : UiPresenterScreenBase<UiViewGameStatu
 	private readonly CompositeDisposable _disposables = new();
 	private readonly ModelLevel _modelLevel;
 
-	public override LevelWindowType WindowType => LevelWindowType.GameStatusScreencreen;
+	public override WindowType WindowType => WindowType.GameStatusScreencreen;
 
 	public UiPresenterGameStatusScreen(
 		UiViewGameStatusScreen view,

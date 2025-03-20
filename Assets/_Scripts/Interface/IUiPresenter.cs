@@ -1,6 +1,6 @@
 ﻿public interface IUiPresenter
 {
-	public LevelWindowType WindowType { get; }
+	public WindowType WindowType { get; }
 	public void Show();
 	public void Hide();
 }

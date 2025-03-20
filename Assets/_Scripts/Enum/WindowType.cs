@@ -1,4 +1,4 @@
-﻿public enum LevelWindowType
+﻿public enum WindowType
 {
 	None = -1,
 
