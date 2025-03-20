@@ -2,7 +2,7 @@
 {
 	public abstract WindowType WindowType { get; }
 	
-	protected UiPresenterScreenBase(TView view, ModelLevelUi sceneUiModel) : base(view, sceneUiModel)
+	protected UiPresenterScreenBase(TView view, ModelUiScreenChange sceneUiModel) : base(view, sceneUiModel)
 	{
 	}
 }

@@ -4,9 +4,9 @@ using Zenject;
 public class ModelLevelUiAutoWindowChange: ModelBase
 {
 	private readonly SignalBus _signalBus;
-	private readonly ModelLevelUi _modelLevelUi;
+	private readonly ModelUiScreenChange _modelLevelUi;
 
-	public ModelLevelUiAutoWindowChange(ModelLevel modelLevel, SignalBus signalBus, ModelLevelUi modelLevelUi)
+	public ModelLevelUiAutoWindowChange(ModelLevel modelLevel, SignalBus signalBus, ModelUiScreenChange modelLevelUi)
 		: base(modelLevel)
 	{
 		_signalBus = signalBus;

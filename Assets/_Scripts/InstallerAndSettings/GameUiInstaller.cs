@@ -34,7 +34,7 @@ public class GameUiInstaller : MonoInstaller
 
 	private void InstallModels()
 	{
-		Container.BindInterfacesAndSelfTo<ModelLevelUi>().AsSingle().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelUiScreenChange>().AsSingle().NonLazy();
 		Container.BindInterfacesAndSelfTo<ModelLevelUiAutoWindowChange>().AsSingle().NonLazy();
 	}
 

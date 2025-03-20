@@ -10,7 +10,7 @@ public class UiPresenterGameStatusScreen : UiPresenterScreenBase<UiViewGameStatu
 	public UiPresenterGameStatusScreen(
 		UiViewGameStatusScreen view,
 		ModelLevel modelLevel,
-		ModelLevelUi sceneUiModel) 
+		ModelUiScreenChange sceneUiModel) 
 		: base(view, sceneUiModel)
 	{
 		_modelLevel = modelLevel;

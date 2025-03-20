@@ -1,10 +1,10 @@
 ﻿public abstract class UiPresenterBase<TView>: Presenter where TView: UiView
 {
-	protected readonly ModelLevelUi SceneUiModel;
+	protected readonly ModelUiScreenChange SceneUiModel;
 
 	public TView View { get;}
 
-	protected UiPresenterBase(TView view, ModelLevelUi sceneUiModel)
+	protected UiPresenterBase(TView view, ModelUiScreenChange sceneUiModel)
 	{
 		View = view;
 		SceneUiModel = sceneUiModel;
