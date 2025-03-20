@@ -34,6 +34,7 @@ public class LobbyUiInstaller : MonoInstaller
 	private void InstallModels()
 	{
 		Container.BindInterfacesAndSelfTo<ModelUiScreenChange>().AsSingle().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelLobbyUiAutoWindowChange>().AsSingle().NonLazy();
 	}
 
 	private void InstallPools()
