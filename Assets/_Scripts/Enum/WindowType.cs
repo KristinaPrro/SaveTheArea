@@ -5,4 +5,7 @@
 	GameStatusScreencreen = 1,
 	StatusScreen = 2,
 	ResultScreen = 3,
+
+
+	Main = 50,
 }
