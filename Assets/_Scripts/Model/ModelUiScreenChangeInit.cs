@@ -1,9 +1,9 @@
-﻿public class ModelLevelUiInit
+﻿public class ModelUiScreenChangeInit
 {
 	private readonly ModelUiScreenChange _modelLevelUi;
 	private readonly IUiPresenter[] _presenters;
 
-	public ModelLevelUiInit(ModelUiScreenChange modelLevelUi, IUiPresenter[] presenters)
+	public ModelUiScreenChangeInit(ModelUiScreenChange modelLevelUi, IUiPresenter[] presenters)
 	{
 		_modelLevelUi = modelLevelUi;
 		_presenters = presenters;

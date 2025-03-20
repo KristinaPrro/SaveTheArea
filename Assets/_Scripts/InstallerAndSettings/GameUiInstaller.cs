@@ -25,7 +25,7 @@ public class GameUiInstaller : MonoInstaller
 		InstallPresenters();
 		
 		//at the end
-		Container.BindInterfacesAndSelfTo<ModelLevelUiInit>().AsSingle().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelUiScreenChangeInit>().AsSingle().NonLazy();
 	}
 
 	private void InstallSignals()
