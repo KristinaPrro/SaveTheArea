@@ -22,9 +22,9 @@ public class LobbyUiInstaller : MonoInstaller
 		InstallModels();
 		InstallPools();
 		InstallPresenters();
-		
+
 		//at the end
-		//Container.BindInterfacesAndSelfTo<ModelLevelUiInit>().AsSingle().NonLazy();
+		Container.BindInterfacesAndSelfTo<ModelUiScreenChangeInit>().AsSingle().NonLazy();
 	}
 
 	private void InstallSignals()
@@ -33,6 +33,7 @@ public class LobbyUiInstaller : MonoInstaller
 
 	private void InstallModels()
 	{
+		Container.BindInterfacesAndSelfTo<ModelUiScreenChange>().AsSingle().NonLazy();
 	}
 
 	private void InstallPools()
@@ -41,5 +42,7 @@ public class LobbyUiInstaller : MonoInstaller
 
 	private void InstallPresenters()
 	{
+		Container.BindViewController<UiViewLobbyMain, UiPresenterLobbyMain>(_uiSettings.ViewLobbyMain,
+			_containerScreenPrefabs);
 	}
 }
