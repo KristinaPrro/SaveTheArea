@@ -2,10 +2,12 @@
 {
 	None = -1,
 
-	GameStatusScreencreen = 1,
-	StatusScreen = 2,
-	ResultScreen = 3,
+	GameStatusScreen = 1,
+	ResultScreen = 5,
 
+	Settings = 40,
 
 	Main = 50,
+
+	Thanks = 100,
 }
