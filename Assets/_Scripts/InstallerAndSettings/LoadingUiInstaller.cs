@@ -18,28 +18,9 @@ public class LoadingUiInstaller : MonoInstaller
 	{
 		Container.BindInstances(_uiSettings);
 
-		InstallSignals();
-		InstallModels();
-		InstallPools();
-		InstallPresenters();
-		
-		//at the end
-		//Container.BindInterfacesAndSelfTo<ModelLevelUiInit>().AsSingle().NonLazy();
-	}
-
-	private void InstallSignals()
-	{
-	}
-
-	private void InstallModels()
-	{
-	}
-
-	private void InstallPools()
-	{
-	}
-
-	private void InstallPresenters()
-	{
+		//InstallSignals
+		//InstallModels
+		//InstallPools
+		//InstallPresenters
 	}
 }

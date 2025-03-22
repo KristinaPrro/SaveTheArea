@@ -19,30 +19,10 @@ public class CoreInstaller : MonoInstaller
 
 		SignalBusInstaller.Install(Container);
 
-		InstallSignals();
-		InstallModels();
-		InstallPools();
-		InstallPresenters();
-
-		//at the end
-		//Container.BindInterfacesAndSelfTo<ModelResetLevel>().AsSingle().NonLazy(); 
-	}
-
-	private void InstallSignals()
-	{
+		//InstallSignals
 		Container.DeclareSignal<SignalCoreChangeScene>();
-	}
 
-	private void InstallModels()
-	{
+		//InstallModels
 		Container.BindInterfacesAndSelfTo<ModelSceneLoader>().AsSingle().NonLazy();
-	}
-
-	private void InstallPools()
-	{
-	}
-
-	private void InstallPresenters()
-	{
 	}
 }

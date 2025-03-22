@@ -15,25 +15,9 @@ public class LoadingInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
-		InstallSignals();
-		InstallModels();
-		InstallPools();
-		InstallPresenters();
-	}
-
-	private void InstallSignals()
-	{
-	}
-
-	private void InstallModels()
-	{
-	}
-
-	private void InstallPools()
-	{
-	}
-
-	private void InstallPresenters()
-	{
+		//InstallSignals
+		//InstallModels
+		//InstallPools
+		//InstallPresenters
 	}
 }

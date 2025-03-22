@@ -15,26 +15,12 @@ public class StartInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
-		InstallSignals();
-		InstallModels();
-		InstallPools();
-		InstallPresenters();
-	}
+		//InstallSignals
 
-	private void InstallSignals()
-	{
-	}
+		//InstallModels
+		Container.BindInterfacesAndSelfTo<ModelStartScene>().AsSingle();
 
-	private void InstallModels()
-	{
-		Container.BindInterfacesAndSelfTo<ModelStartScene>().AsSingle(); 
-	}
-
-	private void InstallPools()
-	{
-	}
-
-	private void InstallPresenters()
-	{
+		//InstallPools
+		//InstallPresenters
 	}
 }

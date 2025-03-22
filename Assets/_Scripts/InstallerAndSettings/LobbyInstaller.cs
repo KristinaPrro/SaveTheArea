@@ -15,28 +15,9 @@ public class LobbyInstaller : MonoInstaller
 	{
 		Container.BindInstances(_settings);
 
-		InstallSignals();
-		InstallModels();
-		InstallPools();
-		InstallPresenters();
-
-		//at the end
-		//Container.BindInterfacesAndSelfTo<ModelResetLevel>().AsSingle().NonLazy(); 
-	}
-
-	private void InstallSignals()
-	{
-	}
-
-	private void InstallModels()
-	{
-	}
-
-	private void InstallPools()
-	{
-	}
-
-	private void InstallPresenters()
-	{
+		//InstallSignals
+		//InstallModels
+		//InstallPools
+		//InstallPresenters
 	}
 }
