@@ -32,7 +32,7 @@ public class ModelUiScreenChange: IDisposable
 		Open(windowType);
 	}
 
-	public void Open(WindowType windowType)
+	private void Open(WindowType windowType)
 	{
 		if (!TryGetPresenter(windowType, out var presenter))
 			return;

@@ -16,11 +16,16 @@ public class ModelLobbyUiAutoWindowChange: IInitializable, IDisposable
 
 	public void Initialize()
 	{
-		_modelLevelUi.Open(WindowType.Main);
+		ChangeScreen(WindowType.Main);
 	}
 
 	public void Dispose()
 	{
 		_disposables.Dispose();
+	}
+
+	private void ChangeScreen(WindowType type)
+	{
+		_modelLevelUi.ChangeScreen(type);
 	}
 }
