@@ -14,10 +14,5 @@ public class LoadingInstaller : MonoInstaller
 	public override void InstallBindings()
 	{
 		Container.BindInstances(_settings);
-
-		//InstallSignals
-		//InstallModels
-		//InstallPools
-		//InstallPresenters
 	}
 }

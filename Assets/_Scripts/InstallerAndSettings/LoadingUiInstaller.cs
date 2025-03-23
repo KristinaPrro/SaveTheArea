@@ -17,10 +17,5 @@ public class LoadingUiInstaller : MonoInstaller
 	public override void InstallBindings()
 	{
 		Container.BindInstances(_uiSettings);
-
-		//InstallSignals
-		//InstallModels
-		//InstallPools
-		//InstallPresenters
 	}
 }
