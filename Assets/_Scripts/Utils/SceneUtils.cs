@@ -1,9 +1,12 @@
 ﻿public static class SceneUtils
 {
 	public const float PROGRESS_VALUE_SCENE_ACTIVATED = 0.9f;
+	public const float START_LOADING_SCENE_DELAY = 2f;
 	public const float MAX_TIMEOUT_FOR_LOADING_SCENE = 10f;
 	public const float MIN_TIMEOUT_FOR_LOADING_SCENE = 1f;
 
+	public const int START_LOADING_SCENE_DELAY_MLS = 
+		(int)MIN_TIMEOUT_FOR_LOADING_SCENE * Utils.TIME_MILLISECONDS_PER_SECOND;
 	public const int MAX_TIMEOUT_FOR_LOADING_SCENE_MLS = 
 		(int)MAX_TIMEOUT_FOR_LOADING_SCENE * Utils.TIME_MILLISECONDS_PER_SECOND;
 	public const int MIN_TIMEOUT_FOR_LOADING_SCENE_MLS = 

@@ -25,7 +25,7 @@ public class ModelStartScene : IInitializable, IDisposable
 
 	private async UniTaskVoid StartGame()
 	{
-		await UniTask.Delay(10000);
+		await UniTask.Delay(SceneUtils.START_LOADING_SCENE_DELAY_MLS);
 
 		_signalBus.Fire(new SignalCoreChangeScene(SceneType.Lobby));
 	}
