@@ -1,8 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using UniRx;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 using Zenject;
 
 public class ModelSceneLoader : IInitializable, IDisposable
@@ -12,6 +15,7 @@ public class ModelSceneLoader : IInitializable, IDisposable
 	private readonly int _loadingSceneIndex;
 	
 	private ReactiveProperty<SceneLoadingState> _loadingState = new(SceneLoadingState.None);
+	private ReactiveProperty<float> _progress = new(Utils.FLOAT_DEFAULT_VALUE);
 	private int _currentSceneIndex = Utils.INT_DEFAULT_VALUE;
 	private float _startTime;
 	private float _elapsedTime => Time.realtimeSinceStartup - _startTime;
@@ -38,14 +42,14 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		_disposables.Dispose();
 	}
 
-	private void OnChangeScene(SignalCoreChangeScene signalData)
-	{
-		LoadScene(signalData.SceneType).Forget();
-	}
-
 	private void OnChangeLoadingState(SceneLoadingState state)
 	{
 		this.LogDebug($"state:{state}; elapsedTime:{_elapsedTime};");
+	}
+
+	private void OnChangeScene(SignalCoreChangeScene signalData)
+	{
+		LoadScene(signalData.SceneType).Forget();
 	}
 
 	private async UniTaskVoid LoadScene(SceneType type)
@@ -54,56 +58,78 @@ public class ModelSceneLoader : IInitializable, IDisposable
 			return;
 
 		this.LogDebug("Add resource loading and progress animation to the UI!", LogChannel.Todo);
-
+		_progress.Value = 0f;
 		_startTime = Time.realtimeSinceStartup;
-		var currentScene = SceneManager.GetActiveScene();
-		var timeoutTask = UniTask.Delay(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE_MLS); 
 
+		//await SetLoadingScene();
 		_loadingState.Value = SceneLoadingState.StartLoadingIntermediateScene;
-		var loadLoadingSceneOperation = SceneManager.LoadSceneAsync(_loadingSceneIndex, LoadSceneMode.Additive);
+		await SceneManager.LoadSceneAsync(_loadingSceneIndex);
+		_progress.Value = 0.15f;
 
-		await loadLoadingSceneOperation;
 		_loadingState.Value = SceneLoadingState.FinishLoadingIntermediateScene;
 
-		if (currentScene != null)
-		{
-			_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;			
-			var unloadOldSceneOperation = SceneManager.UnloadSceneAsync(currentScene);
+		await Clear();
+		_progress.Value = 0.3f;
 
-			await unloadOldSceneOperation;
-			_loadingState.Value = SceneLoadingState.FinishUnloadingOldScene;
-		}
+		//todo preload critical assets
+		_progress.Value = 0.5f;
 
-		_loadingState.Value = SceneLoadingState.StartClearAssets;
-		//to do clear assets
-		_loadingState.Value = SceneLoadingState.FinishClearAssets;
-
-		_loadingState.Value = SceneLoadingState.StartLoadingNewScene;
-		var loadNewSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
-
-		var loadingNewSceneTask = UniTask.WaitUntil(() => loadNewSceneOperation.isDone);
-		var loadingResult = await UniTask.WhenAny(loadingNewSceneTask, timeoutTask);
-
-		if (loadingResult != 0)
-		{
-			this.LogError($"Scene loading timed out! Scene with {newSceneIndex} name may be corrupted");
-			_loadingState.Value = SceneLoadingState.None;
-
+		if (!await IsSuccessLoadNewScene(newSceneIndex))
 			return;
-		}
+		
+		_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;
+		await SceneManager.UnloadSceneAsync(_loadingSceneIndex);
+		_loadingState.Value = SceneLoadingState.FinishUnloadingIntermediateScene;
 
-		_loadingState.Value = SceneLoadingState.FinishLoadingNewScene;
+		var newScene = SceneManager.GetSceneByBuildIndex(newSceneIndex);
+		SceneManager.SetActiveScene(newScene);
 
 		await UniTask.Delay(SceneUtils.MIN_TIMEOUT_FOR_LOADING_SCENE_MLS);
 
-		_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;
-		var unloadIntermediateSceneOperation = SceneManager.UnloadSceneAsync(_loadingSceneIndex);
-
-		var unloadingIntermediateSceneTask = UniTask.WaitUntil(() => unloadIntermediateSceneOperation.isDone);
-		await unloadIntermediateSceneOperation;
-		_loadingState.Value = SceneLoadingState.FinishUnloadingIntermediateScene;
-		// signal?
 		_loadingState.Value = SceneLoadingState.Done;
+
+		_progress.Value = Utils.FLOAT_DEFAULT_VALUE;
+		_loadingState.Value = SceneLoadingState.None;
+	}
+
+	private async UniTask Clear()
+	{
+		_loadingState.Value = SceneLoadingState.StartClearAssets;
+		await UniTask.Yield(PlayerLoopTiming.FixedUpdate);//to do clear assets
+		_loadingState.Value = SceneLoadingState.FinishClearAssets;
+	}
+
+	private async UniTask<bool> IsSuccessLoadNewScene(int newSceneIndex)
+	{
+		_loadingState.Value = SceneLoadingState.StartLoadingNewScene;
+
+		var timeoutTime = Time.realtimeSinceStartup + SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE;
+
+		var loadNewSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
+		loadNewSceneOperation.allowSceneActivation = false;
+
+		while (!loadNewSceneOperation.isDone)
+		{
+			_progress.Value = 0.5f 
+				+ Mathf.Clamp01(loadNewSceneOperation.progress / SceneUtils.PROGRESS_VALUE_SCENE_ACTIVATED)/2;
+
+			if (Time.realtimeSinceStartup > timeoutTime)
+			{
+				this.LogError($"Scene loading timed out! Scene with {newSceneIndex} name may be corrupted");
+				_loadingState.Value = SceneLoadingState.None;
+				return false;
+			}
+
+			if (loadNewSceneOperation.progress >= SceneUtils.PROGRESS_VALUE_SCENE_ACTIVATED)
+			{
+				loadNewSceneOperation.allowSceneActivation = true;
+			}
+
+			await UniTask.Yield(PlayerLoopTiming.FixedUpdate);
+		}
+		
+		_loadingState.Value = SceneLoadingState.FinishLoadingNewScene;
+		return true;
 	}
 
 	private bool TryGetSceneIndex(SceneType type, out int newSceneIndex)
@@ -125,7 +151,6 @@ public class ModelSceneLoader : IInitializable, IDisposable
 
 		return true;
 	}
-
 	//private async UniTaskVoid LoadSceneAsync(int sceneIndex, float startTime)
 	//{
 	//	var loadOperation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
@@ -171,5 +196,78 @@ public class ModelSceneLoader : IInitializable, IDisposable
 
 	//	var newScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
 	//	SceneManager.SetActiveScene(newScene);
+
+	////_loadingState.Value = SceneLoadingState.StartLoadingNewScene;
+	////var loadNewSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
+	////loadNewSceneOperation.allowSceneActivation = false;
+
+	////var loadingNewSceneTask = UniTask.WaitUntil(() => loadNewSceneOperation.isDone)
+	////	.Timeout(TimeSpan.FromSeconds(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE));
+	////var progressTask = Progress(loadingNewSceneTask);
+
+	////var loadingResult = await UniTask.WhenAny(loadingNewSceneTask, progressTask);
+
+	////if (loadingResult != 0)
+	////{
+	////	this.LogError($"Scene loading timed out! Scene with {newSceneIndex} name may be corrupted");
+	////	_loadingState.Value = SceneLoadingState.None;
+	////	return;
+	////}
+
+	////_loadingState.Value = SceneLoadingState.FinishLoadingNewScene; 
+
+
+	////_loadingState.Value = SceneLoadingState.StartLoadingNewScene;
+	////var loadNewSceneTask = LoadNewScene(newSceneIndex)
+	////	.Timeout(TimeSpan.FromSeconds(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE))
+	////	.SuppressCancellationThrow();
+	////var progressTask = Progress();
+
+	////await UniTask.WhenAll(loadNewSceneTask, progressTask);
+
+	////if (!loadNewSceneTask.Status)
+	////{
+	////	this.LogError($"Scene loading timed out! Scene with {newSceneIndex} name may be corrupted");
+	////	_loadingState.Value = SceneLoadingState.None;
+	////	return;
+	////}
+
+	////_loadingState.Value = SceneLoadingState.FinishLoadingNewScene; 
+
+	////var loadNewSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
+
+	////var loadingNewSceneTask = UniTask.WaitUntil(() => loadNewSceneOperation.isDone);
+	////var timeoutTask = UniTask.Delay(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE_MLS);
+
+	////var loadingResult = await UniTask.WhenAny(loadingNewSceneTask, timeoutTask);
+
+	////if (loadingResult != 0)
+	////{
+	////	this.LogError($"Scene loading timed out! Scene with {newSceneIndex} name may be corrupted");
+	////	_loadingState.Value = SceneLoadingState.None;
+	////	return;
+	////}
+
+	////var newScene = SceneManager.GetSceneByBuildIndex(newSceneIndex);
+	////SceneManager.SetActiveScene(newScene);
 	//}
+
+	//private async UniTask SetLoadingScene()
+	//{
+	//	var oldScene = SceneManager.GetActiveScene();
+
+	//	_loadingState.Value = SceneLoadingState.StartLoadingIntermediateScene;
+	//	await SceneManager.LoadSceneAsync(_loadingSceneIndex, LoadSceneMode.Additive);
+	//	var loadingScene = SceneManager.GetSceneByBuildIndex(_loadingSceneIndex);
+	//	SceneManager.SetActiveScene(loadingScene);
+	//	_loadingState.Value = SceneLoadingState.FinishLoadingIntermediateScene;
+
+	//	if (oldScene != null)
+	//	{
+	//		_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;
+	//		await SceneManager.UnloadSceneAsync(oldScene);
+	//		_loadingState.Value = SceneLoadingState.FinishUnloadingOldScene;
+	//	}
+	//}
+
 }
