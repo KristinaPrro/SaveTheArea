@@ -15,9 +15,6 @@ public class ModelSceneLoader : IInitializable, IDisposable
 	private int _currentSceneIndex = Utils.INT_DEFAULT_VALUE;
 	private float _startTime;
 
-	public SceneLoadingState LoadingState => _loadingState.Value;
-	public IObservable<SceneLoadingState> LoadingStateStream => _loadingState ;
-
 	public ModelSceneLoader(SignalBus signalBus)
 	{
 		_signalBus = signalBus;
@@ -32,7 +29,7 @@ public class ModelSceneLoader : IInitializable, IDisposable
 				
 		_signalBus.GetStream<SignalCoreChangeScene>().Subscribe(OnChangeScene).AddTo(_disposables);
 
-		LoadingStateStream.AsObservable().Subscribe(OnChangeLoadingState).AddTo(_disposables);
+		_loadingState.AsObservable().Subscribe(OnChangeLoadingState).AddTo(_disposables);
 	}
 
 	public void Dispose()
@@ -47,10 +44,10 @@ public class ModelSceneLoader : IInitializable, IDisposable
 
 	private void OnChangeLoadingState(SceneLoadingState state)
 	{
-		this.Log($"state:{state}; elapsedTime:{Time.realtimeSinceStartup - _startTime};");
+		this.LogDebug($"state:{state}; elapsedTime:{Time.realtimeSinceStartup - _startTime};");
 	}
 
-	private void LoadScene(SceneType type, bool isFast = false)
+	private void LoadScene(SceneType type)
 	{
 		if (!SceneUtils.TryGetSceneName(type, out var sceneName))
 		{
@@ -66,10 +63,8 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		}
 
 		this.LogDebug("Add resource loading and progress animation to the UI!", LogChannel.Todo);
-		if (isFast)
-			LoadTargetSceneAsyncFast(newSceneIndex).Forget();
-		else
-			LoadTargetSceneAsync(newSceneIndex).Forget();
+		
+		LoadTargetSceneAsync(newSceneIndex).Forget();
 	}
 
 	private async UniTaskVoid LoadTargetSceneAsync(int newSceneIndex)
@@ -96,7 +91,6 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		_loadingState.Value = SceneLoadingState.StartClearAssets;
 		//to do clear assets
 		_loadingState.Value = SceneLoadingState.FinishClearAssets;
-
 
 		_loadingState.Value = SceneLoadingState.StartLoadingNewScene;
 		var loadNewSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
@@ -125,31 +119,7 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		// signal?
 		_loadingState.Value = SceneLoadingState.Done;
 	}
-	
-	private async UniTaskVoid LoadTargetSceneAsyncFast(int newSceneIndex)
-	{
-		_startTime = Time.realtimeSinceStartup;
-		var currentScene = SceneManager.GetActiveScene();
-		var timeoutTask = UniTask.Delay(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE_MLS); 
 
-		_loadingState.Value = SceneLoadingState.StartLoadingIntermediateScene;
-		var loadLoadingSceneOperation = SceneManager.LoadSceneAsync(newSceneIndex, LoadSceneMode.Additive);
-
-		await loadLoadingSceneOperation;
-		_loadingState.Value = SceneLoadingState.FinishLoadingIntermediateScene;
-
-		if (currentScene != null)
-		{
-			_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;			
-			var unloadOldSceneOperation = SceneManager.UnloadSceneAsync(currentScene);
-
-			await unloadOldSceneOperation;
-			_loadingState.Value = SceneLoadingState.FinishUnloadingOldScene;
-		}
-
-		_loadingState.Value = SceneLoadingState.Done;
-	}
-	
 	//private async UniTaskVoid LoadSceneAsync(int sceneIndex, float startTime)
 	//{
 	//	var loadOperation = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Additive);
