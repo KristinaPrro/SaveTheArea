@@ -14,6 +14,7 @@ public class ModelSceneLoader : IInitializable, IDisposable
 	private ReactiveProperty<SceneLoadingState> _loadingState = new(SceneLoadingState.None);
 	private int _currentSceneIndex = Utils.INT_DEFAULT_VALUE;
 	private float _startTime;
+	private float _elapsedTime => Time.realtimeSinceStartup - _startTime;
 
 	public ModelSceneLoader(SignalBus signalBus)
 	{
@@ -39,36 +40,21 @@ public class ModelSceneLoader : IInitializable, IDisposable
 
 	private void OnChangeScene(SignalCoreChangeScene signalData)
 	{
-		LoadScene(signalData.SceneType);
+		LoadScene(signalData.SceneType).Forget();
 	}
 
 	private void OnChangeLoadingState(SceneLoadingState state)
 	{
-		this.LogDebug($"state:{state}; elapsedTime:{Time.realtimeSinceStartup - _startTime};");
+		this.LogDebug($"state:{state}; elapsedTime:{_elapsedTime};");
 	}
 
-	private void LoadScene(SceneType type)
+	private async UniTaskVoid LoadScene(SceneType type)
 	{
-		if (!SceneUtils.TryGetSceneName(type, out var sceneName))
-		{
-			this.LogError($"Scene with {type} type is unknown!");
+		if (!TryGetSceneIndex(type, out int newSceneIndex))
 			return;
-		}
-
-		var newSceneIndex = SceneUtility.GetBuildIndexByScenePath(sceneName);
-		if (newSceneIndex == Utils.INT_DEFAULT_VALUE)
-		{
-			this.LogError($"Scene with {sceneName} name and {type} type not found!");
-			return;
-		}
 
 		this.LogDebug("Add resource loading and progress animation to the UI!", LogChannel.Todo);
-		
-		LoadTargetSceneAsync(newSceneIndex).Forget();
-	}
 
-	private async UniTaskVoid LoadTargetSceneAsync(int newSceneIndex)
-	{
 		_startTime = Time.realtimeSinceStartup;
 		var currentScene = SceneManager.GetActiveScene();
 		var timeoutTask = UniTask.Delay(SceneUtils.MAX_TIMEOUT_FOR_LOADING_SCENE_MLS); 
@@ -118,6 +104,26 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		_loadingState.Value = SceneLoadingState.FinishUnloadingIntermediateScene;
 		// signal?
 		_loadingState.Value = SceneLoadingState.Done;
+	}
+
+	private bool TryGetSceneIndex(SceneType type, out int newSceneIndex)
+	{
+		newSceneIndex = Utils.INT_DEFAULT_VALUE;
+
+		if (!SceneUtils.TryGetSceneName(type, out var sceneName))
+		{
+			this.LogError($"Scene with {type} type is unknown!");
+			return false;
+		}
+
+		newSceneIndex = SceneUtility.GetBuildIndexByScenePath(sceneName);
+		if (newSceneIndex == Utils.INT_DEFAULT_VALUE)
+		{
+			this.LogError($"Scene with {sceneName} name and {type} type not found!");
+			return false;
+		}
+
+		return true;
 	}
 
 	//private async UniTaskVoid LoadSceneAsync(int sceneIndex, float startTime)
