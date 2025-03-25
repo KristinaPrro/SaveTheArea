@@ -46,10 +46,10 @@ public class ModelSceneLoader : IInitializable, IDisposable
 
 	private void OnChangeScene(SignalCoreChangeScene signalData)
 	{
-		LoadScene(signalData.SceneType).Forget();
+		LoadSceneAsync(signalData.SceneType).Forget();
 	}
 
-	private async UniTaskVoid LoadScene(SceneType type)
+	private async UniTaskVoid LoadSceneAsync(SceneType type)
 	{
 		if (!TryGetSceneIndex(type, out int newSceneIndex))
 			return;
@@ -63,10 +63,10 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		await SceneManager.LoadSceneAsync(_loadingSceneIndex);
 		_loadingState.Value = SceneLoadingState.FinishLoadingIntermediateScene;
 
-		await Clear();
+		await ClearAsync();
 		_progress.Value = SceneUtils.PROGRESS_VALUE_START_LOADING_NEW_SCENE;
 
-		if (!await IsSuccessLoadNewScene(newSceneIndex))
+		if (!await TryLoadNewSceneAsync(newSceneIndex))
 			return;
 		
 		_loadingState.Value = SceneLoadingState.StartUnloadingOldScene;
@@ -84,7 +84,7 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		_loadingState.Value = SceneLoadingState.None;
 	}
 
-	private async UniTask Clear()
+	private async UniTask ClearAsync()
 	{
 		_loadingState.Value = SceneLoadingState.StartClearAssets;
 		
@@ -102,7 +102,7 @@ public class ModelSceneLoader : IInitializable, IDisposable
 		_loadingState.Value = SceneLoadingState.FinishClearAssets;
 	}
 
-	private async UniTask<bool> IsSuccessLoadNewScene(int newSceneIndex)
+	private async UniTask<bool> TryLoadNewSceneAsync(int newSceneIndex)
 	{
 		_loadingState.Value = SceneLoadingState.StartLoadingNewScene;
 
