@@ -4,9 +4,9 @@ using Zenject;
 public class ModelLevelUiAutoWindowChange: ModelBase
 {
 	private readonly SignalBus _signalBus;
-	private readonly ModelLevelUi _modelLevelUi;
+	private readonly ModelUiScreenChange _modelLevelUi;
 
-	public ModelLevelUiAutoWindowChange(ModelLevel modelLevel, SignalBus signalBus, ModelLevelUi modelLevelUi)
+	public ModelLevelUiAutoWindowChange(ModelLevel modelLevel, SignalBus signalBus, ModelUiScreenChange modelLevelUi)
 		: base(modelLevel)
 	{
 		_signalBus = signalBus;
@@ -21,17 +21,22 @@ public class ModelLevelUiAutoWindowChange: ModelBase
 		_signalBus.GetStream<SignalGameResults>().Subscribe(OnGameResults).AddTo(Disposables);
 
 		_modelLevelUi.CloseAll();
-		_modelLevelUi.Open(WindowType.GameStatusScreencreen);
+		ChangeScreen(WindowType.GameStatusScreen);
 	}
 
 	private void OnGameNew(SignalGameNew signalData)
 	{
 		this.Log($"");
-		_modelLevelUi.ChangeScreen(WindowType.GameStatusScreencreen);		
+		ChangeScreen(WindowType.GameStatusScreen);
 	}
 
 	private void OnGameResults(SignalGameResults signalData)
 	{
-		_modelLevelUi.ChangeScreen(WindowType.ResultScreen);
+		ChangeScreen(WindowType.ResultScreen);
+	}
+
+	private void ChangeScreen(WindowType type)
+	{
+		_modelLevelUi.ChangeScreen(type);
 	}
 }

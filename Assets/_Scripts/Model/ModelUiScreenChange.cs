@@ -2,14 +2,14 @@
 using System.Linq;
 using UniRx;
 
-public class ModelLevelUi: IDisposable
+public class ModelUiScreenChange: IDisposable
 {	
 	protected readonly CompositeDisposable Disposables = new();
 
 	private IUiPresenter[] _presenters;
 	protected IUiPresenter _presenterCurrentWindow;
 
-	public ModelLevelUi()
+	public ModelUiScreenChange()
 	{
 	}
 
@@ -32,7 +32,7 @@ public class ModelLevelUi: IDisposable
 		Open(windowType);
 	}
 
-	public void Open(WindowType windowType)
+	private void Open(WindowType windowType)
 	{
 		if (!TryGetPresenter(windowType, out var presenter))
 			return;

@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3600c0c58f60fa94eb00c0b3d8b5ce21, type: 3}
+  m_Name: LobbyUiSettings
+  m_EditorClassIdentifier: 
+  <ViewLobbyMain>k__BackingField: {fileID: 6065403610643406985, guid: b3521fb28a31fdb4982cbc39012e19e7, type: 3}

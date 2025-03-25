@@ -13,7 +13,7 @@ public class UiPresenterResultScreen : UiPresenterScreenBase<UiViewResultScreen>
 	public UiPresenterResultScreen(
 		UiViewResultScreen view,
 		SignalBus signalBus,
-		ModelLevelUi sceneUiModel) : base(view, sceneUiModel)
+		ModelUiScreenChange sceneUiModel) : base(view, sceneUiModel)
 	{
 		_signalBus= signalBus;
 	}
