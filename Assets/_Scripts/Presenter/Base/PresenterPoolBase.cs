@@ -1,12 +1,24 @@
 ﻿public abstract class PresenterPoolBase<TView> : PresenterBase<TView> where TView : ViewPool
 {
-	protected PresenterPoolBase(TView view) : base(view)
+    private bool _desposed;
+    protected PresenterPoolBase(TView view) : base(view)
 	{
-	}
+        _desposed = false;
+    }
 
 	public override void Dispose()
-	{
-		View.SelfRelease();
+    {
+        if (_desposed)
+        {
+            this.LogError($"{GetHashCode()} ({_desposed})");
+            return;
+        }
+
+        this.Log($"{GetHashCode()} ({_desposed})");
+
+        _desposed = true;
+
+        View.SelfRelease();
 		base.Dispose();
 	}
 }

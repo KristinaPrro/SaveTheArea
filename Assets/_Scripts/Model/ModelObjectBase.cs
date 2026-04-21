@@ -28,7 +28,7 @@ public class ModelObjectBase<T> : IDisposable, IResettable where T : ISpawnEleme
 	{
 		if(!_presenters.Contains(element))
 		{
-			this.LogError($"{nameof(T)} not found! ({_presenters.Count}:  {Debug()})");
+			this.LogError($"{typeof(T)} not found! ({_presenters.Count}:  {Debug()})");
 			return;
 		}
 
